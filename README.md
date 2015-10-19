@@ -85,79 +85,68 @@ need to actually care about.
 ## LovMx - VMX (Virtual Machine eXchange)
 #############################################################
 
-# pattern |  in              out   | side effects
-#–––––––––|––––––––––––––––––––––––|–––––––––––––––––––––––––
-# data    |  Holo \       / Tube   | output |> html/json/etc
-#–––––––––|––––––––––––––––––––––––|–––––––––––––––––––––––––
-# actual  |        Machine         | files/sockets/https
-#–––––––––|––––––––––––––––––––––––|–––––––––––––––––––––––––
+pattern |  in              out   | side effects
+––––––––|––––––––––––––––––––––––|–––––––––––––––––––––––––
+data    |  Holo \       / Tube   | output |> html/json/etc
+––––––––|––––––––––––––––––––––––|–––––––––––––––––––––––––
+actual  |        Machine         | files/sockets/https
+––––––––|––––––––––––––––––––––––|–––––––––––––––––––––––––
 
 
 ## NOTES
 #############################################################
 
-# Check out Bridge for a standard LovMx module, it also
-# works well as an example `Application` (aka Elixir 
-# Module) you would need to write to use the LovMx on
-# your own.
+ Check out Bridge for a standard LovMx module, it also
+ works well as an example `Application` (aka Elixir 
+ Module) you would need to write to use the LovMx on
+ your own.
 
-# This Bridge uses the server flavor of OrbitalMagic 
-# but we also have an awesome Maru based include for
-# building data APIs.. check out `lib/cake.ex` to see 
-# more about and how other Orbital Magic works.
+ This Bridge uses the server flavor of OrbitalMagic 
+ but we also have an awesome Maru based include for
+ building data APIs.. check out `lib/cake.ex` to see 
+ more about and how other Orbital Magic works.
 
-# The LovMx also works well inside a Phoenix app
-# (see www.ilvmx.com or github.com/silljays/ilvmx)
-# because the LovMx loves to flip the Bird. Phoenix 
-# channels plus <3 this universe.
+ The LovMx also works well inside a Phoenix app
+ (see www.ilvmx.com or github.com/silljays/ilvmx)
+ because the LovMx loves to flip the Bird. Phoenix 
+ channels plus <3 this universe.
 
-# Finally, the server can be started from the command
-# line (aka standalone) optionally initated into the 
-# the ilvmx/galaxy/:whatever
+ Finally, the server can be started from the command
+ line (aka standalone) optionally initated into the 
+ the ilvmx/galaxy/:whatever
 
-# In Galaxy mode the server will search #todo for other 
-# LovMx nodes and automatically begin participating
-# in the network via establishing Holo + Tube links.
+ In Galaxy mode the server will search #todo for other 
+ LovMx nodes and automatically begin participating
+ in the network via establishing Holo + Tube links.
 
-# todo: much of the networking, discovery/propgation, and
-# auth parts and in need of good love. But the ideas and
-# proof of concepts should be mostly stubbed.
+ todo: much of the networking, discovery/propgation, and
+ auth parts and in need of good love. But the ideas and
+ proof of concepts should be mostly stubbed.
 
 x "## Chapter 2. Static Data"
 
-# Datas are nice for storing objects to disk,
-# but let's play with dynamic data too. Here
-# we will capture a flow of data or a data flow.
+ Datas are nice for storing objects to disk,
+ but let's play with dynamic data too. Here
+ we will capture a flow of data or a data flow.
 
-# Creating static objects (a Data-based Data flow) inside your head.
+### Creating static objects (a Data-based Data flow) inside your head.
 data = Data.new "hi, this is your ai speaking.", Kind.auto
 
-# Save it to the Db
-## todo: write Db layer.
+### Save it to the Db
+### todo: write Db layer.
 data = Fridge.push data
 
-# Push it to the Web.
+### Push it to the Web.
 data = Tube.post data, "a/test/file"
 
 
-#@x "## Chapter 3. Flowing Data"
+###@x "## Chapter 3. Flowing Data"
 
-# Datas are nice for storing objects to disk,
-# but let's play with dynamic data too. Here
-# we will capture a flow of data or a data flow.
+ Static Data is nice for storing objects to disk,
+ but let's play with dynamic data too. Here
+ we will capture a flow of data or a data flow.
 
-# Creating static objects (a Data-based Data flow) inside your head.
-data = new "hi, this is your ai speaking.", Kind.flow
-
-# Save it to the Db
-## todo: write Db layer.
-data = Fridge.push data
-
-# Push it to the Web.
-@x :data = Tube.post data, "player/profile/123"
-
-
-x "## Chapter 4. Flowing Data"
+# Chapter 4. Flowing Data
 
 ```
 ## Setup the README.
@@ -225,7 +214,7 @@ end
 
 # That should be fairly clear.
 
-# Now let's store and secret something in a private Castle.
+Now let's store and secret something in a private Castle.
 
 %Data{native: TodoEncryption} = Castle.secret Data.new("hide stuff here.."), "secretpassword"
 
@@ -281,7 +270,8 @@ Holo.d "whateverpath"
 ```
 
 # Chapter 4) Create Superpowered Maru Routers for advanced data flows.
-## Working Code showing hoe to process routes in Nubspace + add content.
+
+Working Code showing how to process routes in Nubspace + add content.
 ########################################################################
 
 ```
@@ -343,4 +333,4 @@ end
 # Chapter 3) Telling your first Textually Exicting Story.
 #########################################################
 
-# todo: <an example cake app>
+todo: <an example cake app>
