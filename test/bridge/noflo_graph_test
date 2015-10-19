@@ -1,0 +1,298 @@
+defmodule NoFlo.Graph.Test do
+  use ExUnit.Case
+
+  ## http://noflojs.org/documentation/protocol/
+
+
+  ###################
+  # Graph protocol
+  ###################
+
+  #This protocol is utilized for communicating about graph changes in both directions.
+
+  test "Bridge.clear",
+  do: assert Bridge.clear # %Data{}
+
+  # Initialize an empty graph.
+  #
+  # id: identifier for the graph being created. Used for all subsequent messages related to the graph instance
+  # name: (optional) Player-readable label for the graph
+  # library: (optional) Component library identifier
+  # main: (optional) Identifies the graph as a main graph of a project that should not be registered as a component
+  # icon: (optional) Icon to use for the graph when used as a component
+  # description: (optional) Description to use for the graph when used as a component
+  # secret: access token to authorize the user
+  # Graphs registered in this way should also be available for use as subgraphs in other graphs. Therefore a graph registration and later changes to it may cause component messages of the Component protocol to be sent back to the client informing of possible changes in the ports of the subgraph component.
+
+  test "Bridge.addnode",
+  do: assert Bridge.addnode %Data{}
+
+  # Add node to a graph.
+  #
+  # id: identifier for the node
+  # component: component name used for the node
+  # metadata (optional): structure of key-value pairs for node metadata
+  # graph: graph the action targets
+  # secret: access token to authorize the user
+
+  test "Bridge.removenode",
+  do: assert Bridge.removenode %Data{}
+
+  # Remove a node from a graph.
+  #
+  # id: identifier for the node
+  # graph: graph the action targets
+  # secret: access token to authorize the user
+
+  test "Bridge.renamenode",
+  do: assert Bridge.renamenode %Data{}
+
+  # Remove a node from a graph.
+  #
+  # id: identifier for the node
+  # graph: graph the action targets
+  # secret: access token to authorize the user
+
+  test "Bridge.changenode",
+  do: assert Bridge.changenode %Data{}
+
+
+  # changenode
+  #
+  # Change the metadata associated to a node in the graph
+  #
+  # id: identifier for the node
+  # metadata: structure of key-value pairs for node metadata
+  # graph: graph the action targets
+  # secret: access token to authorize the user
+
+  test "Bridge.addedge",
+  do: assert Bridge.addedge %Data{}
+
+  #
+  # Add an edge to the graph
+  #
+  # src: source node for the edge
+  # node: node identifier
+  # port: port name
+  # index: connection index (optional, for addressable ports)
+  # tgt: target node for the edge
+  # node: node identifier
+  # port: port name
+  # index: connection index (optional, for addressable ports)
+  # metadata (optional): structure of key-value pairs for edge metadata
+  # graph: graph the action targets
+  # secret: access token to authorize the user
+
+
+  test "Bridge.removeedge",
+  do: assert Bridge.removeedge %Data{}
+
+  # removeedge
+  #
+  # Remove an edge from the graph
+  #
+  # src: source node for the edge
+  # node: node identifier
+  # port: port name
+  # tgt: target node for the edge
+  # node: node identifier
+  # port: port name
+  # graph: graph the action targets
+  # secret: access token to authorize the user
+
+
+  test "Bridge.changeedge",
+  do: assert Bridge.changeedge %Data{}
+
+  # changeedge
+  #
+  # Change an edge's metadata
+  #
+  # src: source node for the edge
+  # node: node identifier
+  # port: port name
+  # tgt: target node for the edge
+  # node: node identifier
+  # port: port name
+  # metadata: struct of key-value pairs for edge metadata
+  # graph: graph the action targets
+  # secret: access token to authorize the user
+
+
+  test "Bridge.addinitial",
+  do: assert Bridge.addinitial %Data{}
+
+  # addinitial
+  #
+  # Add an IIP to the graph
+  #
+  # src:
+  # data: IIP value in its actual data type
+  # tgt: target node for the edge
+  # node: node identifier
+  # port: port name
+  # index: connection index (optional, for addressable ports)
+  # metadata (optional): structure of key-value pairs for edge metadata
+  # graph: graph the action targets
+  # secret: access token to authorize the user
+
+
+  test "Bridge.removeinitial",
+  do: assert Bridge.removeinitial %Data{}
+
+  # Remove an IIP from the graph
+  #
+  # tgt: target node for the edge
+  # node: node identifier
+  # port: port name
+  # graph: graph the action targets
+  # secret: access token to authorize the user
+
+
+
+  test "Bridge.addinport",
+  do: assert Bridge.addinport %Data{}
+
+
+  # addinport
+  #
+  # Add an exported inport to the graph.
+  #
+  # public: the exported name of the port
+  # node:: node identifier
+  # port: internal port name
+  # metadata (optional): structure of key-value pairs for node metadata
+  # graph: graph the action targets
+  # secret: access token to authorize the user
+
+
+
+  test "Bridge.removeinport",
+  do: assert Bridge.removeinport %Data{}
+
+
+  # removeinport
+  #
+  # Remove an exported port from the graph
+  #
+  # public: the exported name of the port to remove
+  # graph: graph the action targets
+  # secret: access token to authorize the user
+
+
+
+  test "Bridge.renameinport",
+  do: assert Bridge.renameinport %Data{}
+
+  # renameinport
+  #
+  # Rename an exported port in the graph
+  #
+  # from: original exported port name
+  # to: new exported port name
+  # graph: graph the action targets
+  # secret: access token to authorize the user
+
+
+  test "Bridge.addoutport",
+  do: assert Bridge.addoutport %Data{}
+
+  # addoutport
+  #
+  # Add an exported outport to the graph.
+  #
+  # public: the exported name of the port
+  # node:: node identifier
+  # port: internal port name
+  # metadata (optional): structure of key-value pairs for port metadata
+  # graph: graph the action targets
+  # secret: access token to authorize the user
+
+
+
+  test "Bridge.removeoutport",
+  do: assert Bridge.removeoutport %Data{}
+
+  # removeoutport
+  #
+  # Remove an exported port from the graph
+  #
+  # public: the exported name of the port to remove
+  # graph: graph the action targets
+  # secret: access token to authorize the user
+
+
+
+
+  test "Bridge.renameoutport",
+  do: assert Bridge.renameoutport %Data{}
+
+  # renameoutport
+  #
+  # Rename an exported port in the graph
+  #
+  # from: original exported port name
+  # to: new exported port name
+  # graph: graph the action targets
+  # secret: access token to authorize the user
+
+
+
+  test "Bridge.addgroup",
+  do: assert Bridge.addgroup %Data{}
+
+  # addgroup
+  #
+  # Add a group to the graph
+  #
+  # name: the group name
+  # nodes: an array of node ids part of the group
+  # metadata (optional): structure of key-value pairs for group metadata
+  # graph: graph the action targets
+  # secret: access token to authorize the user
+
+
+
+
+  test "Bridge.removegroup",
+  do: assert Bridge.removegroup %Data{}
+
+  # removegroup
+  #
+  # Remove a group from the graph
+  #
+  # name: the group name
+  # graph: graph the action targets
+  # secret: access token to authorize the user
+
+
+
+  test "Bridge.renamegroup",
+  do: assert Bridge.renamegroup %Data{}
+
+  # renamegroup
+  #
+  # Rename a group in the graph.
+  #
+  # from: original group name
+  # to: new group name
+  # graph: graph the action targets
+  # secret: access token to authorize the user
+
+
+
+
+  test "Bridge.changegroup",
+  do: assert Bridge.changegroup %Data{}
+
+  # changegroup
+  #
+  # Change a group's metadata
+  #
+  # name: the group name
+  # metadata: structure of key-value pairs for group metadata
+  # graph: graph the action targets
+  # secret: access token to authorize the user
+
+end

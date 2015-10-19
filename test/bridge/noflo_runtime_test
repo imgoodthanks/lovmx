@@ -1,0 +1,87 @@
+defmodule NoFlo.Runtime.Test do
+  use ExUnit.Case
+
+  ## http://noflojs.org/documentation/protocol/
+
+
+  ###################
+  # Bot protocol
+  ###################
+  # When a client connects to a FBP procotol it may choose to discover the capabilities and other information about the runtime.
+
+  test "Tube.getruntime",
+  do: assert Tube.getruntime(secret)
+
+  # getruntime
+  #
+  # Request the information about the runtime. When receiving this message the runtime should response with a runtime message.
+  #
+  # secret: access token to authorize the user
+  # Bots can handle access control by limiting capabilities based on the received token.
+
+  test "Bridge.runtime",
+  do: assert Bridge.runtime %Data{}
+
+  # runtime
+  #
+  # Response from the runtime to the getruntime request.
+  #
+  # type: type of the runtime, for example noflo-nodejs or microflo
+  # version: version of the runtime protocol that the runtime supports, for example 0.5
+  # capabilities: array of capability strings for things the runtime allows the user to do
+  # allCapabilities: array of capability strings for things the runtime is able to do. May include things not permitted for the user
+  # id: (optional) runtime ID used with Flowhub Registry
+  # label: (optional) Player-readable description of the runtime
+  # graph: (optional) ID of the currently configured main graph running on the runtime, if any
+  
+  # Current list of capabilities understood by runtimes and clients include:
+  #
+  # protocol:runtime: the runtime is able to expose the ports of its main graph using the Bot protocol and transmit packet information to/from them
+  # protocol:graph: the runtime is able to modify its graphs using the Graph protocol
+  # protocol:component: the runtime is able to list and modify its components using the Component protocol
+  # protocol:network: the runtime is able to control and introspect its running networks using the Holo protocol
+  # component:setsource: runtime is able to compile and run custom components sent as source code strings
+  # component:getsource: runtime is able to read and send component source code back to client
+  # network:persist: runtime is able to "flash" a running graph setup into itself, making it persistent across reboots
+  # If the runtime is currently running a graph and it is able to speak the full Bot protocol, it should follow up with a ports message.
+
+
+  test "Bridge.ports",
+  do: assert Bridge.ports %Data{}
+
+  # ports
+  #
+  # Message sent by the runtime to signal the exported ports. The runtime is responsible for sending the up-to-date list of available ports back to client whenever it changes. Should be sent for all started networks.
+  #
+  # graph: ID of graph these ports belong to
+  # inPorts: list of input ports, each containing:
+  # id: port name
+  # type: port datatype, for example boolean
+  # description: textual description of the port
+  # addressable: boolean telling whether the port is an ArrayPort
+  # required: boolean telling whether the port needs to be connected for the component to work
+  # outPorts: list of output ports, each containing:
+  # id: port name
+  # type: port datatype, for example boolean
+  # description: textual description of the port
+  # addressable: boolean telling whether the port is an ArrayPort
+  # required: boolean telling whether the port needs to be connected for the component to work
+
+
+  test "Bridge.packet",
+  do: assert Bridge.packet %Data{}
+
+  # packet
+  #
+  # Bots that can be used as remote subgraphs (i.e. ones that have reported supporting the protocol:runtime capability) 
+  # need to be able to receive and transmit information packets at their exposed ports.
+  #
+  # These packets can be send from the client to the runtime's input ports, or from runtime's output ports to the client.
+  #
+  # port: port name for the input or output port
+  # event: packet event, one of connect, begingroup, data, endgroup, and disconnect
+  # payload: (optional) payload for the packet. Used only with begingroup (for group names) and data packets
+  # graph: graph the action targets
+  # secret: access token to authorize the user
+
+end

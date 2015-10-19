@@ -1,0 +1,47 @@
+# Setup as compiled from various sources.
+
+cd /
+
+# Update
+
+sudo apt-get update --fix-missing && sudo apt-get install
+sudo apt-get install build-essential libssl-dev wget git docker.io -y
+
+# Install the build tools (dpkg-dev g++ gcc libc6-dev make)
+apt-get install -q -y cowsay build-essential git curl
+apt-get install -q -y python-software-properties python
+
+# automatic configure script builder (debianutils m4 perl)
+apt-get -y install autoconf
+ 
+# Needed for terminal handling (libc-dev libncurses5 libtinfo-dev libtinfo5 ncurses-bin)
+apt-get -y install libncurses5-dev
+# For building with wxWidgets
+apt-get -y install libwxgtk2.8-dev libgl1-mesa-dev libglu1-mesa-dev libpng3
+# For building ssl (libssh-4 libssl-dev zlib1g-dev)
+apt-get -y install libssh-dev
+# ODBC support (libltdl3-dev odbcinst1debian2 unixodbc)
+apt-get -y install unixodbc-dev
+# Our Web Server
+apt-get -y install nginx
+
+
+# Install Erlang
+cd /tmp
+wget http://packages.erlang-solutions.com/erlang-solutions_1.0_all.deb
+dpkg -i erlang-solutions_1.0_all.deb
+apt-get update
+apt-get install -y erlang erlang-src
+
+# Install rebar + Elixir
+apt-get install elixir
+
+
+# ILvMx.
+# todo: pull from github.com/silljays/lovmx
+
+cd /lovmx
+MIX_ENV=prod mix deps.get
+MIX_ENV=prod mix compile
+MIX_ENV=prod mix lovmx
+

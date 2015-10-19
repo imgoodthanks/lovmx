@@ -1,0 +1,7 @@
+#!/bin/bash
+
+if [ -z $1 ]; then
+	iex --sname "anon" --remsh lovmx@shhh
+else
+	iex --sname $1 --remsh lovmx@shhh
+fi

@@ -1,0 +1,95 @@
+defmodule NoFlo.Component.Test do
+  use ExUnit.Case
+  
+  # # Sub-protocols
+  # - runtime: communications about runtime capabilities and its exported ports
+  # - graph: communications about graph changes
+  # - component: communications about available components and changes to them
+  # - network: communications related to running a FBP graph
+  #
+  #
+  # # Messages
+  # - Sub-protocol identifier (graph/component/network)
+  # - Topic (for example, addnode)
+  # - Message payload (typically a data structure specific to the sub-protocol and topic)
+  
+  ## http://noflojs.org/documentation/protocol/
+
+  ######################
+  # Component protocol
+  ######################
+  #
+  # Protocol for handling the component registry.
+
+
+  # @doc """
+  # # list
+  # #
+  # # Request a list of currently available components. Will be responded with a set of component messages.
+  # #
+  # # secret: access token to authorize the user
+  # """
+  # test "Bridge.list",
+  # do: assert Bridge.list %Data{}
+
+
+  #test "Bridge.component",
+  #do: assert Bridge.component %Data{}
+  #
+  ## component
+  ##
+  ## Transmit the metadata about a component instance.
+  ##
+  ## name: component name in format that can be used in graphs
+  ## description (optional): textual description on what the component does
+  ## icon (optional): visual icon for the component, matching icon names in Font Awesome
+  ## subgraph: boolean telling whether the component is a subgraph
+  ## inPorts: list of input ports, each containing:
+  ## id: port name
+  ## type: port datatype, for example boolean
+  ## description: textual description of the port
+  ## addressable: boolean telling whether the port is an ArrayPort
+  ## required: boolean telling whether the port needs to be connected for the component to work
+  ## values: (optional) array of the values that the port accepts for enum ports
+  ## default: (optional) the default value received by the port
+  ## outPorts: list of output ports, each containing:
+  ## id: port name
+  ## type: port datatype, for example boolean
+  ## description: textual description of the port
+  ## addressable: boolean telling whether the port is an ArrayPort
+  ## required: boolean telling whether the port needs to be connected for the component to work
+  #
+  #test "Bridge.componentsready",
+  #do: assert Bridge.componentsready %Data{}
+  #
+  ## componentsready
+  ##
+  ## Answer to the list command, sent when all available components have been sent via component messages. Payload contains the number of components on the runtime.
+  #
+  #test "Tube.getsource",
+  #do: assert Tube.getsource %Data{}
+  #
+  ## getsource
+  ##
+  ## Request for the source code of a given component. Will be responded with a source message.
+  ##
+  ## name: Name of the component to get source code for
+  ## secret: access token to authorize the user
+  #
+  #
+  #test "Bridge.source",
+  #do: assert Bridge.source %Data{}
+  #
+  ## source
+  ##
+  ## Source code for a component. In cases where a runtime receives a source message, it should do whatever operations are needed for making that component available for graphs, including possible compilation.
+  ##
+  ## name: Name of the component
+  ## language: The programming language used for the component code, for example coffeescript
+  ## library: (optional) Component library identifier
+  ## code: Component source code
+  ## tests: (optional) unit tests for the component
+  ## secret: access token to authorize the user
+
+
+end

@@ -1,0 +1,459 @@
+* {
+margin: 0;
+padding: 0;
+}
+
+html,
+header,
+footer {
+background: rgb(11, 11, 11);
+}
+
+body {
+padding: 20px;
+}
+
+body,
+#page {
+background: none;
+min-height: 800px;
+}
+
+
+html,
+body, 
+h1, 
+h2, 
+h3, 
+h4, 
+h5, 
+h6, 
+p, 
+dl, 
+dt, 
+ul, 
+ol, 
+li, 
+blockquote, 
+label, 
+fieldset,
+pre {
+color: rgba(102, 102, 102, 0.76);
+font-smooth: always;
+text-rendering: optimizeLegibility;
+font: 18px "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Utkal, sans-serif;
+font-weight: 300;
+-webkit-font-smoothing: antialiased;
+}
+
+header h1,
+header p  {
+margin-bottom: 20px;
+}
+
+header,
+footer {
+}
+
+#page {
+}
+section#blob {
+}
+
+section {
+margin-bottom: 20px;
+padding: 40px;
+}
+
+section > * {
+margin-bottom: 10px;
+margin-top: 10px;
+}
+
+body {
+padding-bottom: 40px;
+padding-top: 20px;
+}
+
+code {
+display: block;
+padding: 20px;
+}
+
+ol,
+ul {
+margin: 0;
+padding-left: 0;
+font-size: 18px;
+}
+
+li {
+list-style: none;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+footer p {
+color: rgba(102, 102, 102, 0.76);
+background: none;
+list-style: none;
+font-size: 24px;
+}
+
+pre {
+display: block;
+color: #2d2f30;
+text-shadow: none;
+overflow: hidden;
+font-size: 16px;
+padding: 20px;
+}
+
+h1, h2, h3, h4, h5, h6, .title, dt, li, label {
+text-transform: lowercase;
+}
+
+h1, h2, h3, h4, h5, h6 {
+margin-top: 0;
+margin-bottom: 0px;
+}
+
+input,
+.form-control,
+textarea,
+input[type=text],
+input[type=file] {
+background-color: #000;
+padding: 20px 20px 20px 40px;
+font-size: 18px;
+text-align: left;
+box-shadow: 0 0 1px #000000;
+-moz-box-shadow: 0 0 1px #000000;
+border: 1px solid rgba(23, 23, 23, 0.87);
+	margin: 10px;
+}
+
+input[type=submit]:focus,
+input:focus,
+textarea:focus {
+border: 1px dashed rgba(167, 254, 143, 0.84);
+color: #7bb9fc;
+background-color: rgba(2, 61, 148, 0.88);
+}
+
+input[type=submit] {
+font-size: 16px;
+display: block;
+color: #dfdfdf;
+background-color: #1e1e1e;
+	border-width: 1px;
+	padding: 10px 20px;
+	-moz-box-shadow: 0 0 1px rgba(56, 146, 239, 0.79);
+	box-shadow: 0 0 1px rgba(56, 146, 239, 0.79);
+}
+
+textarea:focus {
+border: 1px dotted #0f8bdb;	
+}
+
+form {
+margin: 0;
+padding: 0;
+}
+
+body form input[type=text],
+body form textarea {
+font-family: Menlo, Monaco, ‘Lucida Sans Unicode’, ‘Lucida Grande’, 'Lucida Sans Typewriter', 'Consolas', monospace;
+box-shadow: inset 0px 0px 10px rgb(0,0,0,1);
+}
+
+select {
+font-size: 16px;
+}
+
+input[type=file],
+input[type=submit] {
+font: 16px "Helvetica Neue", Arial, Helvetica, Geneva, sans-serif;
+}
+
+input[type=file] {
+text-shadow: none;
+color: #555555;
+padding: 10px;
+vertical-align: middle;
+line-height: 100%;
+}
+
+label {
+display: block;
+}
+
+.hint {
+font-size: 15px;
+display: block;
+color: #ac5db4;
+}
+
+img.effects {
+max-height: 88%;
+display: inline-block;
+-moz-transition: all 2s ease-in-out; 
+-webkit-transition: all 2s ease-in-out; 
+-o-transition: all 2s ease-in-out; 
+transition: all 2s ease-in-out;
+}
+
+.keycode {
+padding: 10px;
+color: #e4e4e4;
+background-color: rgba(89, 26, 255, 0.33);
+display: block;
+margin: 0 0 20px;
+}
+
+body a {
+display: inline-block;
+padding: 3px 10px;
+background: url(#0d82c4) #14447e;
+border-radius: 1px;
+color: rgb(108, 198, 248);
+margin: 5px;
+}
+
+body a.radio {
+background-color: #4f3ff1;
+color: #eeeeee;
+
+
+}
+
+body a:hover,
+input[type=submit]:hover {
+cursor: help;
+background-color: #13920e;
+color: #eeeeee;
+}
+
+body a img {
+background: none;
+}
+
+
+/*.sigil {
+font: bold 28px/10px "Arial Unicode MS", "Zapf Dingbats";
+}*/
+
+section {
+position: relative;
+margin-bottom: 20px;
+border-radius: 2px;
+}
+
+footer {
+color: rgba(97, 97, 97, 0.68);
+}
+
+footer p {
+font-size: 18px;
+margin: 5px;
+padding: 5px;
+}
+
+footer a {
+background: rgba(45, 48, 50, 0.73);
+color: #8f9396;
+font-size: 18px;
+text-decoration: underline;
+}
+
+footer li {
+display: inline-block;
+}
+
+#holo-logo {
+display: inline-block;
+max-width: 33%;
+}
+
+footer .copyright.sigil {
+clear: none;
+}
+
+
+/* CUSTOM ILVMX/LOLNUB STUFF */
+
+.item p {
+margin-top: 20px;
+margin-bottom: 20px;
+}
+
+.bot .keycode {
+font-size: 18px;
+border-radius: 2px;
+background-color: #5a00e1;
+color: #eeeeee;
+}
+
+code,
+pre {
+font: 16px "Menlo", "Monaco", monospace;
+border: none;
+background: none;
+color: #b8babb;
+display: block;
+overflow: hidden;
+border-radius: 1;
+}
+
+code {
+position: relative;
+margin: 0;
+}
+
+code a:hover,
+.bot .keycode:hover {
+background-color: rgba(225, 11, 55, 0.86);
+color: #dadada;
+border-bottom-color: rgba(97, 4, 23, 0.86);
+}
+
+code ul,
+code ol,
+code dl,
+code pre {
+margin-top: 20px;
+margin-bottom: 20px;
+}
+
+body a {
+margin-bottom: 10px;
+background-color: #108dfc;
+border-bottom: 1px dotted rgba(14, 14, 14, 0.17);
+}
+
+code p {
+color: #c4c7c9;
+}
+
+code.text {
+background-color: rgba(21, 21, 21, 0.9);
+margin-bottom: 80px;
+margin-top: 0;
+}
+
+code.bot {
+max-height: 23%;
+padding: 10px;
+}
+
+code.blob {
+margin: 0;
+padding: 10px;
+}
+
+p code {
+padding: 10px;
+background-color: rgba(0, 170, 5, 0.68);
+font-weight: bold;
+font-style: italic;
+border-radius: 2px;
+border-bottom: 3px solid #4b8900;
+display: inline-block;
+margin: 0 10px;
+}
+
+pre code {
+margin: 0;
+background-color: rgba(24, 23, 25, 0.68);
+padding: 10px;
+color: #ecf6fe;
+border-radius: 2px;
+border: 1px dashed #2b2144;
+}
+
+.blob {
+
+margin: 0;
+}
+
+.data-text,
+.data-json {
+padding: 0;	
+}
+
+pre.blob {
+padding: 20px;
+}
+
+pre.other {
+color: #1e1e1e;
+font-size: 12px;
+}
+
+pre p {
+color: #d1d1d1;
+margin: 10px;
+display: block;
+}
+
+code img.effects {
+max-height: 333px;
+background-color: #a8d2f0;
+color: #dfdfdf;
+}
+
+a.automagic {
+background-color: #004d8a;
+color: #b3d5ef;
+}
+
+a.galaxy,
+header ul li {
+display: inline-block;
+margin: 0;
+}
+
+header,
+footer {
+-moz-box-shadow: 0 10px 10px rgba(3, 3, 3, 0.5);
+}
+
+header {
+z-index: 1;
+}
+
+#data h1,
+#data h2,
+#data h3 {
+margin-top: 20px;
+margin-bottom: 20px;
+}
+
+#meta li {
+display: inline-block;
+}
+
+#meta {
+padding: 20px;
+}
+
+blockquote {
+border: none;
+margin: 20px;
+}
+
+header ul {
+margin-top: 10px;
+margin-bottom: 10px;
+}
+
+#magic {
+background: url('../img/cursor.gif') 20px center no-repeat #000;
+border: 1px solid rgba(23, 23, 23, 0.87);
+display: inline-block;
+min-width: 420px;
+}
