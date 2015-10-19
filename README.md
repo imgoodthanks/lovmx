@@ -2,13 +2,6 @@ require Logger
 
 use Magic
 
-# Start our Universe
-Holo.reset true, true
-
-x "# Chapter 1. Programming LovMx with Magic."
-
-Programming the internet love Bot.
-
 # LovMx + ILvMx.
 ## Orbital Magic for Cloud Apps.
 ### Internet LoveMx + Internet Love and #virtual Magic #exchange
@@ -41,8 +34,7 @@ Yeah that sounds right.
 
 Welcome to #nubspace. Here, take this map...
 
-## LovMx - Nubspace Tree of Life.
-###############################################
+# Chapter 1. LovMx Tree of Life.
 
 Generally speaking, the Multiverse has three parts above,
 three below, and only really a few things in the middle we 
@@ -70,8 +62,7 @@ need to actually care about.
 
 
 ## LovMx - Multiverse
-#############################################################
-
+```
 –––––––––––––––––––
 [universe]
 –––––––––––––––––––
@@ -81,51 +72,22 @@ need to actually care about.
 –––––––––––––––––––
 [server/multiverse]
 –––––––––––––––––––
-
-## LovMx - VMX (Virtual Machine eXchange)
+```
+## Virtual Machine eXchange
 #############################################################
 
+```
 pattern |  in              out   | side effects
 ––––––––|––––––––––––––––––––––––|–––––––––––––––––––––––––
 data    |  Holo \       / Tube   | output |> html/json/etc
 ––––––––|––––––––––––––––––––––––|–––––––––––––––––––––––––
 actual  |        Machine         | files/sockets/https
 ––––––––|––––––––––––––––––––––––|–––––––––––––––––––––––––
+```
 
+# Chapter 2. Data is All.
 
-## NOTES
-#############################################################
-
- Check out Bridge for a standard LovMx module, it also
- works well as an example `Application` (aka Elixir 
- Module) you would need to write to use the LovMx on
- your own.
-
- This Bridge uses the server flavor of OrbitalMagic 
- but we also have an awesome Maru based include for
- building data APIs.. check out `lib/cake.ex` to see 
- more about and how other Orbital Magic works.
-
- The LovMx also works well inside a Phoenix app
- (see www.ilvmx.com or github.com/silljays/ilvmx)
- because the LovMx loves to flip the Bird. Phoenix 
- channels plus <3 this universe.
-
- Finally, the server can be started from the command
- line (aka standalone) optionally initated into the 
- the ilvmx/galaxy/:whatever
-
- In Galaxy mode the server will search #todo for other 
- LovMx nodes and automatically begin participating
- in the network via establishing Holo + Tube links.
-
- todo: much of the networking, discovery/propgation, and
- auth parts and in need of good love. But the ideas and
- proof of concepts should be mostly stubbed.
-
-x "## Chapter 2. Static Data"
-
- Datas are nice for storing objects to disk,
+ Data is nice for storing objects to disk,
  but let's play with dynamic data too. Here
  we will capture a flow of data or a data flow.
 
@@ -140,13 +102,7 @@ data = Fridge.push data
 data = Tube.post data, "a/test/file"
 
 
-###@x "## Chapter 3. Flowing Data"
-
- Static Data is nice for storing objects to disk,
- but let's play with dynamic data too. Here
- we will capture a flow of data or a data flow.
-
-# Chapter 4. Flowing Data
+# Chapter 3. Flowing Data
 
 ```
 ## Setup the README.
@@ -269,7 +225,7 @@ Holo.d "whateverpath"
 
 ```
 
-# Chapter 4) Create Superpowered Maru Routers for advanced data flows.
+# Chapter 4. Maru Routers for advanced data flows.
 
 Working Code showing how to process routes in Nubspace + add content.
 ########################################################################
@@ -330,7 +286,32 @@ defmodule Readme.Web do
 end
 ```
 
-# Chapter 3) Telling your first Textually Exicting Story.
-#########################################################
+## NOTES
+#############################################################
 
-todo: <an example cake app>
+ Check out Bridge for a standard LovMx module, it also
+ works well as an example `Application` (aka Elixir 
+ Module) you would need to write to use the LovMx on
+ your own.
+
+ This Bridge uses the server flavor of OrbitalMagic 
+ but we also have an awesome Maru based include for
+ building data APIs.. check out `lib/cake.ex` to see 
+ more about and how other Orbital Magic works.
+
+ The LovMx also works well inside a Phoenix app
+ (see www.ilvmx.com or github.com/silljays/ilvmx)
+ because the LovMx loves to flip the Bird. Phoenix 
+ channels plus <3 this universe.
+
+ Finally, the server can be started from the command
+ line (aka standalone) optionally initated into the 
+ the ilvmx/galaxy/:whatever
+
+ In Galaxy mode the server will search #todo for other 
+ LovMx nodes and automatically begin participating
+ in the network via establishing Holo + Tube links.
+
+ todo: much of the networking, discovery/propgation, and
+ auth parts and in need of good love. But the ideas and
+ proof of concepts should be mostly stubbed.
