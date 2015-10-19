@@ -108,7 +108,7 @@ defmodule Pipe do
 
   @doc "Return `Kind.pull = markdown(text)`."
   def down(text) when is_binary(text) do
-    Discount.to_html(text)
+    Cmark.to_html(text)
   end
 
   @doc "Create JSON for easy API/web access."

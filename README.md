@@ -17,7 +17,7 @@ We give away the best Web Theme Park on the net. (lolnub.com)
 
 In a nutshell, we wanna build: 
  
-An Elixir-based Wolfram Language 
+*An Elixir-based Wolfram Language 
 powered by a Twitter like network 
 of Markdown-style documents 
 for Clients connected to their own private VPN/VM
@@ -28,7 +28,7 @@ of Code + Data + Data storage aka Cake Apps
 written by commerce and community 
 in a *meticulously* namespaced 
 v2v storage-based network made 
-completely open source and transparent.
+completely open source and transparent.*
 
 Yeah that sounds right.
 

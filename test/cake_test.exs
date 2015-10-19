@@ -25,7 +25,7 @@ defmodule Cake.Test do
   test "return the Data.error type",  do: assert :error == Data.error
  
   test "Cake does cool stuff",
-  do: assert "<h1>lol</h1>" = Data.path Kind.cake, Cake.magic Data.new "#lol"
+  do: assert "<h1>lol</h1>\n" = Data.path Kind.cake, Cake.magic Data.new "# lol"
 
   test "Cake does nil stuff",
   do: assert is_nil Cake.magic nil

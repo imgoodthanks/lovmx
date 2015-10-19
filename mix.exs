@@ -58,27 +58,23 @@ defmodule Lovmx.Mixfile do
       {:plug,         [optional: false, hex: :plug]},
       {:ibrowse,      github: "cmullaparthi/ibrowse", tag: "v4.1.2"},
       {:httpotion,    "~> 2.1.0"},
-      {:earmark,      ">= 0.0.0",   only: [:dev, :test]},
-      {:ex_doc,       ">= 0.0.0",   only: :dev},
-      {:excoveralls,  "~> 0.3",     only: [:dev, :test]},
-      #{:dialyze, "~> 0.2.0"},
-
       {:mongodb_ecto, "~> 0.1"},
       {:ecto,         "~> 1.0"},
-      
-      {:discount,     ">= 0.0.0"},
       {:poison,       hex: :poison, override: false},
-      
       {:webassembly,  "~> 0.5.0"},
       {:maru,         "~> 0.8"},
-      
-      {:exrm,         "~> 0.19.6"},
-
-      {:socket,       github: "meh/elixir-socket"},
-      {:connection,   "1.0.0-rc.1", [optional: false, hex: :connection]},
-
       {:moment,       github: "atabary/moment"},
       {:pretty_hex,   github: "polsab/pretty_hex"},
+      {:cmark,       hex: :cmark},
+      
+      # {:exrm,         "~> 0.19.6"},
+      # 
+      # {:earmark,      ">= 0.0.0",   only: [:dev, :test]},
+      # {:ex_doc,       ">= 0.0.0",   only: :dev},
+      # {:excoveralls,  "~> 0.3",     only: [:dev, :test]},
+      # {:dialyze, "~> 0.2.0"},
+      # {:socket,       github: "meh/elixir-socket"},
+      # {:connection,   "1.0.0-rc.1", [optional: false, hex: :connection]},
       
       # deploy
       # {:fleet_api,    github: "jordan0day/fleet-api"},

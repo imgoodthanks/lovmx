@@ -114,14 +114,9 @@ defmodule Holo do
   end
 
   @doc "Use `Holo.list <nubspace>` to return a [list] of things."
-  def list(nubspace, secret \\ nil)
-
-  def list(nubspace, secret) when is_atom(nubspace) or is_binary(nubspace) do
+  def list(nubspace, secret \\ nil) when is_atom(nubspace) or is_binary(nubspace) do
     Tube.read(Lovmx.web(nubspace), secret)
     |> List.wrap
-  end
-  def list(nada \\ nil, nope \\ nil) when is_nil(nada) do
-    list "/"
   end
   
   @doc "Move `data` to home at `process` or `nubspace`."    
