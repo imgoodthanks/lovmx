@@ -68,7 +68,7 @@ defmodule Bridge do
       # use plug/send_file here for OS-level support
       send_file conn, 200, path
     else
-      Logger.debug "Bridge.nubspace: #{nubspace}"
+      Logger.debug "Bridge.GET // #{nubspace}"
       
       resp conn, 200, Pipe.page Holo.list(nubspace)
     end
@@ -83,9 +83,9 @@ defmodule Bridge do
     nubspace = Lovmx.path(nubspace)
     path = Lovmx.root Lovmx.web [nubspace]
 
-    Logger.debug "Bridge.nubspace: #{nubspace}"
+    Logger.debug "Bridge.POST // #{nubspace}"
 
-    resp conn, 200, Pipe.page "lols"
+    resp conn, 200, Pipe.page Holo.list(nubspace)
   end
   
   @doc "Even the Universe misses things."
