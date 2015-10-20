@@ -36,12 +36,11 @@ apt-get install -y erlang erlang-src
 # Install rebar + Elixir
 apt-get install elixir
 
-
 # ILvMx.
 # todo: pull from github.com/silljays/lovmx
 
 cd /lovmx
 MIX_ENV=prod mix deps.get
 MIX_ENV=prod mix compile
-MIX_ENV=prod mix lovmx
+MIX_ENV=prod ./boot
 

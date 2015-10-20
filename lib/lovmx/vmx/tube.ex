@@ -12,6 +12,8 @@ defmodule Tube do
   systems and networks.
   """
   
+  use GenServer
+  
   ## Secure Web
   
   @doc "Return things from Web.Nubspace or the internet."
@@ -100,4 +102,21 @@ defmodule Tube do
   # @doc "Write raw `native` data to the root of the Multiverse / Unix file system."
   # def multi(native, aboslute, secret)
   
+  def start_link(_) do
+    # An agent that we'll eventually pass around to the *all* the Holo servers...
+    link = {:ok, agent} = Agent.start_link(fn -> Map.new end)
+    
+    # Keep the map inmemory for fluffiness.
+    link = {:ok, tube} = GenServer.start_link(Tube, agent, name: :tube)
+    Logger.info "Tube.start_link #{inspect tube}"
+    
+    # hack: start the Bridge/API server until a proper API is in place
+    Plug.Adapters.Cowboy.https(Bridge, self, port: Bridge.port,
+                                        password: "secretlols", # CHANGE YOUR PASSWORD TO YOUR SSL CERTS
+                                         otp_app: :lovmx,
+                                         keyfile: "priv/ssl/key.pem",
+                                        certfile: "priv/ssl/cert.pem")
+
+    link
+  end
 end

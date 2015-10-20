@@ -1,5 +1,5 @@
-# ILvMx, Lovmx, and all related sub-projects and all related
-# sub-directories and source code are Copyright 2015 #lovmx
+# Lovmx and all related sub-projects and all related
+# sub-directories and source code are Copyright 2015 Silljays.com
 # developers AND licensed as free and open source software:
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -23,12 +23,12 @@ defmodule Lovmx do
   ## Orbital Magic for Cloud Apps.
   ### Internet LoveMx + Internet Love and #virtual Magic #exchange
 
-  LovMx + ILvMx are free and open source nonprofit 
-  global projects to host a namespace of code/data/blobs.
+  LovMx + ILvMx are free and open source nonprofit projects 
+  to host a global namespace of code/data/blobs.
   
   We are fun (silljays.com).
-  We develop a cloud app server <-[You are here.] 
-  We created a reference cloud app client (lolnub.app). 
+  We develop a cloud app server (this project).
+  We develop a reference cloud app client (lolnub.app). 
   We host a public data service (ilvmx.com).
   We give away the best Web Theme Park on the net. (lolnub.com)
   
@@ -51,58 +51,8 @@ defmodule Lovmx do
   
   Welcome to #nubspace. Here, take this map...
 
-  ## LovMx - Nubspace Tree of Life.
-  #############################################################
+  See `README.md` or @readme in the LovMx for more.
   
-  Generally speaking, the Multiverse has three parts above,
-  three below, and only really a few things in the middle we 
-  need to actually care about.
-
-  # graph/higher
-
-  - Data // both a particle (code/data) and a wave (roll/jump)
-  - Flow // push/pull data from other `nubspace` and `data`
-  - Pipe // push one-way `data` to other parts of `nubspace`
-  
-  # universe
-  - Bot // easily create code + data components w/ a variety of data
-  - Bridge // default HTTPS API server and NoFlo gateway
-  - Player // user agents
-  
-  # vmx
-  - Holo // global namespace of code + data storage
-  - Machine // the virtual/physical code/server object 
-  - Tube // input/output API endpoints
-  
-  # hyperverse
-  - Cake // All energy/matter/movement
-  - Wizard // like a galactic nuclear janitor
-  
-  
-  ## LovMx - Multiverse
-  #############################################################
-  
-  –––––––––––––––––––
-  [universe]
-  –––––––––––––––––––
-  [vmx/holo]
-  [vmx/machine]
-  [vmx/tube]
-  –––––––––––––––––––
-  [server/multiverse]
-  –––––––––––––––––––
-  
-  ## LovMx - VMX (Virtual Machine eXchange)
-  #############################################################
-
-  # pattern |  in              out   | side effects
-  #–––––––––|––––––––––––––––––––––––|–––––––––––––––––––––––––
-  # data    |  Holo \       / Tube   | output |> html/json/etc
-  #–––––––––|––––––––––––––––––––––––|–––––––––––––––––––––––––
-  # actual  |        Machine         | files/sockets/https
-  #–––––––––|––––––––––––––––––––––––|–––––––––––––––––––––––––
-  
-
   ## NOTES
   #############################################################
   
@@ -132,6 +82,13 @@ defmodule Lovmx do
   # todo: much of the networking, discovery/propgation, and
   # auth parts and in need of good love. But the ideas and
   # proof of concepts should be mostly stubbed.
+  
+  https://en.wikipedia.org/wiki/Holography
+  https://en.wikipedia.org/wiki/Functional_reactive_programming
+  https://github.com/flowbased/flowbased.org/wiki
+  https://github.com/flowbased/flowbased.org/wiki/Concepts
+  https://en.wikipedia.org/wiki/Persistent_data_structure
+  https://raw.githubusercontent.com/reactive-streams/reactive-streams-jvm/v1.0.0/README.md
   """
   
   use Application
@@ -152,8 +109,9 @@ defmodule Lovmx do
 
     # Define workers and child supervisors to be supervised
     children = [
-      worker(Wizard,     [self]), # system
-      worker(Holo,       [self]), # data/in
+      worker(Wizard,     [self]), # janitor
+      worker(Tube,       [self]), # io/external
+      worker(Holo,       [self]), # io/internal
     ]
 
     # See http://elixir-lang.org/docs/stable/elixir/Supervisor.html

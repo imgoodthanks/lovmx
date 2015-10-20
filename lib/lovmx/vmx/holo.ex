@@ -31,7 +31,9 @@ defmodule Holo do
   @doc "Use `Holo.x` to `Holo.x` data in the BACKGROUND."  
   def x(data = %Data{}, _nubspace \\ nil, _secret \\ nil) do
     # refresh *all* things + re-ping machine(s)
-    Task.async fn -> Holo.orbit(data) end
+    Task.async fn -> 
+      Holo.orbit(data) 
+    end
     
     data
   end
@@ -41,7 +43,7 @@ defmodule Holo do
     Logger.info "Holo.bang."
 
     # devhack: nuke the galaxy on each boot
-    Holo.reset(true, true)
+    Holo.reset(nubspace: true, universe: true)
 
     # reload a previously saved galaxy
     if reboot and File.exists?(Lovmx.project ["priv", "holo.freeze"]) do
@@ -62,10 +64,12 @@ defmodule Holo do
   end
   
   @doc "WARNING: Destroy various parts of Nubspace. *thundering sounds*"
-  def reset(destroy_nubspace \\ false, destroy_galaxy \\ false) do
+  def reset(opts \\ []) do
     #todo: add (an entire..) auth process (using player + stampcodes)
-
-    GenServer.cast :holo, {:reset, destroy_nubspace, destroy_galaxy}
+    destroy_nubspace = Keyword.get opts, :nubspace, false
+    destroy_universe = Keyword.get opts, :universe, false
+    
+    GenServer.cast :holo, {:reset, destroy_nubspace, destroy_universe}
     
     self
   end
@@ -77,7 +81,11 @@ defmodule Holo do
   
   @doc "Use `Holo.orbit` to start a `Machine` at `nubspace` with `data`."
   def orbit(data = %Data{}, nubspace \\ nil, secret \\ nil, duration \\ Lovmx.long) do
-    GenServer.call :holo, {:orbit, data, nubspace, secret, duration}
+    Task.async fn ->
+      GenServer.call :holo, {:orbit, data, nubspace, secret, duration}
+    end
+    
+    data
   end
   def handle_call({:orbit, data = %Data{}, nubspace, secret, duration}, source, agent) do
     # we need a namespace to orbit over..
@@ -164,7 +172,7 @@ defmodule Holo do
   
   ## Callbacks
   
-  def handle_cast({:reset, destroy_nubspace, destroy_galaxy}, agent) do
+  def handle_cast({:reset, destroy_nubspace, destroy_universe}, agent) do
     Logger.info "Holo:reset"
     #todo: Process.exit :kill all bots/pids in nubspace
     
@@ -178,7 +186,7 @@ defmodule Holo do
       :ok = Agent.update agent, fn x -> Map.new end
     end
 
-    if destroy_galaxy do
+    if destroy_universe do
       # copy the boot folder over
       File.rm_rf Lovmx.project ["priv", "static"]
       # freshly copy static stuff no matter what
@@ -265,16 +273,9 @@ defmodule Holo do
     link = {:ok, agent} = Agent.start_link(fn -> Map.new end)
     
     # Keep the map inmemory for fluffiness.
-    link = {:ok, holo} = GenServer.start_link(Holo, agent, name: :holo)
+    link = {:ok, holo} = GenServer.start_link(Holo, agent, name: :holo, debug: [])
     Logger.info "Holo.start_link #{inspect holo}"
-    
-    # hack: start the Bridge/API server until a proper API is in place
-    Plug.Adapters.Cowboy.https(Bridge, self, port: Bridge.port,
-                                        password: "secretlols",
-                                         otp_app: :lovmx,
-                                         keyfile: "priv/ssl/key.pem",
-                                        certfile: "priv/ssl/cert.pem")
-                                      
+
     link
   end
   

@@ -7,11 +7,14 @@ defmodule Flow do
   ## Actions/Events
   ### Manage and Trigger Input(s)/Output(s) for Data.
   
-  A data flow is the basic layout of our application or the Modules you 
-  define and respond to the various Data/Flow signal types, stacking
-  and plugging your modules into all the various framework slots, 
-  for example the Bot produces something that Flows into a Pipe and
-  out to the Tube module.
+  A data flow is the basic layout of an `application` or are the 
+  Modules you need to define and respond to the various other 
+  Data/Flow signal types, stacking and plugging your modules into 
+  all the available framework signals. 
+  
+  For example a Bot produces something that Flows into a Pipe and
+  out to the Tube module for the world (Universe/Multiverse) to
+  see and use.
   """
     
   ## IN

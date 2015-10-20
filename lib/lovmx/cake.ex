@@ -71,7 +71,7 @@ defmodule Cake do
   that sits below Cake and which *ALL* calls should return. 
   Then it looks more like: Cake > Cake > binary.
   
-  For examples see `about.cake` or @help, #help, #cake, etc.
+  For examples see `README.magic` or @help, #help, #cake, etc.
   """
   
   @moduledoc "Use `Cake` to build industrial strength Orbital Magic apps."
@@ -186,7 +186,6 @@ defmodule Magic do
 
       Code.ensure_loaded Cake
       import Cake
-            
     end
   end
   
@@ -201,12 +200,11 @@ defmodule OrbitalMagic do
 
       import Plug.Conn
       use Plug.Router
+      use Plug.Builder
       plug :match
       plug :dispatch
-      
-      plug Plug.Logger
-      
       use WebAssembly
+      
     end
   end
   

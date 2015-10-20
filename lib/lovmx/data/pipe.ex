@@ -9,9 +9,9 @@ defmodule Pipe do
   
   Tree of Life:
   -------------
-  - Pipe(s) live *below* the data/flow
-  - Pipe(s) live *lateral* to code/machine
-  - Pipe(s) live *above* the server/elixir/warps
+  - Pipe(s) live *below* data/holo
+  - Pipe(s) live *lateral* to data/machine
+  - Pipe(s) live *above* the warps/elixir/server
 
   # todo: formal protocols + Pipe API extensions
 
@@ -22,11 +22,11 @@ defmodule Pipe do
   ## Static Tranforms 
   # for *complex* transforms we use Bots, Flows, and Pipes
   
-  # @doc "Pipe to a Cake/Magic document."
-  # def magic(data = %Data{}, nubspace, secret \\ nil) do
-  #   Cake.magic(data)
-  #   |> Tube.save(nubspace, secret)
-  # end
+  @doc "Pipe to a Cake/Magic document."
+  def magic(data = %Data{}, nubspace, secret \\ nil) do
+    Cake.magic(data)
+    |> Tube.save(nubspace, secret)
+  end
   
   @doc "Create static HTML pages."
   def page(data = %Data{}) do
@@ -134,9 +134,9 @@ defmodule Pipe do
     Enum.join Enum.map things, &(text &1)
   end
   def text(data = %Data{kind: :link}) do
-    """
-    #{data.native}
-    """
+"""
+#{data.native}
+"""
   end
   def text(data = %Data{home: home}) when is_pid(home) do
     PrettyHex.pretty_hex data.home
@@ -146,6 +146,45 @@ defmodule Pipe do
   end
   def text(data) do
     PrettyHex.pretty_hex inspect data
+  end
+  @doc "Render args as debug/text."
+  def text([]) do
+"""
+```
+[]
+```
+"""
+  end
+  def text(things) when is_list(things) do
+    Enum.join Enum.map things, &(text &1)
+  end
+  def text(data = %Data{}) do
+"""
+```
+#warp // <a href='warp/#{data.tick}/#{data.keycode}' class='automagic'>#{data.keycode}</a>
+
+#tick // #{data.tick}
+
+#help // #{data.help}
+
+#meta // #{inspect data.meta}
+
+#bugs // #{inspect data.bugs}
+
+#data // #{inspect data.native}
+
+#code // #{inspect length(data.code)} codes
+
+```
+"""
+  end
+  def text(data) do
+"""
+```
+#data:
+#{inspect data}
+```
+"""
   end
     
   @doc "Drop `data` to /dev/null."
