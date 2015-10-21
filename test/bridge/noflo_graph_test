@@ -10,8 +10,8 @@ defmodule NoFlo.Graph.Test do
 
   #This protocol is utilized for communicating about graph changes in both directions.
 
-  test "Bridge.clear",
-  do: assert Bridge.clear # %Data{}
+  test "Bridge.clear", do:
+		assert Bridge.clear # %Data{}
 
   # Initialize an empty graph.
   #
@@ -24,8 +24,8 @@ defmodule NoFlo.Graph.Test do
   # secret: access token to authorize the user
   # Graphs registered in this way should also be available for use as subgraphs in other graphs. Therefore a graph registration and later changes to it may cause component messages of the Component protocol to be sent back to the client informing of possible changes in the ports of the subgraph component.
 
-  test "Bridge.addnode",
-  do: assert Bridge.addnode %Data{}
+  test "Bridge.addnode", do:
+		assert Bridge.addnode %Data{}
 
   # Add node to a graph.
   #
@@ -35,8 +35,8 @@ defmodule NoFlo.Graph.Test do
   # graph: graph the action targets
   # secret: access token to authorize the user
 
-  test "Bridge.removenode",
-  do: assert Bridge.removenode %Data{}
+  test "Bridge.removenode", do:
+		assert Bridge.removenode %Data{}
 
   # Remove a node from a graph.
   #
@@ -44,8 +44,8 @@ defmodule NoFlo.Graph.Test do
   # graph: graph the action targets
   # secret: access token to authorize the user
 
-  test "Bridge.renamenode",
-  do: assert Bridge.renamenode %Data{}
+  test "Bridge.renamenode", do:
+		assert Bridge.renamenode %Data{}
 
   # Remove a node from a graph.
   #
@@ -53,8 +53,8 @@ defmodule NoFlo.Graph.Test do
   # graph: graph the action targets
   # secret: access token to authorize the user
 
-  test "Bridge.changenode",
-  do: assert Bridge.changenode %Data{}
+  test "Bridge.changenode", do:
+		assert Bridge.changenode %Data{}
 
 
   # changenode
@@ -66,8 +66,8 @@ defmodule NoFlo.Graph.Test do
   # graph: graph the action targets
   # secret: access token to authorize the user
 
-  test "Bridge.addedge",
-  do: assert Bridge.addedge %Data{}
+  test "Bridge.addedge", do:
+		assert Bridge.addedge %Data{}
 
   #
   # Add an edge to the graph
@@ -85,8 +85,8 @@ defmodule NoFlo.Graph.Test do
   # secret: access token to authorize the user
 
 
-  test "Bridge.removeedge",
-  do: assert Bridge.removeedge %Data{}
+  test "Bridge.removeedge", do:
+		assert Bridge.removeedge %Data{}
 
   # removeedge
   #
@@ -102,8 +102,8 @@ defmodule NoFlo.Graph.Test do
   # secret: access token to authorize the user
 
 
-  test "Bridge.changeedge",
-  do: assert Bridge.changeedge %Data{}
+  test "Bridge.changeedge", do:
+		assert Bridge.changeedge %Data{}
 
   # changeedge
   #
@@ -120,8 +120,8 @@ defmodule NoFlo.Graph.Test do
   # secret: access token to authorize the user
 
 
-  test "Bridge.addinitial",
-  do: assert Bridge.addinitial %Data{}
+  test "Bridge.addinitial", do:
+		assert Bridge.addinitial %Data{}
 
   # addinitial
   #
@@ -138,8 +138,8 @@ defmodule NoFlo.Graph.Test do
   # secret: access token to authorize the user
 
 
-  test "Bridge.removeinitial",
-  do: assert Bridge.removeinitial %Data{}
+  test "Bridge.removeinitial", do:
+		assert Bridge.removeinitial %Data{}
 
   # Remove an IIP from the graph
   #
@@ -151,8 +151,8 @@ defmodule NoFlo.Graph.Test do
 
 
 
-  test "Bridge.addinport",
-  do: assert Bridge.addinport %Data{}
+  test "Bridge.addinport", do:
+		assert Bridge.addinport %Data{}
 
 
   # addinport
@@ -168,8 +168,8 @@ defmodule NoFlo.Graph.Test do
 
 
 
-  test "Bridge.removeinport",
-  do: assert Bridge.removeinport %Data{}
+  test "Bridge.removeinport", do:
+		assert Bridge.removeinport %Data{}
 
 
   # removeinport
@@ -182,8 +182,8 @@ defmodule NoFlo.Graph.Test do
 
 
 
-  test "Bridge.renameinport",
-  do: assert Bridge.renameinport %Data{}
+  test "Bridge.renameinport", do:
+		assert Bridge.renameinport %Data{}
 
   # renameinport
   #
@@ -195,8 +195,8 @@ defmodule NoFlo.Graph.Test do
   # secret: access token to authorize the user
 
 
-  test "Bridge.addoutport",
-  do: assert Bridge.addoutport %Data{}
+  test "Bridge.addoutport", do:
+		assert Bridge.addoutport %Data{}
 
   # addoutport
   #
@@ -211,8 +211,8 @@ defmodule NoFlo.Graph.Test do
 
 
 
-  test "Bridge.removeoutport",
-  do: assert Bridge.removeoutport %Data{}
+  test "Bridge.removeoutport", do:
+		assert Bridge.removeoutport %Data{}
 
   # removeoutport
   #
@@ -225,8 +225,8 @@ defmodule NoFlo.Graph.Test do
 
 
 
-  test "Bridge.renameoutport",
-  do: assert Bridge.renameoutport %Data{}
+  test "Bridge.renameoutport", do:
+		assert Bridge.renameoutport %Data{}
 
   # renameoutport
   #
@@ -239,8 +239,8 @@ defmodule NoFlo.Graph.Test do
 
 
 
-  test "Bridge.addgroup",
-  do: assert Bridge.addgroup %Data{}
+  test "Bridge.addgroup", do:
+		assert Bridge.addgroup %Data{}
 
   # addgroup
   #
@@ -255,8 +255,8 @@ defmodule NoFlo.Graph.Test do
 
 
 
-  test "Bridge.removegroup",
-  do: assert Bridge.removegroup %Data{}
+  test "Bridge.removegroup", do:
+		assert Bridge.removegroup %Data{}
 
   # removegroup
   #
@@ -268,8 +268,8 @@ defmodule NoFlo.Graph.Test do
 
 
 
-  test "Bridge.renamegroup",
-  do: assert Bridge.renamegroup %Data{}
+  test "Bridge.renamegroup", do:
+		assert Bridge.renamegroup %Data{}
 
   # renamegroup
   #
@@ -283,8 +283,8 @@ defmodule NoFlo.Graph.Test do
 
 
 
-  test "Bridge.changegroup",
-  do: assert Bridge.changegroup %Data{}
+  test "Bridge.changegroup", do:
+		assert Bridge.changegroup %Data{}
 
   # changegroup
   #

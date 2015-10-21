@@ -2,11 +2,11 @@ defmodule Tube.Test do
   use ExUnit.Case
 
 
-  test "Tube.get returns a [list] of Blobs.",
-  do: assert is_list Tube.get "img"
+  test "Tube.get returns a [list] of Blobs.", do:
+		assert is_list Tube.get "img"
 
-  test "Use `Tube.read` to list directories",
-  do: assert [%Data{}|_] = Tube.read Lovmx.web "img"
+  test "Use `Tube.read` to list directories", do:
+		assert [%Data{}|_] = Tube.read Lovmx.web "img"
   
   test "Use `Tube.save` to create files at `path`." do
     data = Tube.save Data.new("machine")

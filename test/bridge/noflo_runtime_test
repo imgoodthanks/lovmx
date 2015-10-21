@@ -9,8 +9,8 @@ defmodule NoFlo.Runtime.Test do
   ###################
   # When a client connects to a FBP procotol it may choose to discover the capabilities and other information about the runtime.
 
-  test "Tube.getruntime",
-  do: assert Tube.getruntime(secret)
+  test "Tube.getruntime", do:
+		assert Tube.getruntime(secret)
 
   # getruntime
   #
@@ -19,8 +19,8 @@ defmodule NoFlo.Runtime.Test do
   # secret: access token to authorize the user
   # Bots can handle access control by limiting capabilities based on the received token.
 
-  test "Bridge.runtime",
-  do: assert Bridge.runtime %Data{}
+  test "Bridge.runtime", do:
+		assert Bridge.runtime %Data{}
 
   # runtime
   #
@@ -46,8 +46,8 @@ defmodule NoFlo.Runtime.Test do
   # If the runtime is currently running a graph and it is able to speak the full Bot protocol, it should follow up with a ports message.
 
 
-  test "Bridge.ports",
-  do: assert Bridge.ports %Data{}
+  test "Bridge.ports", do:
+		assert Bridge.ports %Data{}
 
   # ports
   #
@@ -68,8 +68,8 @@ defmodule NoFlo.Runtime.Test do
   # required: boolean telling whether the port needs to be connected for the component to work
 
 
-  test "Bridge.packet",
-  do: assert Bridge.packet %Data{}
+  test "Bridge.packet", do:
+		assert Bridge.packet %Data{}
 
   # packet
   #

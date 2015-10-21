@@ -1,8 +1,8 @@
 defmodule Player.Test do
   use ExUnit.Case
 
-  test "Player.anon",
-  do: assert Player.anon
+  test "Player.anon", do:
+		assert Player.anon
 
   # test "Player.tripcode" do
   #   samples = %{
