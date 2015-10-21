@@ -22,25 +22,29 @@ defmodule Kind do
   """
   
   ## Flow Controls
-  def init, do: :init      # new/fresh
-  def kick, do: :kick      # kick/reboot/refresh
-  def meta, do: :meta      # meta/control
-  def list, do: :list      # show/head/etc
-  def pull, do: :pull      # pull/get/read 
-  def code, do: :code      # source/code
-  def push, do: :push      # push/post/update
-  def stub, do: :stub      # promise/future
-  def wait, do: :wait      # noop/drop
-  def flow, do: :flow      # run/exe/produce
-  def stop, do: :stop      # halt/stop
+  def boot, do: :boot # new/fresh
+  def lock, do: :lock # lock/secret
+  def meta, do: :meta # meta/control  
+  def list, do: :list # show/head/etc
+  def pull, do: :pull # pull/get/read 
+  def code, do: :code # source/code
+  def push, do: :push # push/once/post/update
+  def wait, do: :wait # promise/future
+  def drop, do: :drop # nil/nada/noop/drop
+  def flow, do: :flow # run/exe/produce
   
-  ## Item Prototypes
-  def text,   do: :text    # binary/text
-  def link,   do: :link    # a path/URI/link
-  def html,   do: :html    # an html snippet
-  def blob,   do: :blob    # static/binary
-  def cake,   do: :cake    # cake/orbitalmagic
+  ## Data Prototypes
+  def data, do: :json # object/data/json
+  def text, do: :text # binary/text
+  def link, do: :link # a path/URI/link
+  def html, do: :html # an html snippet
+  def blob, do: :blob # static/binary
+  def cake, do: :cake # cake/magic 
+  ## ^^^ cake is first class ^^^ 
   
+  ## Exception
+  def boom, do: :boom # error/exception/
+    
 end
 
 defmodule Cake do
@@ -96,7 +100,7 @@ defmodule Cake do
       ".eex"    -> EEx.eval_string Tube.read(path), assigns: []
       ".magic"  -> Tube.read(path) |> Cake.magic
       _ ->
-        Data.bugs("#weird `#{path}` *seems* to have a problem...")
+        Data.boom("#weird `#{path}` *seems* to have a problem...")
     end
   end
   
@@ -148,7 +152,7 @@ defmodule Cake do
   # end
   def x(data = %Data{}, signal, "list", path) do  
     # get the list
-    list = Holo.list(path)
+    list = Holo.space(path)
     #Logger.debug "#list // #{inspect list}"
     
     {Data.renew(data, list), Pipe.text(list)}

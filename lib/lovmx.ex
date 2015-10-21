@@ -248,7 +248,7 @@ defmodule Lovmx do
 
   @doc "todo: consolidate: Scrub `holospace` to make *safe* paths."
   def scrub(holospace) do
-    #todo: make compliant
+    # TODO: make compliant
 
     [holospace] 
     |> Path.join 

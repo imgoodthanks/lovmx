@@ -7,7 +7,7 @@ defmodule Flow.Test do
 		assert %Data{} = Flow.into "lol", Data.new, :message
 
   test "Flow.pull(data, signal) controls a flow.", do:
-		assert %Data{pull: %{"about" => :init}} = Flow.pull Data.new, "about"
+		assert %Data{pull: %{"about" => :boot}} = Flow.pull Data.new, "about"
   
   test "Flow.take(data, signal) controls a flow.", do:
 		assert %Data{pull: %{"readme" => %Data{}}} = Flow.take Data.new, Data.new, "readme"

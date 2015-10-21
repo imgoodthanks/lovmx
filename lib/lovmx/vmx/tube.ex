@@ -25,7 +25,7 @@ defmodule Tube do
       try do
         HTTPotion.get(holospace).body
       rescue x ->
-        [Data.new(holospace, Data.error, x)]
+        [Data.new(holospace, Kind.boom, x)]
       end
     else
       # an internal lovmx call
@@ -71,16 +71,16 @@ defmodule Tube do
   
   @doc "Save `data` to `holospace` with Magic features."  
   def save(data = %Data{}, holospace \\ nil, secret \\ nil) when is_nil(holospace) or is_atom(holospace) or is_binary(holospace) do
-    #todo: support secrets
+    # TODO: support secrets
     
     # writing to data's home, or holospace?
     if is_nil holospace do
       holospace = data.keycode
     end
-    path = Lovmx.path [holospace, Kind.init]
+    path = Lovmx.path [holospace, Kind.boot]
     
     write Lovmx.freeze(data), path, secret
-    #Logger.debug "Tube.save: #{Lovmx.path([holospace, Kind.init])}"
+    #Logger.debug "Tube.save: #{Lovmx.path([holospace, Kind.boot])}"
     
     data
   end
@@ -94,7 +94,7 @@ defmodule Tube do
 
     # write the data out
     File.write! absolute, Lovmx.freeze(native), [:write]
-    #Logger.debug "Tube.write: #{Lovmx.path([absolute, Kind.init])}"
+    #Logger.debug "Tube.write: #{Lovmx.path([absolute, Kind.boot])}"
 
     native
   end

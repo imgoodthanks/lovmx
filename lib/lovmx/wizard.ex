@@ -55,7 +55,7 @@ defmodule Wizard do
   `:universe` for destroying the static file system Universe.
   """
   def reset(opts \\ []) do
-    #todo: add (an entire..) auth process (using player + stampcodes)
+    # TODO: add (an entire..) auth process (using player + stampcodes)
     destroy_holospace = Keyword.get opts, :holospace, false
     destroy_universe = Keyword.get opts, :universe, false
     
@@ -98,7 +98,7 @@ defmodule Wizard do
     #Logger.info "Wizard:tock"
     #Holo.x self, "wizard/tock"
 
-    #todo: "janitorial tasks"
+    # TODO: "janitorial tasks"
     # - archive magic
     # - galaxy magic
     # - multiverse magic

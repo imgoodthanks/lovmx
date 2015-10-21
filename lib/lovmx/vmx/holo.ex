@@ -14,35 +14,26 @@ defmodule Holo do
   Holo signals into the Machine and other parts of the 
   framework often in order to best get/create/update 
   whatever your little heart asks for. Like magic, but 
-  with software bugs.
+  with software boom.
   
   tl;dr Global Namespace + Push Data into the Machine.
   """  
 
   use GenServer
+  import Kind
   
   ## Holospace (internet readable static/dynamic storage)
 
   @doc "Use `Holo.space` to return *everything* in Holospace share."
   def space do
-    GenServer.call HoloServer, :space
+    GenServer.call HoloServer, {Kind.meta}
   end
   
-  @doc "Use `Holo.space <signal>` to return a [list] of specific *computed* data at `holospace`."
+  @doc "Use `Holo.space <signal>` to look at and return *SPECIFIC* data at `holospace`."
   def space(holospace, secret \\ nil) when is_atom(holospace) or is_binary(holospace) do
-    list(holospace, secret)
-    |> Stream.map(fn data -> 
-      data.native
-    end) 
-    |> Enum.to_list
+    GenServer.call HoloServer, {Kind.pull, holospace, secret}
   end
-  
-  @doc "Use `Holo.list <holospace>` to return a [list] of things at `holospace`."
-  def list(holospace, secret \\ nil) when is_atom(holospace) or is_binary(holospace) do
-    Tube.read(Lovmx.web(holospace), secret)
-    |> List.wrap
-  end
-  
+    
   @doc "Give `data` a new home at `process`."    
   def home(data = %Data{}, process) when is_pid(process) do
     # # say goodbye
@@ -73,116 +64,85 @@ defmodule Holo do
     data
   end
   def share(data = %Data{}, holospace \\ nil, secret \\ nil, duration \\ Lovmx.long) do
-    GenServer.call HoloServer, {:share, data, holospace, secret, duration}
+    GenServer.call HoloServer, {Kind.push, data, holospace, secret, duration}
   end
 
   @doc "WARNING: Destroy `holospace`. *thundering sounds*"
   def forget(holospace \\ nil, secret \\ nil) when is_atom(holospace) or is_binary(holospace) do
    # todo: return true if the thing has not spread to holospace
    # otherwise radio "unable to erase" + remove the object
-   GenServer.cast HoloServer, {:reset, holospace, secret}
-
+   GenServer.cast HoloServer, {Kind.drop, holospace, secret}
+   
    holospace
   end
   
   ## Callbacks
   
-  def handle_cast(:reset, agent) do
-        
-    #todo: Process.exit :kill all machines in holospace.
-    
-    # recreate holospace if that's what the wiz says we should do...
-    :ok = Agent.update agent, fn x -> Map.new end
-    Logger.info "Holo!reset // #dynamic // #{inspect Moment.now}"
-    
-    {:noreply, agent}
-  end
-      
-  def handle_call(:space, source, agent) do
-    #todo: poll machines for compliance.
-    
+  def handle_call({meta}, source, agent) do
     {:reply, Agent.get(agent, &(&1)), agent}
   end
-  
-  def handle_call({:capture, data = %Data{}, holospace, secret, duration}, source, agent) do
-    #Logger.debug "Holo:capture #{inspect self} // #{inspect holospace} // #{inspect data}"
-    
-    # extract our map that we reset shortly
+
+  def handle_call({pull, holospace, secret}, source, agent) do
     map = Agent.get(agent, &(&1))
+    machine = Map.get(map, holospace)
     
-    # we need a namespace to share over..
-    if is_nil holospace do
-      holospace = data.keycode
-    end
-    
-    if Map.has_key?(map, holospace) do
-      # return the data
-      {:reply, Data.bugs(data, "Machine.handle_call:capture // holospace is already taken: #{inspect holospace}"), agent}
+    if Process.alive? machine do
+      {:reply, Machine.compute(machine, holospace, secret), agent}
     else
-      {:reply, handle_call({:share, data, holospace, secret, duration}, source, agent), agent}
+      {:reply, Kind.drop, agent}
     end
   end
   
-  #def handle_call({:boost, data = %Data{}, holospace, secret, duration}, source, agent) do
-  
-  def handle_cast({:feel, source, data, holospace, secret, duration}, agent) do
-    #Logger.debug "Holo.feel #{inspect self} // #{inspect source} // #{inspect data}"
-    
-    # get the map
-    map = Agent.get(agent, &(&1))
-    
-    # compile data but keep it in a second level Machine process
-    # todo: check if this data already has a machine installed..
-    data = data
-    |> Machine.compute(holospace, secret, duration)
-    #|> Tube.share(holospace, secret)
-    #|> Tube.save
-    
-    # check for updated versions
-    #existing = Map.get(map, holospace)
-    
-    # store the <holospace/keycode> -> <machine/pid> map here in Holo
-    :ok = Agent.update(agent, fn x -> Map.put x, data.keycode, data end)
-    
-    # send a :push back to the data
-    if Process.alive?(source) do
-      send source, {:push, self, data}
-    end
-    
-    {:noreply, agent}
-  end
-  
-  def handle_call({:share, data = %Data{}, holospace, secret, duration}, source, agent) do
+  def handle_call({push, data = %Data{}, holospace, secret, duration}, source, agent) do
     # we need a namespace to share over..
     if is_nil holospace do
       holospace = data.keycode
     end
     
-    # # start a machine
-    unless is_nil data.home do
+    # only start a machine if the data has no other home
+    if is_nil data.home do
       machine = Machine.boot(data)
-      # |> Machine.compute(holospace, secret)
-      
-      #todo: use safetybox and encrypt data w/ secret
       data = put_in data.home, machine
-      #|> Tube.save(holospace, secret)
     end
-
-    #Logger.debug "Holo.share #{inspect self} // #{inspect holospace} // #{inspect data}"
-
+    
+    # compile data in a second level Machine process
+    data = Machine.compute(machine, holospace, secret, duration)
+    
     # update map/space
     :ok = Agent.update agent, fn map ->
-      Map.put(map, holospace, machine)
+      Map.put map, holospace, machine
     end
-
+    
+    # TODO: send a :push to holospace
+    
     # return the data
     {:reply, data, agent}
   end
-  
-  def handle_cast({:reset, holospace, secret}, agent) do
-    # remove the data
-    # Map.drop(map, holospace)
 
+  def handle_cast({drop}, agent) do
+    # TODO: Process.exit :kill all machines in holospace.
+    
+    # recreate holospace if that's what the wiz says we should do...
+    :ok = Agent.update agent, fn x -> 
+      Map.new
+    end
+    Logger.info "Holo!drop // #dynamic // #{inspect Moment.now}"
+    
+    {:noreply, agent}
+  end
+  def handle_cast({drop, holospace, secret}, agent) do
+    # get the map
+    map = Agent.get(agent, &(&1))
+    
+    # remove holospace
+    :ok = Agent.update(agent, fn map -> 
+      if Map.has_key? map, holospace do
+        Map.delete map, holospace
+      end
+      
+      map
+    end)
+    
     {:noreply, agent}
   end
 

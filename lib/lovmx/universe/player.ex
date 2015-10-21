@@ -20,12 +20,12 @@ defmodule Player do
   # def quiz(topic, secret \\ Lovmx.keycode) do
   #   topic
   #   |> Data.new(secret)
-  #   |> Holo.pull
+  #   |> Holo.space
   # end
   #
   # @doc "Sweet prince."
   # def items(secret \\ Lovmx.keycode) do
-  #   Holo.pull("player")
+  #   Holo.space("player")
   # end
   #
   # @doc "Ask/broadcast to please take stuff from `player`."
@@ -39,7 +39,7 @@ defmodule Player do
   # def handle_cast({:data, source, holospace, secret}, computer) do
   #   #Holo.share "Player.handle_call::grab: #{holospace} (#{inspect source})"
   #
-  #   #send source, Holo.pull(computer, holospace, secret)
+  #   #send source, Holo.space(computer, holospace, secret)
   #
   #   {:noreply, computer}
   # end
@@ -53,7 +53,7 @@ defmodule Player do
   # def handle_call({:loot, player}, source, computer) do
   #   ###Holo.share "Player.handle_call:::loot: #{inspect player} (#{inspect computer})"
   #
-  #   #todo: grab stuff
+  #   # TODO: grab stuff
   #
   #   {:reply, Player.items, computer}
   # end

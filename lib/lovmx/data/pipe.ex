@@ -169,7 +169,7 @@ defmodule Pipe do
 
 #meta // #{inspect data.meta}
 
-#bugs // #{inspect data.bugs}
+#boom // #{inspect data.boom}
 
 #data // #{inspect data.native}
 

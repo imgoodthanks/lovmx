@@ -61,11 +61,11 @@ defmodule Bot do
   
   #@doc "Ask the agent/player/whatever for further input..."
   # def stub do
-  #   #todo: item this up
+  #   # TODO: item this up
   #   IO.gets :stdin
   # end
   # def stub(data = %Data{}) do
-  #   #todo: item this up
+  #   # TODO: item this up
   #   Data.code(data, fn x ->
   #     Holo.share x, IO.gets :stdin
   #   end)

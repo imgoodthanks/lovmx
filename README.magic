@@ -192,7 +192,7 @@ Holo.push "about", Holo.read "README.magic"
 
 # Reading stuff from the public Computer or server drives."
 
-Holo.pull "about"
+Holo.space "about"
 
 # Creating stuff in memory only.
 

@@ -36,13 +36,13 @@ defmodule Data do
   
   defstruct keycode: nil,
     home: nil,    # <process> or <secret> or <holospace>
-    kind: nil,    # default to :init or see `Kind` + `cake.ex`
+    kind: nil,    # default to :boot or see `Kind` + `cake.ex`
     time: nil,    # genesis/duration/etc
     life: nil,    # microseconds/duration/expiration
     
     meta: %{},    # %{} a metadata map
     help: [],     # [messages] notes/readme
-    bugs: [],     # [errors/exceptions]
+    boom: [],     # [errors/exceptions]
     
     pull: %{},    # *startup* input (aka ROM)
     code: [],     # [functions] current program
@@ -59,7 +59,7 @@ defmodule Data do
   ## Creating Data - See `flow.ex` and `pipe.ex` for more about data flows.
   
   @doc "Use `Data.new` to create new Data from native `real` data."
-  def new(native \\ nil, kind \\ Kind.init, meta \\ %{}) do
+  def new(native \\ nil, kind \\ Kind.boot, meta \\ %{}) do
     data = %Data{
         keycode: Lovmx.path(["data", Lovmx.keycode]),
            kind: kind,
@@ -88,7 +88,7 @@ defmodule Data do
   end
 
   @doc "Use `Data.kind` to mutate the data type using custom or Kind types."
-  def kind(data = %Data{}, kind \\ Data.init) do
+  def kind(data = %Data{}, kind \\ Data.boot) do
     data = put_in data.kind, kind
   end
   
@@ -116,7 +116,7 @@ defmodule Data do
     
       # blank the :pulls so next time through it'll re-fire w/ fresh data
       Enum.map data.pull, fn {key, value} ->
-        data = put_in data.pull, Map.put(data.pull, key, Kind.init)
+        data = put_in data.pull, Map.put(data.pull, key, Kind.boot)
       end
     end
     
@@ -153,13 +153,13 @@ defmodule Data do
   end
 
   @doc "Add an error `message` to Bot."
-  def bugs(data = %Data{}, message) when not is_nil(message) do
-    Data.tick put_in(data.bugs, List.flatten [List.wrap(message)|data.bugs])
+  def boom(data = %Data{}, message) when not is_nil(message) do
+    Data.tick put_in(data.boom, List.flatten [List.wrap(message)|data.boom])
   end
 
   @doc "Rollback `data` to a previous version."
   def roll(data = %Data{}, tick \\ nil) do
-    # init version
+    # boot version
     if !tick do
       if data.tick > 0 do
         tick = data.tick - 1
@@ -187,15 +187,14 @@ defmodule Data do
   
   ## Meta/Error/Exception
   
-  def error, do: :error
-  def error(error) do
+  def boom(error) do
     error
     |> Data.new
-    |> Data.kind(Kind.stop)
+    |> Data.kind(Kind.boom)
     |> Data.tick
   end
-  def bugs(data, error \\ nil) do
-    %{ data | bugs: Enum.concat(data.bugs, [error]) }
+  def boom(data, error \\ nil) do
+    %{ data | boom: Enum.concat(data.boom, [error]) }
     |> Data.tick
   end
   

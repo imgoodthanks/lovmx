@@ -6,24 +6,25 @@ defmodule Cake.Test do
 
   ## Types
 
-  test "return the Kind.init type",  do: assert :init  == Kind.init
-  test "return the Kind.kick type",  do: assert :kick  == Kind.kick
-  test "return the Kind.meta type",  do: assert :meta  == Kind.meta
-  test "return the Kind.list type",  do: assert :list  == Kind.list
-  test "return the Kind.pull type",  do: assert :pull  == Kind.pull
-  test "return the Kind.code type",  do: assert :code  == Kind.code
-  test "return the Kind.push type",  do: assert :push  == Kind.push
-  test "return the Kind.stub type",  do: assert :stub  == Kind.stub
-  test "return the Kind.flow type",  do: assert :flow  == Kind.flow
-  test "return the Kind.stop type",  do: assert :stop  == Kind.stop
-  
-  test "return the Kind.text type",  do: assert :text  == Kind.text
-  test "return the Kind.link type",  do: assert :link  == Kind.link
-  test "return the Kind.html type",  do: assert :html  == Kind.html
-  test "return the Kind.blob type",  do: assert :blob  == Kind.blob
-  test "return the Kind.cake type",  do: assert :cake  == Kind.cake
+  test "Kind.boot", do: assert :boot == Kind.boot
+  test "Kind.lock", do: assert :lock == Kind.lock  
+  test "Kind.meta", do: assert :meta == Kind.meta
+  test "Kind.list", do: assert :list == Kind.list
+  test "Kind.pull", do: assert :pull == Kind.pull
+  test "Kind.code", do: assert :code == Kind.code
+  test "Kind.push", do: assert :push == Kind.push
+  test "Kind.wait", do: assert :wait == Kind.wait
+  test "Kind.drop", do: assert :drop == Kind.drop
+  test "Kind.flow", do: assert :flow == Kind.flow
                                      
-  test "return the Data.error type", do: assert :error == Data.error
+  test "Kind.data", do: assert :json == Kind.data
+  test "Kind.text", do: assert :text == Kind.text
+  test "Kind.link", do: assert :link == Kind.link
+  test "Kind.html", do: assert :html == Kind.html
+  test "Kind.blob", do: assert :blob == Kind.blob
+  test "Kind.cake", do: assert :cake == Kind.cake
+
+  test "Kind.boom", do: assert :boom == Kind.boom
  
   test "Cake does cool stuff", do:
 		assert "<h1>lol</h1>\n" = Data.path Kind.cake, Cake.magic Data.new "# lol"

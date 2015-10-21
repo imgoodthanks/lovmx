@@ -9,11 +9,13 @@ defmodule Machine do
   """
   
   use GenServer
-      
+  import Kind
+  
   @doc "Machine"  
   def boot(data = %Data{}) do
     link = {:ok, machine} = Machine.start_link(data)
     #Logger.debug "Machine.boot // #{inspect machine} // #{inspect data}"
+    # data = put_in data.home, machine
     
     machine
   end
@@ -29,17 +31,22 @@ defmodule Machine do
   end
     
   @doc "Use `Holo.x` to `Holo.x` data in the BACKGROUND."  
-  def x(data = %Data{}) do
+  def x(machine) when is_pid(machine) do
     # refresh *all* things + re-ping machine(s)
-    #Task.async fn -> Holo.share(data) end
+    Task.async fn -> Holo.share(data) end
     
     data
   end
-  def compute(process) do
-    GenServer.call process, {:data, nil, nil, Lovmx.tock}
+  def compute(machine) when is_pid(machine) do
+    GenServer.call machine, {flow, nil, nil, Lovmx.tock}
   end
-  def compute(native, holospace, secret, duration) do
-    native
+  def compute(machine, holospace, secret \\ nil, duration \\ Lovmx.tock) when is_pid(machine) do
+    GenServer.call machine, {flow, holospace, secret, duration}
+  end
+  def compute(nada, _, _, _) when is_nil(nada) do
+    # TODO: log a Kind.drop w/ the wiz
+    
+    nil
   end
   
   ## Callbacks
@@ -47,21 +54,17 @@ defmodule Machine do
   # Listen for replies to various signal `Kind`s. See `cake.ex` to learn more
   # about Machine Magic and how it works.
   
-  def handle_call({:flow, holospace, secret, duration}, source, agent) do
-    data = Agent.get(agent, &(&1))
-    
-    Stream.interval(Lovmx.tock) |>  Enum.take_while fn x ->
-      Machine.compute data.home
-    end
+  def handle_call({boot, holospace, secret, duration}, source, agent) do
+    {:reply, Agent.get(agent, &(&1)), agent}
+  end
+  
+  def handle_call({lock, holospace, secret, duration}, source, agent) do
+    # TODO: globally capture this holospace as ours
     
     {:reply, Agent.get(agent, &(&1)), agent}
   end
   
-  def handle_call({:init, holospace, secret, duration}, source, agent) do
-    {:reply, Agent.get(agent, &(&1)), agent}
-  end
-  
-  def handle_call({:meta, signal, effect}, source, agent) do
+  def handle_call({meta, signal, effect}, source, agent) do
     :ok = Agent.update agent, fn data -> 
       Data.meta(data, signal, effect)
     end
@@ -69,13 +72,13 @@ defmodule Machine do
     {:reply, Agent.get(agent, &(&1)), agent}
   end
 
-  def handle_call({:list, holospace, secret, duration}, source, agent) do
+  def handle_call({list, holospace, secret, duration}, source, agent) do
     data = Agent.get(agent, &(&1))
     
     {:reply, data.native, agent}
   end
 
-  def handle_call({:pull, holospace, secret, duration}, source, agent) do
+  def handle_call({pull, holospace, secret, duration}, source, agent) do
     :ok = Agent.update agent, fn data -> 
       data = Enum.map data.pull, fn {signal, message} -> 
         Flow.pull(data, signal)
@@ -85,11 +88,11 @@ defmodule Machine do
     {:reply, Agent.get(agent, &(&1)), agent}
   end
   
-  def handle_call({:code, holospace, secret, duration}, source, agent) do
+  def handle_call({code, holospace, secret, duration}, source, agent) do
     {:reply, Agent.get(agent, &(&1)).code, agent}
   end
   
-  def handle_call({:push, holospace, secret, duration}, source, agent) do
+  def handle_call({push, holospace, secret, duration}, source, agent) do
     :ok = Agent.update agent, fn data -> 
       Enum.each data.push, fn signal -> 
         Flow.push(data, signal)
@@ -101,11 +104,17 @@ defmodule Machine do
     {:reply, Agent.get(agent, &(&1)), agent}
   end
   
-  def handle_call({:stub, holospace, secret, duration}, source, agent) do
+  def handle_call({wait, holospace, secret, duration}, source, agent) do
     {:reply, Agent.get(agent, &(&1)), agent}
   end
-      
-  def handle_call({:data, holospace, secret, duration}, source, agent) do
+  
+  def handle_call({drop, holospace, secret, duration}, source, agent) do
+    # spawn a task and forget it
+    
+    {:reply, Agent.get(agent, &(&1)), agent}
+  end
+  
+  def handle_call({flow, holospace, secret, duration}, source, agent) do
     # Init + Compile + Exe a full Data/Flow..
     # pull our data
     data = Agent.get(agent, &(&1))
@@ -130,25 +139,20 @@ defmodule Machine do
     #Logger.debug "... // #{inspect data}"
     #Machine.compute(data)
     
-    # ...push data out.
-    Enum.map data.push, fn {key, value} ->
-      put_in data.push, Map.put(data.push, key, Data.push)
-    end
-    
-    # update the data.kind from :init (do something) to :flow (wait or stream)
-    #data = Flow.meta data, Data.flow
+    # # ...push data out.
+    # Enum.map data.push, fn {key, value} ->
+    #   put_in data.push, Map.put(data.push, key, Data.push)
+    # end
+    #
+    # # update the data.kind from :boot (do something) to :flow (wait or stream)
+    # #data = Flow.meta data, Data.flow
     
     # update map/space
     :ok = Agent.update agent, fn data -> data end
     
     {:reply, Agent.get(agent, &(&1)), agent}
   end
-  
-  def handle_call({:stop, holospace, secret, duration}, source, agent) do
-    # spawn a task and forget it
-    
-    {:reply, Agent.get(agent, &(&1)), agent}
-  end
+
     
   @doc "Machine"  
   def start_link(data = %Data{}) do
@@ -157,7 +161,7 @@ defmodule Machine do
     # outside of the Bot's own process.
     {:ok, agent} = Agent.start_link fn -> data end
     
-    link = {:ok, machine} = GenServer.start_link(Machine, agent, debug: [:trace])
+    link = {:ok, machine} = GenServer.start_link(Machine, agent, debug: [])
     #Logger.debug "Machine.start_link #{data.keycode}"
     
     link

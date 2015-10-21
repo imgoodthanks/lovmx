@@ -41,11 +41,11 @@ defmodule Data.Test do
   test "Use `Data.clone` to push *all* of holospace with updated `data`.", do:
 		assert %Data{} = Data.clone Data.new
 
-  test "Use `Data.bugs` to add errors to the data.", do:
-		assert %Data{} = Data.bugs Data.new, "whoops"
+  test "Use `Data.boom` to add errors to the data.", do:
+		assert %Data{} = Data.boom Data.new, "whoops"
 
-  test "Use `Data.error` to create *an* error data.", do:
-		assert %Data{} = Data.error "whoops"
+  test "Use `Data.boom` to create *an* error data.", do:
+		assert %Data{} = Data.boom "whoops"
   
   # test "Data.roll to return a previous version of Bot.",
   # do: assert %Data{} = Data.roll Data.tick(Holo.share Data.new), 0
@@ -59,10 +59,10 @@ defmodule Data.Test do
   test "Use `Data.morph` to mutate data into whatever `fn` returns.", do:
 		assert is_binary Data.morph Data.new, fn x -> "lol" end
   
-  test "Use `Data.clone` to add bugs/messages to `bot`.", do:
+  test "Use `Data.clone` to add boom/messages to `bot`.", do:
 		assert %Data{} = Data.new |> Data.clone
 
-  test "Data.bugs(binary) returns Bot full of Cake.", do:
-		assert %Data{bugs: ["@yourebugged"]} = Data.bugs Data.new, "@yourebugged"
+  test "Data.boom(binary) returns Bot full of Cake.", do:
+		assert %Data{boom: ["@yourebugged"]} = Data.boom Data.new, "@yourebugged"
 
 end

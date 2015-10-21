@@ -89,7 +89,7 @@ defmodule Bridge do
     else
       Logger.debug "Bridge.GET // #{holospace}"
       
-      resp conn, 200, Pipe.page Holo.list(holospace)
+      resp conn, 200, Pipe.page Holo.space(holospace)
     end
   end
   
@@ -104,12 +104,12 @@ defmodule Bridge do
 
     Logger.debug "Bridge.POST // #{holospace}"
 
-    resp conn, 200, Pipe.page Holo.list(holospace)
+    resp conn, 200, Pipe.page Holo.space(holospace)
   end
   
   @doc "Even the Universe misses things."
   match _ do
-    #todo: forward to the wizard for defensive purposes.
+    # TODO: forward to the wizard for defensive purposes.
     send_resp(conn, 404, "oops")
   end
   

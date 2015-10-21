@@ -30,10 +30,10 @@ defmodule Flow do
     
   @doc "Put everything at `holospace` *INTO* `data.pull`."
   def pull(data = %Data{}, holospace, secret \\ nil) when is_atom(holospace) or is_binary(holospace) do    
-    #todo: route the flow based on Kind.flow to spawn a Computer process
+    # TODO: route the flow based on Kind.flow to spawn a Computer process
     
     # embed that to the current player process.
-    put_in(data.pull, Map.put(data.pull, holospace, Kind.init))
+    put_in(data.pull, Map.put(data.pull, holospace, Kind.boot))
     |> Holo.x(holospace, secret)
   end
   
@@ -41,8 +41,8 @@ defmodule Flow do
   def take(data = %Data{}, native, signal \\ nil, secret \\ nil) when is_atom(signal) or is_binary(signal) do
     #Logger.debug "Flow.take // #{data.keycode} // #{signal} // #{inspect native}"
     
-    #todo: update all data/bots that live at this holospace with our new `data`
-    #todo: route the flow based on Kind.flow to spawn a Computer process
+    # TODO: update all data/bots that live at this holospace with our new `data`
+    # TODO: route the flow based on Kind.flow to spawn a Computer process
     # embed that to the current player process.
      
     put_in(data.pull, Map.put(data.pull, signal, native))
@@ -57,7 +57,7 @@ defmodule Flow do
     data = put_in data.kind, Data.new
     data = put_in data.life, Lovmx.long
     
-    pulls = Holo.list(holospace, lock)
+    pulls = Holo.space(holospace, lock)
   
     unless Enum.empty? pulls do
       data = List.first Enum.map pulls, fn path ->

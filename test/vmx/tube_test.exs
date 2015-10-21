@@ -15,7 +15,7 @@ defmodule Tube.Test do
     webpath = Lovmx.root Lovmx.web data.keycode
   
     assert File.exists?(webpath) and File.dir?(webpath)
-    assert File.exists? Path.join [webpath, "#{Kind.init}"]
+    assert File.exists? Path.join [webpath, "#{Kind.boot}"]
     #assert true == File.exists? Path.join [webpath, "data"]
     #assert true == File.exists? Path.join [webpath, "text"]
     #assert true == File.exists? Path.join [botpath, "json"]
