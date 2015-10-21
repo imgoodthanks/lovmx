@@ -1,4 +1,4 @@
-Wizard.reset universe: true, nubspace: true
+Wizard.reset universe: true, holospace: true
 
 ExUnit.start()
 

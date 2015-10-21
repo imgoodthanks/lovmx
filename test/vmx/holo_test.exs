@@ -55,11 +55,11 @@ defmodule Holo.Test do
   #
 
   #
-  # test "Use `Holo.share` stores nubspace: data." do
+  # test "Use `Holo.share` stores holospace: data." do
   #   assert %Data{keycode: keycode} = Holo.share "lol"
   # end
 
-  # test "Use `Holo.feel` returns *ALL* nubspace data." do
+  # test "Use `Holo.feel` returns *ALL* holospace data." do
   #   key = Lovmx.keycode
   #
   #   one = Data.new("one") |> Holo.share key
@@ -69,7 +69,7 @@ defmodule Holo.Test do
   #   assert two in Holo.list(key)
   # end
 
-  # test "Use `Holo.grab` returns *ALL* nubspace data @ path" do
+  # test "Use `Holo.grab` returns *ALL* holospace data @ path" do
   #   key = Lovmx.keycode
   #   one = Data.new("one") |> Holo.share key
   #   two = Data.new("two") |> Holo.share key

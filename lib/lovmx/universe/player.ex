@@ -29,24 +29,24 @@ defmodule Player do
   # end
   #
   # @doc "Ask/broadcast to please take stuff from `player`."
-  # def take(player, nubspace, secret \\ nil) do
+  # def take(player, holospace, secret \\ nil) do
   #   #Holo.share "Player::grab:bot:#{inspect player}"
   #
-  #   ##GenServer.call(PlayerServer, {:data, self, nubspace, secret})
+  #   ##GenServer.call(PlayerServer, {:data, self, holospace, secret})
   #
   #   player
   # end
-  # def handle_cast({:data, source, nubspace, secret}, computer) do
-  #   #Holo.share "Player.handle_call::grab: #{nubspace} (#{inspect source})"
+  # def handle_cast({:data, source, holospace, secret}, computer) do
+  #   #Holo.share "Player.handle_call::grab: #{holospace} (#{inspect source})"
   #
-  #   #send source, Holo.pull(computer, nubspace, secret)
+  #   #send source, Holo.pull(computer, holospace, secret)
   #
   #   {:noreply, computer}
   # end
   #
   # @doc "Anonymously grab and put stuff into `Player.items`."
   # def loot(player, data) do
-  #   #Holo.share "Player::grab:nubspace:#{inspect player}"
+  #   #Holo.share "Player::grab:holospace:#{inspect player}"
   #
   #   #GenServer.call(PlayerServer, {:loot, player})
   # end

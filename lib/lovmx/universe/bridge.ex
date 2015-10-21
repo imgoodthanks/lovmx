@@ -73,38 +73,38 @@ defmodule Bridge do
   end
 
   @doc "Route *all* generic PULL signals from HTTPS."  
-  def call(conn = %Plug.Conn{method: "GET", path_info: nubspace}, agent) do
-    if nubspace in [[], [""], nil] do
-      nubspace = "/"
+  def call(conn = %Plug.Conn{method: "GET", path_info: holospace}, agent) do
+    if holospace in [[], [""], nil] do
+      holospace = "/"
     end
 
-    nubspace = Lovmx.path(nubspace)
-    path = Lovmx.root Lovmx.web [nubspace]
+    holospace = Lovmx.path(holospace)
+    path = Lovmx.root Lovmx.web [holospace]
 
-    #Logger.debug "Bridge.nubspace: #{nubspace}"
+    #Logger.debug "Bridge.holospace: #{holospace}"
 
     if File.exists?(path) and not File.dir?(path) do
       # use plug/send_file here for OS-level support
       send_file conn, 200, path
     else
-      Logger.debug "Bridge.GET // #{nubspace}"
+      Logger.debug "Bridge.GET // #{holospace}"
       
-      resp conn, 200, Pipe.page Holo.list(nubspace)
+      resp conn, 200, Pipe.page Holo.list(holospace)
     end
   end
   
   @doc "Route *all* generic PUSH signals from HTTPS."  
-  def call(conn = %Plug.Conn{method: "POST", path_info: nubspace}, agent) do
-    if nubspace in [[], [""], nil] do
-      nubspace = "/"
+  def call(conn = %Plug.Conn{method: "POST", path_info: holospace}, agent) do
+    if holospace in [[], [""], nil] do
+      holospace = "/"
     end
 
-    nubspace = Lovmx.path(nubspace)
-    path = Lovmx.root Lovmx.web [nubspace]
+    holospace = Lovmx.path(holospace)
+    path = Lovmx.root Lovmx.web [holospace]
 
-    Logger.debug "Bridge.POST // #{nubspace}"
+    Logger.debug "Bridge.POST // #{holospace}"
 
-    resp conn, 200, Pipe.page Holo.list(nubspace)
+    resp conn, 200, Pipe.page Holo.list(holospace)
   end
   
   @doc "Even the Universe misses things."

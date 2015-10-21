@@ -32,7 +32,7 @@ defmodule Lovmx do
   We host a public data service (ilvmx.com).
   We give away the best Web Theme Park on the net. (lolnub.com)
   
-  Welcome to #nubspace. Here, take this map...
+  Welcome to Holospace. Here, take this map...
 
   See `README.magic` or @readme inside LovMx for more.
   
@@ -238,19 +238,19 @@ defmodule Lovmx do
   end
 
   @doc "Shorthand wrapper for throw'ing unless is_path"
-  def path?(nubspace) when is_atom(nubspace) or is_binary(nubspace) do
-    unless is_path(nubspace) do
-      throw "bad path: #{inspect nubspace}"
+  def path?(holospace) when is_atom(holospace) or is_binary(holospace) do
+    unless is_path(holospace) do
+      throw "bad path: #{inspect holospace}"
     end
 
-    nubspace
+    holospace
   end
 
-  @doc "todo: consolidate: Scrub `nubspace` to make *safe* paths."
-  def scrub(nubspace) do
+  @doc "todo: consolidate: Scrub `holospace` to make *safe* paths."
+  def scrub(holospace) do
     #todo: make compliant
 
-    [nubspace] 
+    [holospace] 
     |> Path.join 
     |> String.strip
     |> String.replace ~r/^(a-z0-9\?\.\s)/, ""

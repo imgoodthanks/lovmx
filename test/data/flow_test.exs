@@ -18,7 +18,7 @@ defmodule Flow.Test do
   # test "Flow.push(data, signal) controls a flow.",
   # do: assert %Data{push: %{"outside" => :push}} = Flow.push Data.new, "outside"
   
-  test "Flow.wait(data, nubspace, secret) controls a flow.",
+  test "Flow.wait(data, holospace, secret) controls a flow.",
   do: assert %Data{} = Flow.wait(Data.new, "/test")
 
 end

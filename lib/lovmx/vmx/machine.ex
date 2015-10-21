@@ -38,7 +38,7 @@ defmodule Machine do
   def compute(process) do
     GenServer.call process, {:data, nil, nil, Lovmx.tock}
   end
-  def compute(native, nubspace, secret, duration) do
+  def compute(native, holospace, secret, duration) do
     native
   end
   
@@ -47,7 +47,7 @@ defmodule Machine do
   # Listen for replies to various signal `Kind`s. See `cake.ex` to learn more
   # about Machine Magic and how it works.
   
-  def handle_call({:flow, nubspace, secret, duration}, source, agent) do
+  def handle_call({:flow, holospace, secret, duration}, source, agent) do
     data = Agent.get(agent, &(&1))
     
     Stream.interval(Lovmx.tock) |>  Enum.take_while fn x ->
@@ -57,7 +57,7 @@ defmodule Machine do
     {:reply, Agent.get(agent, &(&1)), agent}
   end
   
-  def handle_call({:init, nubspace, secret, duration}, source, agent) do
+  def handle_call({:init, holospace, secret, duration}, source, agent) do
     {:reply, Agent.get(agent, &(&1)), agent}
   end
   
@@ -69,13 +69,13 @@ defmodule Machine do
     {:reply, Agent.get(agent, &(&1)), agent}
   end
 
-  def handle_call({:list, nubspace, secret, duration}, source, agent) do
+  def handle_call({:list, holospace, secret, duration}, source, agent) do
     data = Agent.get(agent, &(&1))
     
     {:reply, data.native, agent}
   end
 
-  def handle_call({:pull, nubspace, secret, duration}, source, agent) do
+  def handle_call({:pull, holospace, secret, duration}, source, agent) do
     :ok = Agent.update agent, fn data -> 
       data = Enum.map data.pull, fn {signal, message} -> 
         Flow.pull(data, signal)
@@ -85,11 +85,11 @@ defmodule Machine do
     {:reply, Agent.get(agent, &(&1)), agent}
   end
   
-  def handle_call({:code, nubspace, secret, duration}, source, agent) do
+  def handle_call({:code, holospace, secret, duration}, source, agent) do
     {:reply, Agent.get(agent, &(&1)).code, agent}
   end
   
-  def handle_call({:push, nubspace, secret, duration}, source, agent) do
+  def handle_call({:push, holospace, secret, duration}, source, agent) do
     :ok = Agent.update agent, fn data -> 
       Enum.each data.push, fn signal -> 
         Flow.push(data, signal)
@@ -101,11 +101,11 @@ defmodule Machine do
     {:reply, Agent.get(agent, &(&1)), agent}
   end
   
-  def handle_call({:stub, nubspace, secret, duration}, source, agent) do
+  def handle_call({:stub, holospace, secret, duration}, source, agent) do
     {:reply, Agent.get(agent, &(&1)), agent}
   end
       
-  def handle_call({:data, nubspace, secret, duration}, source, agent) do
+  def handle_call({:data, holospace, secret, duration}, source, agent) do
     # Init + Compile + Exe a full Data/Flow..
     # pull our data
     data = Agent.get(agent, &(&1))
@@ -116,7 +116,7 @@ defmodule Machine do
         case key do
           # put in static/atomic data via a straight data.pull -> `value`
           key when is_atom(key)    -> data = put_in data.pull, value
-          # put in dynamic/nubspace data via a Machine.data
+          # put in dynamic/holospace data via a Machine.data
           key when is_binary(key)  -> data = put_in data.pull, Map.put(data.pull, key, "#todo")
         end
       end) |> List.first
@@ -144,7 +144,7 @@ defmodule Machine do
     {:reply, Agent.get(agent, &(&1)), agent}
   end
   
-  def handle_call({:stop, nubspace, secret, duration}, source, agent) do
+  def handle_call({:stop, holospace, secret, duration}, source, agent) do
     # spawn a task and forget it
     
     {:reply, Agent.get(agent, &(&1)), agent}

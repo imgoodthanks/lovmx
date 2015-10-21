@@ -28,7 +28,7 @@ completely open source and transparent.*
 
 Yeah that sounds right.
 
-Welcome to #nubspace. Here, take this map...
+Welcome to Holospace. Here, take this map...
 
 
 # See `README.magic` for more info.

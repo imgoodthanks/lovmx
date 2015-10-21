@@ -31,7 +31,7 @@ defmodule Cake.Test do
   test "Cake does nil stuff",
   do: assert is_nil Cake.magic nil
       
-  # test "#magic `@list. img` list nubspace",
+  # test "#magic `@list. img` list holospace",
   # do: assert is_list Cake.magic("@list. img").native
    
 end

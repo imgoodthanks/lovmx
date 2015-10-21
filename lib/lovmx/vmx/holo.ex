@@ -33,18 +33,18 @@ defmodule Holo do
     GenServer.call HoloServer, :space
   end
   
-  @doc "Use `Holo.space <signal>` to return a [list] of specific *computed* data at `nubspace`."
-  def space(nubspace, secret \\ nil) when is_atom(nubspace) or is_binary(nubspace) do
-    list(nubspace, secret)
+  @doc "Use `Holo.space <signal>` to return a [list] of specific *computed* data at `holospace`."
+  def space(holospace, secret \\ nil) when is_atom(holospace) or is_binary(holospace) do
+    list(holospace, secret)
     |> Stream.map(fn data -> 
       data.native
     end) 
     |> Enum.to_list
   end
   
-  @doc "Use `Holo.list <nubspace>` to return a [list] of things at `nubspace`."
-  def list(nubspace, secret \\ nil) when is_atom(nubspace) or is_binary(nubspace) do
-    Tube.read(Lovmx.web(nubspace), secret)
+  @doc "Use `Holo.list <holospace>` to return a [list] of things at `holospace`."
+  def list(holospace, secret \\ nil) when is_atom(holospace) or is_binary(holospace) do
+    Tube.read(Lovmx.web(holospace), secret)
     |> List.wrap
   end
   
@@ -60,34 +60,34 @@ defmodule Holo do
     |> Holo.x
   end
   
-  @doc "Move `data` to `nubspace`."  
-  def move(data = %Data{}, nubspace, secret \\ nil) when is_atom(nubspace) or is_binary(nubspace) do
+  @doc "Move `data` to `holospace`."  
+  def move(data = %Data{}, holospace, secret \\ nil) when is_atom(holospace) or is_binary(holospace) do
     # say goodbye
     Holo.forget(data.home, secret)
     
-    put_in(data.home, nubspace)
+    put_in(data.home, holospace)
     |> Holo.x
   end
   
-  @doc "Use `Holo.x` and `Holo.share` to start a `Machine` at `nubspace` with `data`."
-  def x(data = %Data{}, _nubspace \\ nil, _secret \\ nil) do
+  @doc "Use `Holo.x` and `Holo.share` to start a `Machine` at `holospace` with `data`."
+  def x(data = %Data{}, _holospace \\ nil, _secret \\ nil) do
     Task.async fn -> 
       Holo.share(data)
     end
     
     data
   end
-  def share(data = %Data{}, nubspace \\ nil, secret \\ nil, duration \\ Lovmx.long) do
-    GenServer.call HoloServer, {:share, data, nubspace, secret, duration}
+  def share(data = %Data{}, holospace \\ nil, secret \\ nil, duration \\ Lovmx.long) do
+    GenServer.call HoloServer, {:share, data, holospace, secret, duration}
   end
 
-  @doc "WARNING: Destroy `nubspace`. *thundering sounds*"
-  def forget(nubspace \\ nil, secret \\ nil) when is_atom(nubspace) or is_binary(nubspace) do
-   # todo: return true if the thing has not spread to nubspace
+  @doc "WARNING: Destroy `holospace`. *thundering sounds*"
+  def forget(holospace \\ nil, secret \\ nil) when is_atom(holospace) or is_binary(holospace) do
+   # todo: return true if the thing has not spread to holospace
    # otherwise radio "unable to erase" + remove the object
-   GenServer.cast HoloServer, {:reset, nubspace, secret}
+   GenServer.cast HoloServer, {:reset, holospace, secret}
 
-   nubspace
+   holospace
   end
   
   ## Callbacks
@@ -109,28 +109,28 @@ defmodule Holo do
     {:reply, Agent.get(agent, &(&1)), agent}
   end
   
-  def handle_call({:capture, data = %Data{}, nubspace, secret, duration}, source, agent) do
-    #Logger.debug "Holo:capture #{inspect self} // #{inspect nubspace} // #{inspect data}"
+  def handle_call({:capture, data = %Data{}, holospace, secret, duration}, source, agent) do
+    #Logger.debug "Holo:capture #{inspect self} // #{inspect holospace} // #{inspect data}"
     
     # extract our map that we reset shortly
     map = Agent.get(agent, &(&1))
     
     # we need a namespace to share over..
-    if is_nil nubspace do
-      nubspace = data.keycode
+    if is_nil holospace do
+      holospace = data.keycode
     end
     
-    if Map.has_key?(map, nubspace) do
+    if Map.has_key?(map, holospace) do
       # return the data
-      {:reply, Data.bugs(data, "Machine.handle_call:capture // nubspace is already taken: #{inspect nubspace}"), agent}
+      {:reply, Data.bugs(data, "Machine.handle_call:capture // holospace is already taken: #{inspect holospace}"), agent}
     else
-      {:reply, handle_call({:share, data, nubspace, secret, duration}, source, agent), agent}
+      {:reply, handle_call({:share, data, holospace, secret, duration}, source, agent), agent}
     end
   end
   
-  #def handle_call({:boost, data = %Data{}, nubspace, secret, duration}, source, agent) do
+  #def handle_call({:boost, data = %Data{}, holospace, secret, duration}, source, agent) do
   
-  def handle_cast({:feel, source, data, nubspace, secret, duration}, agent) do
+  def handle_cast({:feel, source, data, holospace, secret, duration}, agent) do
     #Logger.debug "Holo.feel #{inspect self} // #{inspect source} // #{inspect data}"
     
     # get the map
@@ -139,14 +139,14 @@ defmodule Holo do
     # compile data but keep it in a second level Machine process
     # todo: check if this data already has a machine installed..
     data = data
-    |> Machine.compute(nubspace, secret, duration)
-    #|> Tube.share(nubspace, secret)
+    |> Machine.compute(holospace, secret, duration)
+    #|> Tube.share(holospace, secret)
     #|> Tube.save
     
     # check for updated versions
-    #existing = Map.get(map, nubspace)
+    #existing = Map.get(map, holospace)
     
-    # store the <nubspace/keycode> -> <machine/pid> map here in Holo
+    # store the <holospace/keycode> -> <machine/pid> map here in Holo
     :ok = Agent.update(agent, fn x -> Map.put x, data.keycode, data end)
     
     # send a :push back to the data
@@ -157,36 +157,36 @@ defmodule Holo do
     {:noreply, agent}
   end
   
-  def handle_call({:share, data = %Data{}, nubspace, secret, duration}, source, agent) do
+  def handle_call({:share, data = %Data{}, holospace, secret, duration}, source, agent) do
     # we need a namespace to share over..
-    if is_nil nubspace do
-      nubspace = data.keycode
+    if is_nil holospace do
+      holospace = data.keycode
     end
     
     # # start a machine
     unless is_nil data.home do
       machine = Machine.boot(data)
-      # |> Machine.compute(nubspace, secret)
+      # |> Machine.compute(holospace, secret)
       
       #todo: use safetybox and encrypt data w/ secret
       data = put_in data.home, machine
-      #|> Tube.save(nubspace, secret)
+      #|> Tube.save(holospace, secret)
     end
 
-    #Logger.debug "Holo.share #{inspect self} // #{inspect nubspace} // #{inspect data}"
+    #Logger.debug "Holo.share #{inspect self} // #{inspect holospace} // #{inspect data}"
 
     # update map/space
     :ok = Agent.update agent, fn map ->
-      Map.put(map, nubspace, machine)
+      Map.put(map, holospace, machine)
     end
 
     # return the data
     {:reply, data, agent}
   end
   
-  def handle_cast({:reset, nubspace, secret}, agent) do
+  def handle_cast({:reset, holospace, secret}, agent) do
     # remove the data
-    # Map.drop(map, nubspace)
+    # Map.drop(map, holospace)
 
     {:noreply, agent}
   end

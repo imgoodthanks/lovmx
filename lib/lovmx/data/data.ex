@@ -35,7 +35,7 @@ defmodule Data do
   """
   
   defstruct keycode: nil,
-    home: nil,    # <process> or <secret> or <nubspace>
+    home: nil,    # <process> or <secret> or <holospace>
     kind: nil,    # default to :init or see `Kind` + `cake.ex`
     time: nil,    # genesis/duration/etc
     life: nil,    # microseconds/duration/expiration
@@ -173,11 +173,11 @@ defmodule Data do
   end
   
   @doc "Jump data to an unknown future if exe `code` passes `test`."
-  def jump(data = %Data{}, nubspace, code, test) do
+  def jump(data = %Data{}, holospace, code, test) do
     result = code.(data)
 
     if test.(result) do
-      data = put_in(data.jump, Map.put(data.jump, nubspace, result))
+      data = put_in(data.jump, Map.put(data.jump, holospace, result))
       |> Data.tick
       |> Holo.x
     else

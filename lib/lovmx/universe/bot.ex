@@ -4,14 +4,14 @@ defmodule Bot do
   
   @moduledoc """
   # Bot
-  ## Bot(s) are a module to map `code` + `data` to `nubspace` Machine(s).
+  ## Bot(s) are a module to map `code` + `data` to `holospace` Machine(s).
   ### aka. Globally Persistent Code and Data Storage Component(s).
   
   Bot are animated and friendly little helpers.
 
   Bot like to eat `Cake` and write code for `Data` and `Player`s
   and should be considered when interacting with any native, 
-  static, primitive, or nubspace based object(s) in need of 
+  static, primitive, or holospace based object(s) in need of 
   holographic intelligence.
 
   Good Bot should be fun, simple, and enjoy `Cake` immensely.
@@ -51,12 +51,12 @@ defmodule Bot do
       block
     end
   end
-  def code(data = %Data{home: machine}, nubspace \\ nil, secret \\ nil, duration \\ nil) when is_pid(machine) do
-    GenServer.call data.home, {:code, nubspace, secret, duration}
+  def code(data = %Data{home: machine}, holospace \\ nil, secret \\ nil, duration \\ nil) when is_pid(machine) do
+    GenServer.call data.home, {:code, holospace, secret, duration}
   end
   
-  def list(data = %Data{home: machine}, nubspace \\ nil, secret \\ nil, duration \\ nil) when is_pid(machine) do
-    GenServer.call data.home, {:list, nubspace, secret, duration}
+  def list(data = %Data{home: machine}, holospace \\ nil, secret \\ nil, duration \\ nil) when is_pid(machine) do
+    GenServer.call data.home, {:list, holospace, secret, duration}
   end
   
   #@doc "Ask the agent/player/whatever for further input..."
@@ -70,28 +70,28 @@ defmodule Bot do
   #     Holo.share x, IO.gets :stdin
   #   end)
   # end
-  def stub(data = %Data{home: machine}, nubspace \\ nil, secret \\ nil, duration \\ nil) when is_pid(machine) do
-    GenServer.call data.home, {:stub, nubspace, secret, duration}
+  def stub(data = %Data{home: machine}, holospace \\ nil, secret \\ nil, duration \\ nil) when is_pid(machine) do
+    GenServer.call data.home, {:stub, holospace, secret, duration}
   end
   
   def pull(data = %Data{}) do
     Tube.read Lovmx.web ["#{data.tick}", data.keycode]
   end
-  def pull(data = %Data{home: machine}, nubspace \\ nil, secret \\ nil, duration \\ nil) when is_pid(machine) do
-    GenServer.call data.home, {:pull, nubspace, secret, duration}
+  def pull(data = %Data{home: machine}, holospace \\ nil, secret \\ nil, duration \\ nil) when is_pid(machine) do
+    GenServer.call data.home, {:pull, holospace, secret, duration}
   end
   
-  def loop(data = %Data{home: machine}, nubspace \\ nil, secret \\ nil, duration \\ nil) when is_pid(machine) do
-    GenServer.call data.home, {:flow, nubspace, secret, duration}
+  def loop(data = %Data{home: machine}, holospace \\ nil, secret \\ nil, duration \\ nil) when is_pid(machine) do
+    GenServer.call data.home, {:flow, holospace, secret, duration}
   end
   
-  def data(data = %Data{home: machine}, nubspace \\ nil, secret \\ nil, duration \\ nil) when is_pid(machine) do
-    GenServer.call data.home, {:data, nubspace, secret, duration}
+  def data(data = %Data{home: machine}, holospace \\ nil, secret \\ nil, duration \\ nil) when is_pid(machine) do
+    GenServer.call data.home, {:data, holospace, secret, duration}
   end
     
   @doc "Stop flowing."
-  def stop(data = %Data{home: machine}, nubspace \\ nil, secret \\ nil, duration \\ nil) when is_pid(machine) do
-    GenServer.call data.home, {:stop, nubspace, secret, duration}
+  def stop(data = %Data{home: machine}, holospace \\ nil, secret \\ nil, duration \\ nil) when is_pid(machine) do
+    GenServer.call data.home, {:stop, holospace, secret, duration}
   end
   
 end

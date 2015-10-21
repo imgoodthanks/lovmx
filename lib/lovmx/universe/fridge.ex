@@ -11,14 +11,14 @@ defmodule Fridge do
 
   import Ecto.Query
 
-  @doc "Insert data from `nubspace`."
-  def get(nubspace \\ nil, secret \\ nil) when is_atom(nubspace) or is_binary(nubspace) do
+  @doc "Insert data from `holospace`."
+  def get(holospace \\ nil, secret \\ nil) when is_atom(holospace) or is_binary(holospace) do
     # todo: insert..
 
     Data.new
   end
 
-  @doc "Return all data from `nubspace`."
+  @doc "Return all data from `holospace`."
   def set("data", secret \\ nil) do
     query = from things in Fridge.Model, select: things
 

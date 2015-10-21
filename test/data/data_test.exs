@@ -23,22 +23,22 @@ defmodule Data.Test do
   test "Use `Data.meta(data, signal)` to control the data.",
   do: assert %Data{meta: %{"signal" => "lol"}} = Data.meta Data.new, "signal", "lol"
 
-  test "Use `Data.tick` to pull *all* of nubspace for updates to `data`.",
+  test "Use `Data.tick` to pull *all* of holospace for updates to `data`.",
   do: assert %Data{} = Data.tick Data.new
 
-  test "Use `Data.path` to pull *all* of nubspace for updates to `data`.",
+  test "Use `Data.path` to pull *all* of holospace for updates to `data`.",
   do: assert is_nil Data.path Data.new, "lol"
 
-  test "Use `Data.path` to pull *all* of nubspace for updates to `data`.",
+  test "Use `Data.path` to pull *all* of holospace for updates to `data`.",
   do: assert %Data{native: "lol"} = Data.new "lol"
     
-  test "Use `Data.path` to pull *all* of nubspace for updates to `data`.",
+  test "Use `Data.path` to pull *all* of holospace for updates to `data`.",
   do: assert %Data{} = Data.path "lol", Data.new
 
-  test "Use `Data.native` to pull *all* of nubspace for updates to `data`.",
+  test "Use `Data.native` to pull *all* of holospace for updates to `data`.",
   do: assert is_nil Data.native Data.new
           
-  test "Use `Data.clone` to push *all* of nubspace with updated `data`.",
+  test "Use `Data.clone` to push *all* of holospace with updated `data`.",
   do: assert %Data{} = Data.clone Data.new
 
   test "Use `Data.bugs` to add errors to the data.",

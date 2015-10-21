@@ -23,16 +23,16 @@ defmodule Pipe do
   # for *complex* transforms we use Bots, Flows, and Pipes
   
   @doc "Pipe to a Cake/Magic document."
-  def magic(data = %Data{}, nubspace, secret \\ nil) do
+  def magic(data = %Data{}, holospace, secret \\ nil) do
     Cake.magic(data)
-    |> Tube.save(nubspace, secret)
+    |> Tube.save(holospace, secret)
   end
   
   @doc "Create static HTML pages."
   def page(data = %Data{}) do
     page data, data.keycode
   end
-  def page(data = %Data{}, nubspace, secret \\ nil) do  
+  def page(data = %Data{}, holospace, secret \\ nil) do  
     # build page/results
     page = Enum.join([
       Cake.kit("html/header.html"),
@@ -41,7 +41,7 @@ defmodule Pipe do
     ])
     
     # write the page to whatever it wanted
-    #Tube.save page, Lovmx.web(nubspace)
+    #Tube.save page, Lovmx.web(holospace)
     
     page
   end
@@ -76,18 +76,18 @@ defmodule Pipe do
   end
   
   @doc "Create HTML snippets."
-  def html(data, nubspace \\ "/", secret \\ nil)
+  def html(data, holospace \\ "/", secret \\ nil)
   
-  def html(data = %Data{native: data}, nubspace, secret) when is_list(data) do
+  def html(data = %Data{native: data}, holospace, secret) when is_list(data) do
     html Enum.map data, &(html &1)
   end
-  def html(data = %Data{kind: :link}, nubspace, secret) do
+  def html(data = %Data{kind: :link}, holospace, secret) do
     ####Holo.share "Pipe.html #{inspect data}"
     "<code class=\"data\">
-    <a href='#{Lovmx.path [nubspace, data.native]}'>#{data.native}</a>
+    <a href='#{Lovmx.path [holospace, data.native]}'>#{data.native}</a>
     </code>"
   end
-  def html(data = %Data{native: %Data{kind: kind, meta: path}}, nubspace, secret) when is_binary(path) do
+  def html(data = %Data{native: %Data{kind: kind, meta: path}}, holospace, secret) when is_binary(path) do
     #Holo.share "Pipe.html %Data{native: %Data{kind: kind, meta: path}}"
     if Freezer.extension(kind) do
       "<img src='#{path}'>"
@@ -96,13 +96,13 @@ defmodule Pipe do
     end
   end
 
-  def html(things, nubspace, secret) when is_list(things) do
-    Enum.join Enum.map things, &(html &1, nubspace, secret)
+  def html(things, holospace, secret) when is_list(things) do
+    Enum.join Enum.map things, &(html &1, holospace, secret)
   end
-  def html(data, nubspace, secret) when is_binary(data) do
+  def html(data, holospace, secret) when is_binary(data) do
     "<pre class=\"text\">#{data}</pre>"
   end
-  def html(other, nubspace, secret) do
+  def html(other, holospace, secret) do
     "<pre class=\"other\">#{inspect other}</pre>"
   end
 

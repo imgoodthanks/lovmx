@@ -28,20 +28,20 @@ defmodule Flow do
     |> Holo.x
   end
     
-  @doc "Put everything at `nubspace` *INTO* `data.pull`."
-  def pull(data = %Data{}, nubspace, secret \\ nil) when is_atom(nubspace) or is_binary(nubspace) do    
+  @doc "Put everything at `holospace` *INTO* `data.pull`."
+  def pull(data = %Data{}, holospace, secret \\ nil) when is_atom(holospace) or is_binary(holospace) do    
     #todo: route the flow based on Kind.flow to spawn a Computer process
     
     # embed that to the current player process.
-    put_in(data.pull, Map.put(data.pull, nubspace, Kind.init))
-    |> Holo.x(nubspace, secret)
+    put_in(data.pull, Map.put(data.pull, holospace, Kind.init))
+    |> Holo.x(holospace, secret)
   end
   
   @doc "Put `native` *INTO* `data.pull`."
   def take(data = %Data{}, native, signal \\ nil, secret \\ nil) when is_atom(signal) or is_binary(signal) do
     #Logger.debug "Flow.take // #{data.keycode} // #{signal} // #{inspect native}"
     
-    #todo: update all data/bots that live at this nubspace with our new `data`
+    #todo: update all data/bots that live at this holospace with our new `data`
     #todo: route the flow based on Kind.flow to spawn a Computer process
     # embed that to the current player process.
      
@@ -49,15 +49,15 @@ defmodule Flow do
     |> Holo.x
   end
   
-  @doc "Walk `nubspace` and put into `data.pull`."
-  def walk(data, nubspace \\ "/", lock \\ nil) when is_atom(nubspace) or is_binary(nubspace) do
-    #Logger.debug "Flow.push // #{nubspace} // #{inspect data}"
+  @doc "Walk `holospace` and put into `data.pull`."
+  def walk(data, holospace \\ "/", lock \\ nil) when is_atom(holospace) or is_binary(holospace) do
+    #Logger.debug "Flow.push // #{holospace} // #{inspect data}"
     
     data = put_in data.home, lock
     data = put_in data.kind, Data.new
     data = put_in data.life, Lovmx.long
     
-    pulls = Holo.list(nubspace, lock)
+    pulls = Holo.list(holospace, lock)
   
     unless Enum.empty? pulls do
       data = List.first Enum.map pulls, fn path ->
@@ -66,21 +66,21 @@ defmodule Flow do
     end
     
     # flow it babe
-    Holo.x data, nubspace, lock
+    Holo.x data, holospace, lock
   end
     
   ## OUT
   
-  @doc "From `data` *to* `machine` or `nubspace` in the *BACKGROUND*."
-  def push(data = %Data{}, nubspace, secret \\ nil) do
-    put_in data.push, Map.put(data.push, nubspace, Kind.push)
-    |> Holo.x(nubspace, secret)
+  @doc "From `data` *to* `machine` or `holospace` in the *BACKGROUND*."
+  def push(data = %Data{}, holospace, secret \\ nil) do
+    put_in data.push, Map.put(data.push, holospace, Kind.push)
+    |> Holo.x(holospace, secret)
   end
   
-  @doc "From `data` *to* `machine` or `nubspace` and *WAIT*."
-  def wait(data = %Data{}, nubspace, secret \\ nil) do
-    put_in(data.push, Map.put(data.push, nubspace, Kind.wait))
-    |> Holo.x(nubspace, secret)
+  @doc "From `data` *to* `machine` or `holospace` and *WAIT*."
+  def wait(data = %Data{}, holospace, secret \\ nil) do
+    put_in(data.push, Map.put(data.push, holospace, Kind.wait))
+    |> Holo.x(holospace, secret)
   end
   
 end

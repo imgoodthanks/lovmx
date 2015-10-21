@@ -8,7 +8,7 @@ defmodule Tube do
   ### Move Data between our Universe and the Multiverse. 
   
   Input and Output to the Universe. Push new data to 
-  <code/nubspace/keycode/bridge/warp/etc> and other future
+  <code/holospace/keycode/bridge/warp/etc> and other future
   systems and networks.
   """
   
@@ -17,19 +17,19 @@ defmodule Tube do
   ## Secure Web
   
   @doc "Return things from Web.Nubspace or the internet."
-  def get(nubspace \\ "/", secret \\ nil) when is_atom(nubspace) or is_binary(nubspace) do
+  def get(holospace \\ "/", secret \\ nil) when is_atom(holospace) or is_binary(holospace) do
     regex = ~r/^https\:/i
 
     # an external web call
-    if Regex.match?(regex, Lovmx.path(nubspace)) do
+    if Regex.match?(regex, Lovmx.path(holospace)) do
       try do
-        HTTPotion.get(nubspace).body
+        HTTPotion.get(holospace).body
       rescue x ->
-        [Data.new(nubspace, Data.error, x)]
+        [Data.new(holospace, Data.error, x)]
       end
     else
       # an internal lovmx call
-      nubspace
+      holospace
       |> Lovmx.web
       |> read
     end
@@ -69,18 +69,18 @@ defmodule Tube do
     end
   end
   
-  @doc "Save `data` to `nubspace` with Magic features."  
-  def save(data = %Data{}, nubspace \\ nil, secret \\ nil) when is_nil(nubspace) or is_atom(nubspace) or is_binary(nubspace) do
+  @doc "Save `data` to `holospace` with Magic features."  
+  def save(data = %Data{}, holospace \\ nil, secret \\ nil) when is_nil(holospace) or is_atom(holospace) or is_binary(holospace) do
     #todo: support secrets
     
-    # writing to data's home, or nubspace?
-    if is_nil nubspace do
-      nubspace = data.keycode
+    # writing to data's home, or holospace?
+    if is_nil holospace do
+      holospace = data.keycode
     end
-    path = Lovmx.path [nubspace, Kind.init]
+    path = Lovmx.path [holospace, Kind.init]
     
     write Lovmx.freeze(data), path, secret
-    #Logger.debug "Tube.save: #{Lovmx.path([nubspace, Kind.init])}"
+    #Logger.debug "Tube.save: #{Lovmx.path([holospace, Kind.init])}"
     
     data
   end

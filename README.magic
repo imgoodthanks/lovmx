@@ -3,8 +3,8 @@ require Logger
 use Magic
 
 # LovMx + ILvMx.
-## Orbital Magic for Cloud Apps.
-### LoveMx + Internet Love and #virtual Magic #exchange
+## Welcome to Holospace.
+### Orbital Magic for Cloud Apps.
 
 LovMx + ILvMx are free and open source nonprofit projects 
 to host a global namespace of code/data/blobs.
@@ -32,7 +32,7 @@ completely open source and transparent.*
 
 Yeah that sounds right.
 
-Welcome to #nubspace. Here, take this map...
+Welcome to Holospace. Here, take this map...
 
 # Chapter 1. LovMx Tree of Life.
 
@@ -42,8 +42,8 @@ need to actually care about.
 
 # graph/higher
 - Data // both a particle (code/data) and a wave (roll/jump)
-- Flow // push/pull data from other `nubspace` and `data`
-- Pipe // push one-way `data` to other parts of `nubspace`
+- Flow // push/pull data from other `holospace` and `data`
+- Pipe // push one-way `data` to other parts of `holospace`
 
 # universe
 - Bot // easily create code + data components w/ a variety of data
@@ -108,9 +108,9 @@ data = Tube.post data, "a/test/file"
 "README.magic"
 |> read # read the file
 |> magic # compile magicdown (markdown+) into data/bot
-|> move "help" # move the bot into the `help` nubspace
+|> move "help" # move the bot into the `help` holospace
 |> rate "fuzzy" # rate it as here but not critical
-|> orbit # send it into nubspace
+|> orbit # send it into holospace
 
 
 # create a forward secrecy style page
@@ -184,7 +184,7 @@ Now let's store and secret something in a private Castle.
 
 # Reading files.
 
-%Data{} = Data.read "<nubspace>", "password"
+%Data{} = Data.read "<holospace>", "password"
 
 # Storing stuff publically from the Computer or server."
 
@@ -204,7 +204,7 @@ fn bot -> Holo.compile "https://reddit.com/r/#{bot.pull.uri}" end
 # Reading all scenes from private memory.
 Holo.y
 
-# Exe *all* `data.code` for *all* lower nubspace.
+# Exe *all* `data.code` for *all* lower holospace.
 Holo.z "whateverpath", "whateverpassword"
 
 # Any memories there or that exist?
@@ -238,7 +238,7 @@ defmodule Readme.Web do
    # Universe
   ## Lovmx-level public data and data storage Container and Data Map.
 
-  Universe is a global map of: <nubspace> -> [things] and are
+  Universe is a global map of: <holospace> -> [things] and are
   superpowered by Maru-brand Routers which are awesome. Ask an
   associate for more information.
 
@@ -258,20 +258,20 @@ defmodule Readme.Web do
   use OrbitalMagic
 
   namespace do
-    route_param :nubspace do
+    route_param :holospace do
       get do
-        nubspace = Lovmx.path params[:nubspace]
+        holospace = Lovmx.path params[:holospace]
         
         data
-        Holo.fuzzy params[:nubspace]
+        Holo.fuzzy params[:holospace]
       end
       route_param :subpath do
         get do
-          nubspace = Lovmx.path [params[:nubspace], params[:subpath]]
+          holospace = Lovmx.path [params[:holospace], params[:subpath]]
           
-          spawn(params[:nubspace], params[:subpath], Data.new nubspace)
+          spawn(params[:holospace], params[:subpath], Data.new holospace)
 
-          Holo.fuzzy params[:nubspace]
+          Holo.fuzzy params[:holospace]
         end
       end
     end

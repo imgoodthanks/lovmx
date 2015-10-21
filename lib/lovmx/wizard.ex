@@ -51,15 +51,15 @@ defmodule Wizard do
   
   *thundering sounds*
   
-  Accepts an atom `:nubspace` for destroying the dynamic Holospace and
+  Accepts an atom `:holospace` for destroying the dynamic Holospace and
   `:universe` for destroying the static file system Universe.
   """
   def reset(opts \\ []) do
     #todo: add (an entire..) auth process (using player + stampcodes)
-    destroy_nubspace = Keyword.get opts, :nubspace, false
+    destroy_holospace = Keyword.get opts, :holospace, false
     destroy_universe = Keyword.get opts, :universe, false
     
-    GenServer.cast WizardServer, {:reset, destroy_nubspace, destroy_universe}
+    GenServer.cast WizardServer, {:reset, destroy_holospace, destroy_universe}
     
     self
   end
@@ -120,13 +120,13 @@ defmodule Wizard do
     {:noreply, agent}
   end
   
-  def handle_cast({:reset, destroy_nubspace, destroy_universe}, agent) do
+  def handle_cast({:reset, destroy_holospace, destroy_universe}, agent) do
     Logger.info "Wizard.reset"
     
     ## DESTROY
     
-    if destroy_nubspace do
-      GenServer.cast HoloServer, {:reset, destroy_nubspace, destroy_universe}
+    if destroy_holospace do
+      GenServer.cast HoloServer, {:reset, destroy_holospace, destroy_universe}
     end
 
     if destroy_universe do
