@@ -22,8 +22,8 @@ defmodule Kind do
   """
   
   ## Flow Controls
-  def flow, do: :flow      # run/exe/produce
   def init, do: :init      # new/fresh
+  def kick, do: :kick      # kick/reboot/refresh
   def meta, do: :meta      # meta/control
   def list, do: :list      # show/head/etc
   def pull, do: :pull      # pull/get/read 
@@ -31,6 +31,7 @@ defmodule Kind do
   def push, do: :push      # push/post/update
   def stub, do: :stub      # promise/future
   def wait, do: :wait      # noop/drop
+  def flow, do: :flow      # run/exe/produce
   def stop, do: :stop      # halt/stop
   
   ## Item Prototypes

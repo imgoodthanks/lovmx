@@ -11,17 +11,9 @@ defmodule Data.Test do
   test "Use `Data.new` to create new `data`.",
   do: %Data{} = Data.new
     
-  test "Use `Holo.move` to add a help message.",
+  test "Use `Data.renew` to add a help message.",
   do: assert %Data{native: :reboot} = Data.renew Data.new("whoa"), :reboot
-    
-  test "Use `Holo.move` to move data to a new home.",
-  do: assert %Data{home: "machine"} = Holo.move Data.new, "machine"
-
-  test "Use `Holo.move` to add a help message." do
-    data = Data.new
-    assert is_pid Holo.move(data, Machine.start_link(data))
-  end
-    
+        
   test "Use `Data.kind` to mutate the data type using custom or Kind types.",
   do: assert %Data{kind: :lols} = Data.kind Data.new, :lols
     
@@ -33,7 +25,6 @@ defmodule Data.Test do
 
   test "Use `Data.tick` to pull *all* of nubspace for updates to `data`.",
   do: assert %Data{} = Data.tick Data.new
-
 
   test "Use `Data.path` to pull *all* of nubspace for updates to `data`.",
   do: assert is_nil Data.path Data.new, "lol"

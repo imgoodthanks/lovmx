@@ -41,7 +41,6 @@ three below, and only really a few things in the middle we
 need to actually care about.
 
 # graph/higher
-
 - Data // both a particle (code/data) and a wave (roll/jump)
 - Flow // push/pull data from other `nubspace` and `data`
 - Pipe // push one-way `data` to other parts of `nubspace`
@@ -145,7 +144,7 @@ end
 ## A counter bot
 "/"
 |> new(0)
-|> code(fn b -> pull b, (b.pull + 1) end)
+|> code(fn b -> pull b, (b.native + 1) end)
 |> x "counter"
 
 
@@ -236,21 +235,21 @@ Holo.x "Chapter 4. // basically do all of the stuff above.."
 defmodule Readme.Web do
 
   @moduledoc """
-   # Galaxy
+   # Universe
   ## Lovmx-level public data and data storage Container and Data Map.
 
-  Galaxy is a global map of: <nubspace> -> [things] and are
+  Universe is a global map of: <nubspace> -> [things] and are
   superpowered by Maru-brand Routers which are awesome. Ask an
   associate for more information.
 
   https://maru.readme.io
 
-  Galaxy(s) are the *center* of `Holo.Nubspace` where all
+  Universe(s) are the *center* of `Holo.Nubspace` where all
   *UNIQUE* code/data/flows are *merged* into a single cohesive
-  Galaxy-wide hologram to be namespaced, stored, and experienced.
+  Universe-wide hologram to be namespaced, stored, and experienced.
 
-  Galaxy(s) host all *PUBLIC* static/dynamic content, which
-  means a Galaxy is primarily responsible for creating and
+  Universe(s) host all *PUBLIC* static/dynamic content, which
+  means a Universe is primarily responsible for creating and
   maintaining the global object graph + all dynamic content
   and updates that happen during normal usage.
   """

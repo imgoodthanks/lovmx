@@ -19,7 +19,8 @@ defmodule Data do
   while also still trying to make nice bits and bytes for the computers.
   
   Our `use Magic` include and `use OrbitalMagic` simply combine
-  as much of Custom API to Flow Based Programming in Elixir. 
+  as much of of the Custom API we can to Flow Based Programming in 
+  Elixir. 
   
   #note: Our data/flow struct size is pretty big but we can make it
   fast and imagine lots of easy behind the scenes struct mutations and
@@ -79,7 +80,7 @@ defmodule Data do
 
     data
   end
-  
+    
   @doc "Use `Kind.meta` controls to help the data flow."
   def meta(data = %Data{}, signal, effect \\ nil) do
     put_in(data.meta, Map.put(data.meta, signal, effect))

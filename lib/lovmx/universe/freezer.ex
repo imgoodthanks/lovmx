@@ -21,33 +21,31 @@ defmodule Freezer do
   }
   
   @doc "Create a Binary box (aka large file)."
-  def put(path, kind, name) do
+  def put(path, mime, name) do
   	{binsum, _}   = System.cmd("/usr/bin/shasum", ["-a", "512224", Lovmx.path?(path)])
     binsum        = String.split(binsum, "  ", parts: 2) |> List.first
 
     # the public path
-    binspace = Lovmx.path ["bin", "#{ binsum }#{ ext(kind) }"]
+    binspace = Lovmx.path ["blob", "#{ binsum }#{ ext(mime) }"]
     
     # write the file..
     File.write! (Lovmx.root Lovmx.web binspace), File.read!(path), [:write]
-    #Logger.debug "Freezer.putsum: #{path} kind: #{kind} name: #{name}]"
+    #Logger.debug "Freezer.put: #{path} kind: #{kind} name: #{name}]"
     
     # create the box
-    box = Data.new(name, kind)
-    box = Holo.move(box, binspace)
+    Data.new(name, mime)
+    |> Holo.move(binspace)
   end
   
   # Custom Freezer stuff.
   
   @doc "Freezer type/file extension accessor."
-  def ext(kind) do
-    box = @static[kind]
-    
-    #if box and Map.has_key? box.meta, kind do
-    #  box.meta.extension
-    #else
+  def ext(mime) do    
+    if Map.has_key? @static, mime do
+      @static[mime].extension
+    else
       @static["unknown"].extension
-      #end
+    end
   end
 
 end

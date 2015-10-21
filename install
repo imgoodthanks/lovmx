@@ -30,14 +30,12 @@ apt-get -y install nginx
 cd /tmp
 wget http://packages.erlang-solutions.com/erlang-solutions_1.0_all.deb
 dpkg -i erlang-solutions_1.0_all.deb
-apt-get update
+apt-get update --fix-missing && apt-get upgrade
 apt-get install -y erlang erlang-src erlang-dev
 
 # Install rebar + Elixir
 apt-get install elixir
 
 # ILvMx.
-cd /lovmx
 MIX_ENV=prod mix deps.get
 MIX_ENV=prod mix compile
-MIX_ENV=prod ./boot

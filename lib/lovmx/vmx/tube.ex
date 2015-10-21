@@ -108,15 +108,12 @@ defmodule Tube do
     
     # Keep the map inmemory for fluffiness.
     link = {:ok, tube} = GenServer.start_link(Tube, agent, name: :tube)
-    Logger.info "Tube.start_link #{inspect tube}"
+    Logger.info "Tube.start_link #{inspect link}"
     
-    # hack: start the Bridge/API server until a proper API is in place
-    Plug.Adapters.Cowboy.https(Bridge, self, port: Bridge.port,
-                                        password: "secretlols", # CHANGE YOUR PASSWORD TO YOUR SSL CERTS
-                                         otp_app: :lovmx,
-                                         keyfile: "priv/ssl/key.pem",
-                                        certfile: "priv/ssl/cert.pem")
-
+    
+    ## SSL Checkup.
+    Bridge.kick secure: File.exists? Lovmx.root "priv/ssl/cert.pem"
+    
     link
   end
 end

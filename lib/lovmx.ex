@@ -32,32 +32,15 @@ defmodule Lovmx do
   We host a public data service (ilvmx.com).
   We give away the best Web Theme Park on the net. (lolnub.com)
   
-  In a nutshell, we wanna build: 
-   
-  An Elixir-based Wolfram Language clone 
-  powered by a Twitter like network 
-  of Markdown-style documents 
-  for Clients connected to their own private VPNs/VMs
-  running an Orbital Magic framework written in the 
-  sexiest language/runtime in the world, oh my dear love Erlang/Elixir, 
-  for the purpose of creating a grassroots network
-  of Code + Data + Blob storage aka Cake Apps 
-  written by commerce and community 
-  in a *meticulously* namespaced 
-  v2v storage-based network made 
-  completely open source and transparent.
-  
-  Yeah that sounds right.
-  
   Welcome to #nubspace. Here, take this map...
 
-  See `README.md` or @readme in the LovMx for more.
+  See `README.magic` or @readme inside LovMx for more.
   
   ## NOTES
   #############################################################
   
   # Check out Bridge for a standard LovMx module, it also
-  # works well as an example `Application` (aka Elixir 
+  # works well as an example `Application` (aka the Elixir 
   # Module) you would need to write to use the LovMx on
   # your own.
 
@@ -100,7 +83,7 @@ defmodule Lovmx do
   @tick 110
   @tock 880
   @long @tick * @tock
-
+  
   # See http://elixir-lang.org/docs/stable/Application.html
   def start(type, data) do
     #Logger.debug @moduledoc
@@ -110,8 +93,9 @@ defmodule Lovmx do
     # Define workers and child supervisors to be supervised
     children = [
       worker(Wizard,     [self]), # janitor
-      worker(Tube,       [self]), # io/external
       worker(Holo,       [self]), # io/internal
+      worker(Machine,    [self]), # code/data/compute
+      worker(Tube,       [self]), # io/external
     ]
 
     # See http://elixir-lang.org/docs/stable/elixir/Supervisor.html
@@ -119,16 +103,17 @@ defmodule Lovmx do
     opts = [strategy: :one_for_one, name: Lovmx.Supervisor]
 
     ## Supervisor
-
     link = {:ok, supervisor} = Supervisor.start_link(children, opts)
+    
     Logger.info "Lovmx.Supervisor: #{inspect link}"
-
-    # children |> Enum.map fn child ->
-    #   Holo.orbit "#supervisor // #{inspect supervisor} // #{inspect child}"
-    #   Holo.install child
-    # end
-          
-    Logger.info  "Lovmx.start #{inspect self}"
+    children |> Enum.map fn child ->
+      Logger.debug "!supervisor // #{inspect supervisor} // #{inspect child}"
+    end
+    
+    Logger.info  "Lovmx.start #{inspect link}"
+    
+    # Kickoff the First Creation of Init.
+    Wizard.bang
     
     link
   end
@@ -292,7 +277,10 @@ defmodule Lovmx do
   @doc "Good night sweet prince."
   def terminate(message, data) do
     #####Holo.orbit "Lovmx.terminate: #{inspect data} message: #{inspect message}"
-
+    
+    # todo: properly shutdown the Bridge
+    # Plug.Adapters.Cowboy.shutdown Bridge.HTTPS
+    
     {:noreply, data}
   end
 

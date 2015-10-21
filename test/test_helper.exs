@@ -1,6 +1,6 @@
-ExUnit.start()
+Wizard.reset universe: true, nubspace: true
 
-Holo.reset(nubspace: true, universe: true)
+ExUnit.start()
 
 defmodule IT do
   use ExUnit.Case

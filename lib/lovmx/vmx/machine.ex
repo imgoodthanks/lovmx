@@ -9,7 +9,7 @@ defmodule Machine do
   """
   
   use GenServer
-  
+      
   @doc "Machine"  
   def boot(data = %Data{}) do
     link = {:ok, machine} = Machine.start_link(data)
@@ -69,7 +69,7 @@ defmodule Machine do
     {:reply, Agent.get(agent, &(&1)), agent}
   end
 
-  def handle_call({:list, nubspace, secret, duration}, source, agent) do    
+  def handle_call({:list, nubspace, secret, duration}, source, agent) do
     data = Agent.get(agent, &(&1))
     
     {:reply, data.native, agent}
@@ -85,11 +85,11 @@ defmodule Machine do
     {:reply, Agent.get(agent, &(&1)), agent}
   end
   
-  def handle_call({:code, nubspace, secret, duration}, source, agent) do    
+  def handle_call({:code, nubspace, secret, duration}, source, agent) do
     {:reply, Agent.get(agent, &(&1)).code, agent}
   end
   
-  def handle_call({:push, nubspace, secret, duration}, source, agent) do    
+  def handle_call({:push, nubspace, secret, duration}, source, agent) do
     :ok = Agent.update agent, fn data -> 
       Enum.each data.push, fn signal -> 
         Flow.push(data, signal)
@@ -149,7 +149,7 @@ defmodule Machine do
     
     {:reply, Agent.get(agent, &(&1)), agent}
   end
-   
+    
   @doc "Machine"  
   def start_link(data = %Data{}) do
     # Create an Agent for our state, which also gets us

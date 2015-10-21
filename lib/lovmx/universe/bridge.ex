@@ -7,7 +7,7 @@ defmodule Bridge do
   ## Like a Rainbow Bridge to the NoFlo Multiverse.
   
   Bridge(s) poly to the Web and Multiverse worlds, 
-  other NoFlo networks, running frameworks (Node/Rails), 
+  other NoFlo networks, other frameworks (Node/Rails), 
   the Unix/Mac/Windows systems below, and other pipelines 
   too.
   """
@@ -22,7 +22,7 @@ defmodule Bridge do
   # todo: add custom Web/Warp support.
   # todo: dynamically build @static from `lib/drive` BOM.
   @static [
-    "bin",
+    "blob",
     "css",
     "help",
     "data",
@@ -41,18 +41,37 @@ defmodule Bridge do
   # ports or values that are not specific to the runtime.
 
   @doc "We live in an HTTPS Multiverse."
-  def port, do: System.get_env("LOVMX_PORT") || 8443
+  def port, do: System.get_env("LOVMX_SECURE_PORT") || 8443
 
   @doc "We need to Plug.init."
-  def init(data) do
+  def init(secure_by_default \\ nil) do
     {:ok, agent} = Agent.start_link fn -> Map.new end
-
+    
     # broadcast ourself
     #Holo.orbit agent, "tube/agent"
 
     agent
   end
   
+  @doc "We walk the Bridge."
+  def kick(opts \\ []) do
+    # todo: we developed in and *will ship* SSL/secure by default, 
+    # just want to do an easier release and need to get the SSL
+    # guide written up on lovmx.com first.
+    secure_by_default = Keyword.get opts, :secure, nil
+    
+    # hack: start the Bridge/API server until a proper API is in place
+    if secure_by_default do 
+      Plug.Adapters.Cowboy.https(Bridge, secure_by_default, port: Bridge.port,
+       otp_app: :lovmx,   
+      password: "secretlols",         # CHANGE YOUR PASSWORD TO YOUR SSL CERT PASSWORD
+       keyfile: "priv/ssl/key.pem",   # install the key and certificate
+      certfile: "priv/ssl/cert.pem")
+    else
+      Plug.Adapters.Cowboy.http(Bridge, secure_by_default, port: Bridge.port) 
+    end
+  end
+
   @doc "Route *all* generic PULL signals from HTTPS."  
   def call(conn = %Plug.Conn{method: "GET", path_info: nubspace}, agent) do
     if nubspace in [[], [""], nil] do
@@ -93,7 +112,7 @@ defmodule Bridge do
     #todo: forward to the wizard for defensive purposes.
     send_resp(conn, 404, "oops")
   end
-    
+  
   ## Callbacks
   
   ## todo: <develop the NoFlo bridge here>

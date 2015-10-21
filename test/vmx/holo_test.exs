@@ -1,12 +1,19 @@
 defmodule Holo.Test do
   use ExUnit.Case
 
-  test "Use `Holo.bang` to start the Hologram",
-  do: assert is_pid Holo.bang
-
   test "Use `Holo.space` to get a map of everything.",
   do: assert is_map Holo.space
 
+  test "Use `Holo.home` to add a help message." do
+    data = Data.new
+    machine = Machine.boot data
+         
+    assert is_pid Holo.home(data, machine).home
+  end
+
+  test "Use `Holo.move` to move data to a new home.",
+  do: assert %Data{home: "machine"} = Holo.move Data.new, "machine"
+  
   # test "Use `Holo.orbit` to put data into Nubspace." do
 #     data = Holo.orbit Data.new
 #     assert data == Holo.data(data.keycode)
