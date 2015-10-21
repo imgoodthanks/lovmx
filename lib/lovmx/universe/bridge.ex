@@ -48,7 +48,7 @@ defmodule Bridge do
     {:ok, agent} = Agent.start_link fn -> Map.new end
     
     # broadcast ourself
-    #Holo.orbit agent, "tube/agent"
+    #Holo.share agent, "tube/agent"
 
     agent
   end

@@ -67,7 +67,7 @@ defmodule Bot do
   # def stub(data = %Data{}) do
   #   #todo: item this up
   #   Data.code(data, fn x ->
-  #     Holo.orbit x, IO.gets :stdin
+  #     Holo.share x, IO.gets :stdin
   #   end)
   # end
   def stub(data = %Data{home: machine}, nubspace \\ nil, secret \\ nil, duration \\ nil) when is_pid(machine) do

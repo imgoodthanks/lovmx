@@ -48,7 +48,7 @@ defmodule Data.Test do
   do: assert %Data{} = Data.error "whoops"
   
   # test "Data.roll to return a previous version of Bot.",
-  # do: assert %Data{} = Data.roll Data.tick(Holo.orbit Data.new), 0
+  # do: assert %Data{} = Data.roll Data.tick(Holo.share Data.new), 0
 
   # test "Data.jump(binary) to forecast future versions of Bot.",
   # do: assert "<p>@lol</p>" = Bot.jump Data.new, "related", fn x -> Cake.magic x end, fn t -> Holo.fuzzy t.native end

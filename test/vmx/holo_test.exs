@@ -1,8 +1,8 @@
 defmodule Holo.Test do
   use ExUnit.Case
 
-  test "Use `Holo.space` to get a map of everything.",
-  do: assert is_map Holo.space
+  test "Use `Holo.space` to get a map of everything.", do: 
+    assert is_map Holo.space
 
   test "Use `Holo.home` to add a help message." do
     data = Data.new
@@ -11,22 +11,23 @@ defmodule Holo.Test do
     assert is_pid Holo.home(data, machine).home
   end
 
-  test "Use `Holo.move` to move data to a new home.",
-  do: assert %Data{home: "machine"} = Holo.move Data.new, "machine"
+  test "Use `Holo.move` to move data to a new home.", do: 
+    assert %Data{home: "machine"} = Holo.move Data.new, "machine"
   
-  # test "Use `Holo.orbit` to put data into Nubspace." do
-#     data = Holo.orbit Data.new
-#     assert data == Holo.data(data.keycode)
-#   end
-#
-  # test "Use `Holo.orbit` gives data.home a Machine process.",
-  # do: assert is_pid Holo.orbit(Data.new).home
+  # test "Use `Holo.space` to put data into Nubspace." do
+  #   data = Holo.share Data.new
   #
-  # test "Use `Holo.orbit` returns original data.",
-  # do: assert "lol" = Holo.orbit "lol"
+  #   assert data == Holo.space(data.keycode)
+  # end
 
-  # test "Use `Holo.orbit` will return most recent orbital Data" do
-  #   data = Holo.orbit Data.new "lol"
+  # test "Use `Holo.share` gives data.home a Machine process.",
+  # do: assert is_pid Holo.share(Data.new).home
+  #
+  # test "Use `Holo.share` returns original data.",
+  # do: assert "lol" = Holo.share "lol"
+
+  # test "Use `Holo.share` will return most recent orbital Data" do
+  #   data = Holo.share Data.new "lol"
   #
   #   Task.async fn ->
   #     Data.renew data, "grr"
@@ -37,7 +38,7 @@ defmodule Holo.Test do
   
   # test "Use `Holo.capture` returns a [list] of Items." do
   #   # create an original bot and put it to orbit
-  #   original = Holo.orbit Data.new
+  #   original = Holo.share Data.new
   #
   #   # assert that it installed...
   #   assert Map.has_key? Holo.space, original.keycode
@@ -54,15 +55,15 @@ defmodule Holo.Test do
   #
 
   #
-  # test "Use `Holo.orbit` stores nubspace: data." do
-  #   assert %Data{keycode: keycode} = Holo.orbit "lol"
+  # test "Use `Holo.share` stores nubspace: data." do
+  #   assert %Data{keycode: keycode} = Holo.share "lol"
   # end
 
-  # test "Use `Holo.data` returns *ALL* nubspace data." do
+  # test "Use `Holo.feel` returns *ALL* nubspace data." do
   #   key = Lovmx.keycode
   #
-  #   one = Data.new("one") |> Holo.orbit key
-  #   two = Data.new("two") |> Holo.orbit key
+  #   one = Data.new("one") |> Holo.share key
+  #   two = Data.new("two") |> Holo.share key
   #
   #   assert one in Holo.list(key)
   #   assert two in Holo.list(key)
@@ -70,8 +71,8 @@ defmodule Holo.Test do
 
   # test "Use `Holo.grab` returns *ALL* nubspace data @ path" do
   #   key = Lovmx.keycode
-  #   one = Data.new("one") |> Holo.orbit key
-  #   two = Data.new("two") |> Holo.orbit key
+  #   one = Data.new("one") |> Holo.share key
+  #   two = Data.new("two") |> Holo.share key
   #
   #   assert ["one", "two"] = Holo.grab key, :native
   # end

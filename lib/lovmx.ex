@@ -276,7 +276,7 @@ defmodule Lovmx do
 
   @doc "Good night sweet prince."
   def terminate(message, data) do
-    #####Holo.orbit "Lovmx.terminate: #{inspect data} message: #{inspect message}"
+    #####Holo.share "Lovmx.terminate: #{inspect data} message: #{inspect message}"
     
     # todo: properly shutdown the Bridge
     # Plug.Adapters.Cowboy.shutdown Bridge.HTTPS

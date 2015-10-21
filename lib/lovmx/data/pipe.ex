@@ -82,13 +82,13 @@ defmodule Pipe do
     html Enum.map data, &(html &1)
   end
   def html(data = %Data{kind: :link}, nubspace, secret) do
-    ####Holo.orbit "Pipe.html #{inspect data}"
+    ####Holo.share "Pipe.html #{inspect data}"
     "<code class=\"data\">
     <a href='#{Lovmx.path [nubspace, data.native]}'>#{data.native}</a>
     </code>"
   end
   def html(data = %Data{native: %Data{kind: kind, meta: path}}, nubspace, secret) when is_binary(path) do
-    #Holo.orbit "Pipe.html %Data{native: %Data{kind: kind, meta: path}}"
+    #Holo.share "Pipe.html %Data{native: %Data{kind: kind, meta: path}}"
     if Freezer.extension(kind) do
       "<img src='#{path}'>"
     else

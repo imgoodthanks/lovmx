@@ -28,64 +28,27 @@ defmodule Holo do
   
   ## Nubspace (internet readable static/dynamic storage)
 
-  @doc "Use `Holo.space` to return *everything* in Nubspace orbit."
+  @doc "Use `Holo.space` to return *everything* in Nubspace share."
   def space do
     GenServer.call HoloServer, :space
   end
   
-  @doc "Use `Holo.x` and `Holo.orbit` to start a `Machine` at `nubspace` with `data`."
-  def x(data = %Data{}, _nubspace \\ nil, _secret \\ nil) do
-    Task.async fn -> 
-      Holo.orbit(data)
-    end
-    
-    data
-  end
-  def orbit(data = %Data{}, nubspace \\ nil, secret \\ nil, duration \\ Lovmx.long) do
-    GenServer.call HoloServer, {:orbit, data, nubspace, secret, duration}
-  end
-  def handle_call({:orbit, data = %Data{}, nubspace, secret, duration}, source, agent) do
-    # we need a namespace to orbit over..
-    if is_nil nubspace do
-      nubspace = data.keycode
-    end
-    
-    # # start a machine
-    unless is_nil data.home do
-      machine = Machine.boot(data)
-      # |> Machine.compute(nubspace, secret)
-      
-      #todo: use safetybox and encrypt data w/ secret
-      data = put_in data.home, machine
-      #|> Tube.save(nubspace, secret)
-    end
-
-    #Logger.debug "Holo:orbit #{inspect self} // #{inspect nubspace} // #{inspect data}"
-
-    # update map/space
-    :ok = Agent.update agent, fn map ->
-      Map.put(map, nubspace, machine)
-    end
-
-    # return the data
-    {:reply, data, agent}
+  @doc "Use `Holo.space <signal>` to return a [list] of specific *computed* data at `nubspace`."
+  def space(nubspace, secret \\ nil) when is_atom(nubspace) or is_binary(nubspace) do
+    list(nubspace, secret)
+    |> Stream.map(fn data -> 
+      data.native
+    end) 
+    |> Enum.to_list
   end
   
-  @doc "Use `Holo.grab` to return a list of *ALL computed* data at nubspace data at `signal`."
-  def grab(nubspace, signal) when is_atom(nubspace) or is_binary(nubspace) do
-    grab(nubspace, nil, signal)
-  end
-  def grab(nubspace, secret \\ nil, signal) when is_atom(nubspace) or is_binary(nubspace) do
-    list(nubspace, secret) |> Stream.map(fn data -> data.native end) |> Enum.to_list
-  end
-  
-  @doc "Use `Holo.list <nubspace>` to return a [list] of things."
+  @doc "Use `Holo.list <nubspace>` to return a [list] of things at `nubspace`."
   def list(nubspace, secret \\ nil) when is_atom(nubspace) or is_binary(nubspace) do
     Tube.read(Lovmx.web(nubspace), secret)
     |> List.wrap
   end
   
-  @doc "Give `data` a Machine home at `process`."    
+  @doc "Give `data` a new home at `process`."    
   def home(data = %Data{}, process) when is_pid(process) do
     # # say goodbye
     # if not is_nil data.home and is_pid data.home and Process.alive? data.home do
@@ -106,6 +69,18 @@ defmodule Holo do
     |> Holo.x
   end
   
+  @doc "Use `Holo.x` and `Holo.share` to start a `Machine` at `nubspace` with `data`."
+  def x(data = %Data{}, _nubspace \\ nil, _secret \\ nil) do
+    Task.async fn -> 
+      Holo.share(data)
+    end
+    
+    data
+  end
+  def share(data = %Data{}, nubspace \\ nil, secret \\ nil, duration \\ Lovmx.long) do
+    GenServer.call HoloServer, {:share, data, nubspace, secret, duration}
+  end
+
   @doc "WARNING: Destroy `nubspace`. *thundering sounds*"
   def forget(nubspace \\ nil, secret \\ nil) when is_atom(nubspace) or is_binary(nubspace) do
    # todo: return true if the thing has not spread to nubspace
@@ -140,7 +115,7 @@ defmodule Holo do
     # extract our map that we reset shortly
     map = Agent.get(agent, &(&1))
     
-    # we need a namespace to orbit over..
+    # we need a namespace to share over..
     if is_nil nubspace do
       nubspace = data.keycode
     end
@@ -149,14 +124,14 @@ defmodule Holo do
       # return the data
       {:reply, Data.bugs(data, "Machine.handle_call:capture // nubspace is already taken: #{inspect nubspace}"), agent}
     else
-      {:reply, handle_call({:orbit, data, nubspace, secret, duration}, source, agent), agent}
+      {:reply, handle_call({:share, data, nubspace, secret, duration}, source, agent), agent}
     end
   end
   
   #def handle_call({:boost, data = %Data{}, nubspace, secret, duration}, source, agent) do
   
-  def handle_cast({:data, source, data, nubspace, secret, duration}, agent) do
-    #Logger.debug "Holo:data #{inspect self} // #{inspect source} // #{inspect data}"
+  def handle_cast({:feel, source, data, nubspace, secret, duration}, agent) do
+    #Logger.debug "Holo.feel #{inspect self} // #{inspect source} // #{inspect data}"
     
     # get the map
     map = Agent.get(agent, &(&1))
@@ -180,6 +155,33 @@ defmodule Holo do
     end
     
     {:noreply, agent}
+  end
+  
+  def handle_call({:share, data = %Data{}, nubspace, secret, duration}, source, agent) do
+    # we need a namespace to share over..
+    if is_nil nubspace do
+      nubspace = data.keycode
+    end
+    
+    # # start a machine
+    unless is_nil data.home do
+      machine = Machine.boot(data)
+      # |> Machine.compute(nubspace, secret)
+      
+      #todo: use safetybox and encrypt data w/ secret
+      data = put_in data.home, machine
+      #|> Tube.save(nubspace, secret)
+    end
+
+    #Logger.debug "Holo.share #{inspect self} // #{inspect nubspace} // #{inspect data}"
+
+    # update map/space
+    :ok = Agent.update agent, fn map ->
+      Map.put(map, nubspace, machine)
+    end
+
+    # return the data
+    {:reply, data, agent}
   end
   
   def handle_cast({:reset, nubspace, secret}, agent) do

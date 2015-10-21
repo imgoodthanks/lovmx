@@ -31,7 +31,7 @@ defmodule Machine do
   @doc "Use `Holo.x` to `Holo.x` data in the BACKGROUND."  
   def x(data = %Data{}) do
     # refresh *all* things + re-ping machine(s)
-    #Task.async fn -> Holo.orbit(data) end
+    #Task.async fn -> Holo.share(data) end
     
     data
   end
