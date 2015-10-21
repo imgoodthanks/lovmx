@@ -13,10 +13,10 @@ defmodule Wizard.Test do
   test "Wizard.tock cooks the eggs.", do: 
     assert is_pid Wizard.tock Wizard.king
 
-  test "Wizard.freeze cooks the eggs.", do: 
+  test "Wizard.freeze saves the eggs.", do: 
     assert is_pid Wizard.freeze
   
-  test "Wizard.reset cooks the eggs.", do: 
+  test "Wizard.reset nukes the eggs.", do: 
     assert is_pid Wizard.reset
     
 end

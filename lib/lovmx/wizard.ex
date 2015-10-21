@@ -29,19 +29,19 @@ defmodule Wizard do
 
   @doc "Two beams. Both have purpose."
   def tick(wizard) do
-    GenServer.cast Wizard.king, :tick
+    GenServer.cast WizardServer, :tick
     
     self
   end
   def tock(wizard) do
-    GenServer.cast Wizard.king, :tock
+    GenServer.cast WizardServer, :tock
     
     self
   end
 
   @doc "Save Holospace to `priv/holospace.term`."
   def freeze do
-    GenServer.cast Wizard.king, :freeze
+    GenServer.cast WizardServer, :freeze
     
     self
   end
@@ -115,7 +115,7 @@ defmodule Wizard do
     
     Holo.space
     |> Lovmx.freeze
-    |> Tube.save(Lovmx.path ["priv", "holospace.term"])
+    |> Tube.write(Lovmx.path ["priv", "holospace.term"])
     
     {:noreply, agent}
   end
@@ -126,7 +126,7 @@ defmodule Wizard do
     ## DESTROY
     
     if destroy_nubspace do
-      GenServer.cast Holo, {:reset, destroy_nubspace, destroy_universe}
+      GenServer.cast HoloServer, {:reset, destroy_nubspace, destroy_universe}
     end
 
     if destroy_universe do
