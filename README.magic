@@ -226,7 +226,7 @@ Holo.d "whateverpath"
 
 # Chapter 4. Maru Routers for advanced data flows.
 
-Working Code showing how to process routes in Nubspace + add content.
+Working Code showing how to process routes in Holospace + add content.
 ########################################################################
 
 ```
@@ -244,7 +244,7 @@ defmodule Readme.Web do
 
   https://maru.readme.io
 
-  Universe(s) are the *center* of `Holo.Nubspace` where all
+  Universe(s) are the *center* of `Holo.Holospace` where all
   *UNIQUE* code/data/flows are *merged* into a single cohesive
   Universe-wide hologram to be namespaced, stored, and experienced.
 

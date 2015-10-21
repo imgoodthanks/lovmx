@@ -14,7 +14,7 @@ defmodule Holo.Test do
   test "Use `Holo.move` to move data to a new home.", do: 
     assert %Data{home: "machine"} = Holo.move Data.new, "machine"
   
-  # test "Use `Holo.space` to put data into Nubspace." do
+  # test "Use `Holo.space` to put data into Holospace." do
   #   data = Holo.share Data.new
   #
   #   assert data == Holo.space(data.keycode)

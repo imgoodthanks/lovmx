@@ -7,7 +7,7 @@ defmodule Player do
   ## Interactive User Agent Component(s)
   
   Advanced Bot-like creatures that create and destroy 
-  inside the LovMx Orbital Nubspace Network. ;)
+  inside the LovMx Orbital Holospace Network. ;)
   """
 
   @doc "Sweet prince."

@@ -4,31 +4,26 @@ defmodule Holo do
   
   @moduledoc """
   # Holo
-  ## Holo
-  ### Holo
+  ## Holospace Management
+  ### Holo manages the entire dynamic + static hologram.
   
-  Holo is one of three core GenServers inside the Framework 
-  and works like a *light* + *fluffy* messaging bridge to the
-  Machine.
-  
-  Holo renders Orbital Nubspace (aka spacetime) by gluing
-  together various parts of the framework into a cohesive
-  whole (aka time/motion is superimposed with data) that may 
-  be graphed, computed, and displayed.
+  Holo renders the local Universe (aka your App) by
+  routing Player data to Machine code and graphing,
+  routing, and piping the side effects as needed.
 
   Holo signals into the Machine and other parts of the 
   framework often in order to best get/create/update 
   whatever your little heart asks for. Like magic, but 
   with software bugs.
   
-  tl;dr Global Namespace + Push data into the Machine.
+  tl;dr Global Namespace + Push Data into the Machine.
   """  
 
   use GenServer
   
-  ## Nubspace (internet readable static/dynamic storage)
+  ## Holospace (internet readable static/dynamic storage)
 
-  @doc "Use `Holo.space` to return *everything* in Nubspace share."
+  @doc "Use `Holo.space` to return *everything* in Holospace share."
   def space do
     GenServer.call HoloServer, :space
   end

@@ -50,7 +50,7 @@ defmodule Cake do
   ## Sugary sweet Cloud App texting language
   ### Build industrial strength Orbital Magic apps in Seconds.
   
-  All energy/matter/vibration of Nubspace is Cake.
+  All energy/matter/vibration of Holospace is Cake.
   And it's Cake all the way down. Except for the `binary`
   that sits below Cake and which *ALL* calls should return. 
   Then it looks more like: CakeN > CakeN+1 > binary.
@@ -67,7 +67,7 @@ defmodule Cake do
   very own Castle server (aka VPN/VPS) or connected to one of the 
   community free, shared, and moderated Castles.
     
-  All energy/matter/vibration of Nubspace is Cake.
+  All energy/matter/vibration of Holospace is Cake.
   And it's Cake all the way down. Except for the `binary`
   that sits below Cake and which *ALL* calls should return. 
   Then it looks more like: Cake > Cake > binary.

@@ -4,7 +4,7 @@ defmodule Pipe do
   
   @moduledoc """
   # Pipe
-  ## Push Data through a series of tubes and Nubspace Port(s).
+  ## Push Data through a series of tubes and Holospace Port(s).
   ### Pipe(s) manage the Data/Output life cycle.
   
   Tree of Life:

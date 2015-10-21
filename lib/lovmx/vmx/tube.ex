@@ -16,7 +16,7 @@ defmodule Tube do
   
   ## Secure Web
   
-  @doc "Return things from Web.Nubspace or the internet."
+  @doc "Return things from Web.Holospace or the internet."
   def get(holospace \\ "/", secret \\ nil) when is_atom(holospace) or is_binary(holospace) do
     regex = ~r/^https\:/i
 
