@@ -135,7 +135,7 @@ defmodule Wizard do
       # freshly copy static stuff no matter what
       File.cp_r  Lovmx.project(["lib", "base"]), Lovmx.project ["priv", "static"]
 
-      Logger.info "!reset // #static // #{inspect Moment.now}"
+      Logger.info "!reset // #universe // #{inspect Moment.now}"
     end
     
     ## RECREATE
@@ -149,7 +149,7 @@ defmodule Wizard do
     File.cp_r Lovmx.project(["doc"]), path
     File.ln_s Lovmx.project(Lovmx.web "doc"), path
 
-    Logger.info "!reset // #doc // #{inspect Moment.now}"
+    Logger.info "!reset // #help // #{inspect Moment.now}"
     
     {:noreply, agent}
   end

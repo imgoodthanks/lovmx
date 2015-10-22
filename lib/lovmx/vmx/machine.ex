@@ -11,7 +11,7 @@ defmodule Machine do
   use GenServer
   import Kind
   
-  @doc "Machine"  
+  @doc "Machine"
   def boot(data = %Data{}) do
     link = {:ok, machine} = Machine.start_link(data)
     #Logger.debug "Machine.boot // #{inspect machine} // #{inspect data}"

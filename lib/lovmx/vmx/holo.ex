@@ -33,7 +33,12 @@ defmodule Holo do
   def space(holospace, secret \\ nil) when is_atom(holospace) or is_binary(holospace) do
     GenServer.call HoloServer, {Kind.pull, holospace, secret}
   end
-    
+  
+  @doc "Use `Holo.list <holospace>` to return a [list] of things at `holospace`."
+  def list(holospace \\ "/", secret \\ nil) when is_atom(holospace) or is_binary(holospace) do
+    GenServer.call HoloServer, {Kind.list, holospace, secret}
+  end
+
   @doc "Give `data` a new home at `process`."    
   def home(data = %Data{}, process) when is_pid(process) do
     # # say goodbye
@@ -66,7 +71,7 @@ defmodule Holo do
   def share(data = %Data{}, holospace \\ nil, secret \\ nil, duration \\ Lovmx.long) do
     GenServer.call HoloServer, {Kind.push, data, holospace, secret, duration}
   end
-
+  
   @doc "WARNING: Destroy `holospace`. *thundering sounds*"
   def forget(holospace \\ nil, secret \\ nil) when is_atom(holospace) or is_binary(holospace) do
    # todo: return true if the thing has not spread to holospace
@@ -78,22 +83,36 @@ defmodule Holo do
   
   ## Callbacks
   
-  def handle_call({meta}, source, agent) do
+  def handle_call({:meta}, source, agent) do
     {:reply, Agent.get(agent, &(&1)), agent}
   end
-
-  def handle_call({pull, holospace, secret}, source, agent) do
+  
+  def handle_call({:list, holospace, secret}, source, agent) do
+    match = Agent.get(agent, &(&1))
+    |> Map.keys
+    |> Stream.filter(fn key -> key == holospace end)
+    |> Enum.to_list
+    |> List.wrap
+    
+    Logger.warn "Holo!list // #holospace // #{inspect match}"
+    
+    {:reply, match, agent}
+  end
+  
+  def handle_call({:pull, holospace, secret}, source, agent) do
     map = Agent.get(agent, &(&1))
     machine = Map.get(map, holospace)
     
-    if Process.alive? machine do
+    Logger.warn "Holo!pull // #holospace // #{inspect machine}"
+    
+    if is_pid machine do
       {:reply, Machine.compute(machine, holospace, secret), agent}
     else
       {:reply, Kind.drop, agent}
     end
   end
-  
-  def handle_call({push, data = %Data{}, holospace, secret, duration}, source, agent) do
+
+  def handle_call({:push, data = %Data{}, holospace, secret, duration}, source, agent) do
     # we need a namespace to share over..
     if is_nil holospace do
       holospace = data.keycode
@@ -118,19 +137,19 @@ defmodule Holo do
     # return the data
     {:reply, data, agent}
   end
-
-  def handle_cast({drop}, agent) do
+  
+  def handle_cast({:drop}, agent) do
     # TODO: Process.exit :kill all machines in holospace.
     
     # recreate holospace if that's what the wiz says we should do...
     :ok = Agent.update agent, fn x -> 
       Map.new
     end
-    Logger.info "Holo!drop // #dynamic // #{inspect Moment.now}"
+    Logger.info "Holo!drop // #holospace // #{inspect Moment.now}"
     
     {:noreply, agent}
   end
-  def handle_cast({drop, holospace, secret}, agent) do
+  def handle_cast({:drop, holospace, secret}, agent) do
     # get the map
     map = Agent.get(agent, &(&1))
     
@@ -145,7 +164,7 @@ defmodule Holo do
     
     {:noreply, agent}
   end
-
+  
   def start_link(_) do
     # An agent that we'll eventually pass around to the *all* the Holo servers...
     link = {:ok, agent} = Agent.start_link(fn -> Map.new end)

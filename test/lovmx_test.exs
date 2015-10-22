@@ -6,7 +6,15 @@ defmodule Lovmx.Test do
   use Magic
   
   ## Examples
-
+  
+  # test "Use `Lovmx` to share code + data in Holospace." do
+  #   key = Lovmx.keycode
+  #   data = Data.new key
+  #
+  #
+  #   assert is_pid Holo.home(data, machine).home
+  # end
+  
   test "Use Lovmx to Cake from Cake.kit.", do:
 		assert is_binary "README.magic" |> Tube.read
     

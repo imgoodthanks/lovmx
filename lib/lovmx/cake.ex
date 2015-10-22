@@ -22,16 +22,16 @@ defmodule Kind do
   """
   
   ## Flow Controls
+  def drop, do: :drop # nil/nada/noop/drop
   def boot, do: :boot # new/fresh
   def lock, do: :lock # lock/secret
-  def meta, do: :meta # meta/control  
+  def meta, do: :meta # meta/control
   def list, do: :list # show/head/etc
   def pull, do: :pull # pull/get/read 
   def code, do: :code # source/code
   def push, do: :push # push/once/post/update
-  def wait, do: :wait # promise/future
-  def drop, do: :drop # nil/nada/noop/drop
   def flow, do: :flow # run/exe/produce
+  def wait, do: :wait # promise/future  
   
   ## Data Prototypes
   def data, do: :json # object/data/json
@@ -134,7 +134,8 @@ defmodule Cake do
     #Logger.debug "Cake.magic3: #{inspect text} // #{inspect data}"
     
     # then flow it baby
-    Flow.into(cake, data, Kind.cake)
+    cake
+    |> Flow.into(data)
   end
   def magic(nada) when is_nil(nada) do
     # there is no magic here.. :(
@@ -150,12 +151,19 @@ defmodule Cake do
   #
   #   {data, Pipe.text(source)}
   # end
-  def x(data = %Data{}, signal, "list", path) do  
-    # get the list
-    list = Holo.space(path)
-    #Logger.debug "#list // #{inspect list}"
+  # def x(data = %Data{}, signal, "list", path) do
+  #   # get the list
+  #   list = Holo.space(path)
+  #   #Logger.debug "#list // #{inspect list}"
+  #
+  #   {Data.renew(data, list), Pipe.text(list)}
+  # end
+  def x(data = %Data{}, signal, "boot", opts) do
+    Logger.warn "#boot // #{inspect signal}  #{inspect opts}"
     
-    {Data.renew(data, list), Pipe.text(list)}
+    # todo: spawn(signal, code.to_existing_atom, [opts])
+    
+    {data, opts}
   end
   def x(data = %Data{}, signal, code, opts) do
     #Logger.debug "#signal // #{inspect signal } // #{inspect code} // #{inspect opts}"

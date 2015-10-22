@@ -5,7 +5,7 @@ defmodule Flow do
   @moduledoc """
   # Flow
   ## Actions/Events
-  ### Manage and Trigger Input(s)/Output(s) for Data.
+  ### Computable Input/Output for Data.
   
   A data flow is the basic layout of an `application` or are the 
   Modules you need to define and respond to the various other 
@@ -19,68 +19,60 @@ defmodule Flow do
     
   ## IN
   
-  @doc "Put `native` *INTO* `data.pull`."
-  def i(native, data = %Data{}, signal) do
-    into(native, data, signal)
+  @doc "Put `native` *INTO* `data.native`."
+  def i(native, data = %Data{}) do
+    into(native, data)
   end
-  def into(native, data = %Data{}, signal) do    
-    put_in(data.pull, Map.put(data.pull, signal, native))
+  def into(native, data = %Data{}) do
+    data
+    |> Data.renew(native)
     |> Holo.x
   end
     
-  @doc "Put everything at `holospace` *INTO* `data.pull`."
-  def pull(data = %Data{}, holospace, secret \\ nil) when is_atom(holospace) or is_binary(holospace) do    
-    # TODO: route the flow based on Kind.flow to spawn a Computer process
-    
+  @doc "Map `holospace` *INTO* `data.pull`."
+  def pull(data = %Data{}, holospace, secret \\ nil) when is_atom(holospace) or is_binary(holospace) do
     # embed that to the current player process.
     put_in(data.pull, Map.put(data.pull, holospace, Kind.boot))
     |> Holo.x(holospace, secret)
   end
   
-  @doc "Put `native` *INTO* `data.pull`."
-  def take(data = %Data{}, native, signal \\ nil, secret \\ nil) when is_atom(signal) or is_binary(signal) do
+  @doc "Put `native` *INTO* `data.pull` at `signal`."
+  def take(native, data = %Data{}, signal \\ nil, secret \\ nil) when is_atom(signal) or is_binary(signal) do
     #Logger.debug "Flow.take // #{data.keycode} // #{signal} // #{inspect native}"
-    
-    # TODO: update all data/bots that live at this holospace with our new `data`
-    # TODO: route the flow based on Kind.flow to spawn a Computer process
-    # embed that to the current player process.
-     
+
     put_in(data.pull, Map.put(data.pull, signal, native))
     |> Holo.x
   end
   
   @doc "Walk `holospace` and put into `data.pull`."
-  def walk(data, holospace \\ "/", lock \\ nil) when is_atom(holospace) or is_binary(holospace) do
+  def walk(data, holospace \\ "/", secret \\ nil) when is_atom(holospace) or is_binary(holospace) do
     #Logger.debug "Flow.push // #{holospace} // #{inspect data}"
-    
-    data = put_in data.home, lock
-    data = put_in data.kind, Data.new
-    data = put_in data.life, Lovmx.long
-    
-    pulls = Holo.space(holospace, lock)
+
+    list = Holo.space(holospace, secret)
   
-    unless Enum.empty? pulls do
-      data = List.first Enum.map pulls, fn path ->
-        data = Flow.pull(data, path, lock)
+    unless Enum.empty? list do
+      data = List.first Enum.map list, fn path ->
+        data = Flow.pull(data, path, secret)
       end
     end
     
     # flow it babe
-    Holo.x data, holospace, lock
+    Holo.x data, holospace, secret
   end
     
   ## OUT
   
   @doc "From `data` *to* `machine` or `holospace` in the *BACKGROUND*."
   def push(data = %Data{}, holospace, secret \\ nil) do
-    put_in data.push, Map.put(data.push, holospace, Kind.push)
+    put_in(data.push, Map.put(data.push, holospace, Kind.push))
     |> Holo.x(holospace, secret)
   end
   
-  @doc "From `data` *to* `machine` or `holospace` and *WAIT*."
-  def wait(data = %Data{}, holospace, secret \\ nil) do
-    put_in(data.push, Map.put(data.push, holospace, Kind.wait))
-    |> Holo.x(holospace, secret)
-  end
+  # @doc "From `data` *to* `machine` or `holospace` and *WAIT*."
+  # def wait(data = %Data{}, holospace, secret \\ nil) do
+  #   # todo: call/receive for a data/signal from `holospace`
+  #   put_in(data.push, Map.put(data.push, holospace, Kind.wait))
+  #   |> Holo.x(holospace, secret)
+  # end
   
 end

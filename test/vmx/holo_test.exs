@@ -4,12 +4,17 @@ defmodule Holo.Test do
   test "Use `Holo.space` to get a map of everything.", do: 
     assert is_map Holo.space
 
-  test "Use `Holo.space` to get a map of everything.", do: 
-    assert is_list Holo.space "lol"
+  # test "Use `Holo.space` to get specific maps of <holospace>.", do:
+  #   assert is_list Holo.space "lol"
       
-  test "Use `Holo.space` to get a map of everything.", do: 
-    assert is_list Holo.space "img"
-        
+  test "Use `Holo.space` to map or drop everything at <holospace>." do
+    data = Holo.share Data.new, "whoa"
+    assert data = Holo.space "whoa"
+  end
+  
+  test "Use `Holo.list` to get a list of everything.", do: 
+    assert is_list Holo.list
+    
   test "Use `Holo.home` to add a help message." do
     data = Data.new
     machine = Machine.boot data

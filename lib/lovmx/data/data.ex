@@ -4,23 +4,25 @@ defmodule Data do
   
   @moduledoc """
   # Data
-  ## Data Tree of Life.
+  ## Tree of Life.
   
   Data is both a particle (module) *and* a wave (capture/flow). 
   Data changes, thats the secret. We create Data and we *change* 
   Data.
   
-  There are sixteen basic datas in the whole everything. 
+  There are sixteen basic datas in the whole everything. See `cake.ex`
+  and `Kind` for more info on data types.
   
-  In force, LovMx tries to apply a Data-first then It Rocks. test.
-  Next and we try for functional, reactive, and monadic-like approaches. 
-  We try to keep each module as focused and DRY as possible at the
-  highest abstraction and resemblance to natural language that we can,
-  while also still trying to make nice bits and bytes for the computers.
+  In force, LovMx always tries to apply a Data-first design. Then 
+  we try to meet the functional, reactive, and monadic-like approaches,
+  and try to keep each module as focused and DRY as possible at the
+  highest abstraction and resemblance to natural language that we can.
+
+  Then we try to make the compsci bits nice for the Machines.
   
   Our `use Magic` include and `use OrbitalMagic` simply combine
-  as much of of the Custom API we can to Flow Based Programming in 
-  Elixir. 
+  as many of our custom APIs as we can fit onto generic Flow Based 
+  Programming in Elixir. 
   
   #note: Our data/flow struct size is pretty big but we can make it
   fast and imagine lots of easy behind the scenes struct mutations and
@@ -98,7 +100,7 @@ defmodule Data do
     
     data.native
   end
-    
+  
   @doc "Readme first."
   def help(data = %Data{}, message) do
     put_in(data.help, Enum.concat(data.help, [message]))

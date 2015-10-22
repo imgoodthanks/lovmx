@@ -36,7 +36,7 @@ defmodule Pipe do
     # build page/results
     page = Enum.join([
       Cake.kit("html/header.html"),
-      html(Cake.magic(data)),
+      html(data.native),
       Cake.kit("html/footer.html"),
     ])
     

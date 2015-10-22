@@ -16,7 +16,7 @@ defmodule Tube.Test do
   
     assert File.exists?(webpath) and File.dir?(webpath)
     assert File.exists? Path.join [webpath, "#{Kind.boot}"]
-    #assert true == File.exists? Path.join [webpath, "data"]
+    #assert true == File.exists? Path.join [webpath, "term"]
     #assert true == File.exists? Path.join [webpath, "text"]
     #assert true == File.exists? Path.join [botpath, "json"]
     #assert true == File.exists? Path.join [botpath, "html"]
@@ -27,5 +27,8 @@ defmodule Tube.Test do
     
     assert File.exists? Lovmx.root Lovmx.web "test"
   end
+  
+  # # test "Bridge.pull to get `webspace` pages.",
+  # # do: IT.assert_web_page Tube.get(IT.web)
   
 end
