@@ -4,7 +4,7 @@ defmodule Data.Test do
   ## Examples
   
   test "Use `Data.new` to create and then `Data.renew` to update `data`", do:
-		%Data{native: "lol", roll: [%Data{native: nil}]} = Data.new |> Data.renew "lol"
+		%Data{native: "yep"} = Data.new("nada") |> Data.renew "yep"
     
   ## APIs
 
@@ -23,9 +23,33 @@ defmodule Data.Test do
   test "Use `Data.meta(data, signal)` to control the data.", do:
 		assert %Data{meta: %{"signal" => "lol"}} = Data.meta Data.new, "signal", "lol"
 
-  test "Use `Data.tick` to pull *all* of holospace for updates to `data`.", do:
-		assert %Data{} = Data.tick Data.new
-
+  test "Use `Data.address(data, signal)` to get a specific Data version string." do
+		data = Data.new
+    |> Data.tick
+    
+    assert Lovmx.path [data, "#{0}"] == Data.address(data)
+  end
+  
+  test "Use `Data.address(data, tick: previous)` to get a specific Data version string." do
+		data = Data.new
+    |> Data.tick
+    
+    assert Lovmx.path [data, "#{0}"] == Data.address(data, tick: :back)
+  end
+  
+  # test "Use `Data.tick` and `Data.roll` to play other versions of `data`." do
+  #   first = data = Data.new("one")
+  #   assert %Data{roll: []} = data
+  #
+  #   # bump the data
+  #   data = Data.tick(data)
+  #   # get the new version
+  #   version = Data.address(data, tick: :back)
+  #   assert version in data.roll
+  #
+  #   assert first = Data.roll(data, tick: :back)
+  # end
+  
   test "Use `Data.path` to pull *all* of holospace for updates to `data`.", do:
 		assert is_nil Data.path Data.new, "lol"
 

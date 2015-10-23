@@ -11,7 +11,6 @@ require Logger
 |> share # send it into holospace
 
 
-#
 # # LovMx + ILvMx.
 # ## Welcome to Holospace.
 # ### Orbital Magic for Cloud Apps.
@@ -165,14 +164,14 @@ require Logger
 # |> Flow.i(Kind.magic, Pipe.down Holo.read "README.magic")
 # |> Flow.i(Kind.text, "checkout `Data#types` or just use custom data here to works"),
 # |> Flow.i(Kind.html, Holo.compile)
-# |> Flow.i(Kind.code, Bot.code do
+# |> Flow.i(Kind.code, Data.code do
 #   bot
 #   |> Flow.r("#pipe a magic down (markdown+) like file at `data.pull.magic`")
 #   |> Bot.pull(Kind.html, Pipe.down)
 # end
 # |> Flow.r("#text", "ok see how it works? create data, then change it..")
 # |> Flow.r("#text", "now we need to Pipe the `data` flow somewhere in order to process it")
-# |> Flow.i(Kind.code, Bot.code)
+# |> Flow.i(Kind.code, Data.code)
 # |> Flow.r("#text", "let's create a web page first")
 # |> Flow.o(Web.post)
 # |> Holo.x
@@ -207,7 +206,7 @@ require Logger
 # # Creating stuff in memory only.
 #
 # fn bot -> Holo.compile "https://reddit.com/r/#{bot.pull.uri}" end
-# |> Bot.code
+# |> Data.code
 # |> Holo.x
 # |> Holo.x "whateverpath", "whateverpassword"
 #

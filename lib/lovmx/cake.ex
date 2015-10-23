@@ -22,6 +22,7 @@ defmodule Kind do
   """
   
   ## Flow Controls
+  def data, do: :json # object/data/json
   def drop, do: :drop # nil/nada/noop/drop
   def boot, do: :boot # new/fresh
   def lock, do: :lock # lock/secret
@@ -34,12 +35,11 @@ defmodule Kind do
   def wait, do: :wait # promise/future  
   
   ## Data Prototypes
-  def data, do: :json # object/data/json
   def text, do: :text # binary/text
   def link, do: :link # a path/URI/link
   def html, do: :html # an html snippet
   def blob, do: :blob # static/binary
-  def cake, do: :cake # cake/magic 
+  def cake, do: :cake # cake/magic
   ## ^^^ cake is first class ^^^ 
   
   ## Exception
@@ -146,7 +146,7 @@ defmodule Cake do
   # def x(data = %Data{}, signal, "code", source) do
   #   #Logger.debug "#path // #{inspect signal} // #{inspect data}"
   #
-  #   data = Bot.code(data, source)
+  #   data = Data.code(data, source)
   #   #Logger.debug "#code // #{inspect source }"
   #
   #   {data, Pipe.text(source)}
@@ -196,9 +196,15 @@ defmodule Magic do
       
       Code.ensure_loaded Tube
       import Tube
-
+      
+      Code.ensure_loaded Machine
+      import Machine
+      
       Code.ensure_loaded Cake
       import Cake
+      
+      require Logger
+      
     end
   end
   

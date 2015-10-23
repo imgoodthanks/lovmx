@@ -22,7 +22,7 @@ defmodule Lovmx.Test do
   # do: assert Regex.match? ~r/magic/i, inspect Lovmx.help
   
   # test "Does cool stuff",
-  # do: assert %Data{} = "#yolo" |> new |> Bot.code(fn data -> Data.renew data, Cake.magic(data.native) end) |> boot |> compute
+  # do: assert %Data{} = "#yolo" |> new |> Data.code(fn data -> Data.renew data, Cake.magic(data.native) end) |> boot |> compute
   #
   ## Boring API
 

@@ -54,27 +54,8 @@ defmodule Bot do
     GenServer.call data.home, {:pull, holospace, secret, duration}
   end
   
-  def code(function) when is_function(function) do
-    code Data.new, function
-  end
-  def code(data = %Data{}, function) when is_function(function) do
-    # todo: better update meta
-    Data.tick put_in(data.code, Enum.concat(data.code, [function]))
-  end
-  def code(block = [do: _]) do
-    code Data.new, block
-  end
-  def code(data = %Data{}, block = [do: _]) do
-    code data, fn data ->
-      block
-    end
-  end
-  def code(data = %Data{home: machine}, holospace \\ nil, secret \\ nil, duration \\ nil) when is_pid(machine) do
-    GenServer.call data.home, {:code, holospace, secret, duration}
-  end
-  
   def push(data = %Data{home: machine}, holospace \\ nil, secret \\ nil, duration \\ nil) when is_pid(machine) do
-    GenServer.call data.home, {:flow, holospace, secret, duration}
+    GenServer.call data.home, {:flow, secret, duration}
   end
   
   def flow(data = %Data{home: machine}, holospace \\ nil, secret \\ nil, duration \\ nil) when is_pid(machine) do

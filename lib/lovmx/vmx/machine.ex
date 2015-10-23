@@ -15,143 +15,120 @@ defmodule Machine do
   def boot(data = %Data{}) do
     link = {:ok, machine} = Machine.start_link(data)
     #Logger.debug "Machine.boot // #{inspect machine} // #{inspect data}"
-    # data = put_in data.home, machine
     
     machine
   end
   
-  @doc "Restart Machine w/ new Data."
-  def reboot(data = %Data{}, native) do
-    # save a rollback version
-    data = Data.tick(data)
-    #update internal data
-    data = put_in(data.native, native)
-
-    data
+  @doc "Machine"
+  def compute(machine, secret \\ nil, duration \\ Lovmx.tock) when is_pid(machine) do
+    GenServer.call machine, {flow, secret, duration}
   end
-    
-  @doc "Use `Holo.x` to `Holo.x` data in the BACKGROUND."  
-  def x(machine) when is_pid(machine) do
-    # refresh *all* things + re-ping machine(s)
-    Task.async fn -> Holo.share(data) end
-    
-    data
-  end
-  def compute(machine) when is_pid(machine) do
-    GenServer.call machine, {flow, nil, nil, Lovmx.tock}
-  end
-  def compute(machine, holospace, secret \\ nil, duration \\ Lovmx.tock) when is_pid(machine) do
-    GenServer.call machine, {flow, holospace, secret, duration}
-  end
-  def compute(nada, _, _, _) when is_nil(nada) do
+  def compute(nada, _, _) when is_nil(nada) do
     # TODO: log a Kind.drop w/ the wiz
     
     nil
   end
   
   ## Callbacks
-  
-  # Listen for replies to various signal `Kind`s. See `cake.ex` to learn more
-  # about Machine Magic and how it works.
-  
-  def handle_call({boot, holospace, secret, duration}, source, agent) do
-    {:reply, Agent.get(agent, &(&1)), agent}
-  end
-  
-  def handle_call({lock, holospace, secret, duration}, source, agent) do
-    # TODO: globally capture this holospace as ours
-    
-    {:reply, Agent.get(agent, &(&1)), agent}
-  end
-  
-  def handle_call({meta, signal, effect}, source, agent) do
-    :ok = Agent.update agent, fn data -> 
-      Data.meta(data, signal, effect)
-    end
-    
-    {:reply, Agent.get(agent, &(&1)), agent}
-  end
 
-  def handle_call({list, holospace, secret, duration}, source, agent) do
-    data = Agent.get(agent, &(&1))
-    
-    {:reply, data.native, agent}
-  end
-
-  def handle_call({pull, holospace, secret, duration}, source, agent) do
-    :ok = Agent.update agent, fn data -> 
-      data = Enum.map data.pull, fn {signal, message} -> 
-        Flow.pull(data, signal)
-      end |> List.first
-    end
-    
-    {:reply, Agent.get(agent, &(&1)), agent}
-  end
-  
-  def handle_call({code, holospace, secret, duration}, source, agent) do
-    {:reply, Agent.get(agent, &(&1)).code, agent}
-  end
-  
-  def handle_call({push, holospace, secret, duration}, source, agent) do
-    :ok = Agent.update agent, fn data -> 
-      Enum.each data.push, fn signal -> 
-        Flow.push(data, signal)
-      end
-      
-      data
-    end
-    
-    {:reply, Agent.get(agent, &(&1)), agent}
-  end
-  
-  def handle_call({wait, holospace, secret, duration}, source, agent) do
-    {:reply, Agent.get(agent, &(&1)), agent}
-  end
-  
-  def handle_call({drop, holospace, secret, duration}, source, agent) do
-    # spawn a task and forget it
-    
-    {:reply, Agent.get(agent, &(&1)), agent}
-  end
-  
-  def handle_call({flow, holospace, secret, duration}, source, agent) do
+  def handle_call({flow, secret, duration}, source, agent) do
     # Init + Compile + Exe a full Data/Flow..
-    # pull our data
-    data = Agent.get(agent, &(&1))
+    data = Agent.get agent, &(&1)
     
-    # pull data in...
-    unless %{} == data.pull do
-      data = (Enum.map data.pull, fn {key, value} ->
-        case key do
-          # put in static/atomic data via a straight data.pull -> `value`
-          key when is_atom(key)    -> data = put_in data.pull, value
-          # put in dynamic/holospace data via a Machine.data
-          key when is_binary(key)  -> data = put_in data.pull, Map.put(data.pull, key, "#todo")
-        end
-      end) |> List.first
-    end
-    #Logger.debug "... // #{inspect data}"
+    # PULL: Data.pull things into here
+    {_, pull_list} = Enum.map_reduce data.pull, Map.new, fn {key, value}, current ->
+      Logger.debug ">>> // #{inspect key} // #{inspect value} // #{inspect current}"    
+      case {key, value} do
+        # put in static/atomic data via a straight data.pull -> `value`
+        {key, value} when is_atom(key) and is_atom(value) ->
+          {key, value}
 
-    # ...exe code/effects...
-    Enum.map data.code, fn x ->
-      Lovmx.thaw(x).(data)
+        # put in dynamic/holospace data via a Holo.space
+        {key, value} when is_atom(key) or is_binary(key) ->
+          {key, Holo.space(key)}
+
+        # TODO: better support here
+        _ -> 
+          {key, Kind.drop}
+      end
     end
-    #Logger.debug "... // #{inspect data}"
-    #Machine.compute(data)
+    Logger.debug "PULL>LIST // #{inspect pull_list}"    
     
-    # # ...push data out.
-    # Enum.map data.push, fn {key, value} ->
-    #   put_in data.push, Map.put(data.push, key, Data.push)
+    # # COMPUTE: exe Data.code and effects
+    # Enum.map data.code, fn x ->
+    #   Lovmx.thaw(x).(data)
     # end
     #
-    # # update the data.kind from :boot (do something) to :flow (wait or stream)
-    # #data = Flow.meta data, Data.flow
-    
-    # update map/space
-    :ok = Agent.update agent, fn data -> data end
-    
-    {:reply, Agent.get(agent, &(&1)), agent}
+    # # update map/space
+    # :ok = Agent.update agent, fn data -> data end
+
+    {:reply, data, agent}
   end
+  
+#   # Listen for replies to various signal `Kind`s. See `cake.ex` to learn more
+#   # about Machine Magic and how it works.
+#
+#   def handle_call({boot, holospace, secret, duration}, source, agent) do
+#     {:reply, Agent.get(agent, &(&1)), agent}
+#   end
+#
+#   def handle_call({lock, holospace, secret, duration}, source, agent) do
+#     # TODO: globally capture this holospace as ours
+#
+#     {:reply, Agent.get(agent, &(&1)), agent}
+#   end
+#
+#   def handle_call({meta, signal, effect}, source, agent) do
+#     :ok = Agent.update agent, fn data ->
+#       Data.meta(data, signal, effect)
+#     end
+#
+#     {:reply, Agent.get(agent, &(&1)), agent}
+#   end
+#
+#   def handle_call({list, holospace, secret, duration}, source, agent) do
+#     data = Agent.get(agent, &(&1))
+#
+#     {:reply, data.native, agent}
+#   end
+#
+#   def handle_call({pull, holospace, secret, duration}, source, agent) do
+#     :ok = Agent.update agent, fn data ->
+#       data = Enum.map data.pull, fn {signal, message} ->
+#         Flow.pull(data, signal)
+#       end |> List.first
+#     end
+#
+#     {:reply, Agent.get(agent, &(&1)), agent}
+#   end
+#
+#   def handle_call({code, holospace, secret, duration}, source, agent) do
+#     {:reply, Agent.get(agent, &(&1)).code, agent}
+#   end
+#
+#   def handle_call({push, holospace, secret, duration}, source, agent) do
+#     :ok = Agent.update agent, fn data ->
+#       Enum.each data.push, fn signal ->
+#         Flow.push(data, signal)
+#       end
+#
+#       data
+#     end
+#
+#     {:reply, Agent.get(agent, &(&1)), agent}
+#   end
+#
+#   def handle_call({wait, holospace, secret, duration}, source, agent) do
+#     {:reply, Agent.get(agent, &(&1)), agent}
+#   end
+#
+#   def handle_call({drop, holospace, secret, duration}, source, agent) do
+#     # spawn a task and forget it
+#
+#     {:reply, Agent.get(agent, &(&1)), agent}
+#   end
+#
+
 
     
   @doc "Machine"  
@@ -163,6 +140,11 @@ defmodule Machine do
     
     link = {:ok, machine} = GenServer.start_link(Machine, agent, debug: [])
     #Logger.debug "Machine.start_link #{data.keycode}"
+    
+    # update the data to include our Machine home
+    :ok = Agent.update agent, fn data -> 
+      Holo.home data, machine 
+    end
     
     link
   end

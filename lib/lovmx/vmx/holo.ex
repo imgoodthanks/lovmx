@@ -23,7 +23,7 @@ defmodule Holo do
   import Kind
   
   ## Holospace (internet readable static/dynamic storage)
-
+  
   @doc "Use `Holo.space` to return *everything* in Holospace share."
   def space do
     GenServer.call HoloServer, {Kind.meta}
@@ -34,11 +34,16 @@ defmodule Holo do
     GenServer.call HoloServer, {Kind.pull, holospace, secret}
   end
   
+  # @doc "Use `Holo.data <signal>` to return *ALL* `<data>.native` at `holospace`."
+  # def data(machine, secret \\ nil, duration \\ Lovmx.tock) when is_pid(machine) do
+  #   compute machine, secret, duration
+  # end
+  
   @doc "Use `Holo.list <holospace>` to return a [list] of things at `holospace`."
   def list(holospace \\ "/", secret \\ nil) when is_atom(holospace) or is_binary(holospace) do
     GenServer.call HoloServer, {Kind.list, holospace, secret}
   end
-
+  
   @doc "Give `data` a new home at `process`."    
   def home(data = %Data{}, process) when is_pid(process) do
     # # say goodbye
@@ -62,9 +67,9 @@ defmodule Holo do
   
   @doc "Use `Holo.x` and `Holo.share` to start a `Machine` at `holospace` with `data`."
   def x(data = %Data{}, _holospace \\ nil, _secret \\ nil) do
-    Task.async fn -> 
-      Holo.share(data)
-    end
+    # Task.async fn ->
+    #   Holo.share(data)
+    # end
     
     data
   end
@@ -101,14 +106,15 @@ defmodule Holo do
   
   def handle_call({:pull, holospace, secret}, source, agent) do
     map = Agent.get(agent, &(&1))
-    machine = Map.get(map, holospace)
+    thing = Map.get(map, holospace)
     
-    Logger.warn "Holo!pull // #holospace // #{inspect machine}"
+    Logger.debug "Holo!pull // #holospace // #{inspect thing}"
     
-    if is_pid machine do
-      {:reply, Machine.compute(machine, holospace, secret), agent}
-    else
-      {:reply, Kind.drop, agent}
+    case thing do
+      thing when is_pid(thing) ->
+        {:reply, Machine.compute(thing), agent}
+      _ -> 
+        {:reply, thing, agent}
     end
   end
 
@@ -121,11 +127,10 @@ defmodule Holo do
     # only start a machine if the data has no other home
     if is_nil data.home do
       machine = Machine.boot(data)
-      data = put_in data.home, machine
     end
     
     # compile data in a second level Machine process
-    data = Machine.compute(machine, holospace, secret, duration)
+    data = Machine.compute(machine, secret, duration)
     
     # update map/space
     :ok = Agent.update agent, fn map ->

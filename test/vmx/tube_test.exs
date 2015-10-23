@@ -2,7 +2,7 @@ defmodule Tube.Test do
   use ExUnit.Case
 
 
-  test "Tube.get returns a [list] of Blobs.", do:
+  test "Use `Tube.get` to return a [list] of things at `holospace`.", do:
 		assert is_list Tube.get "img"
 
   test "Use `Tube.read` to list directories", do:
@@ -12,7 +12,7 @@ defmodule Tube.Test do
     data = Tube.save Data.new("machine")
   
     # check botpath
-    webpath = Lovmx.root Lovmx.web data.keycode
+    webpath = Lovmx.root Lovmx.web Data.address(data)
   
     assert File.exists?(webpath) and File.dir?(webpath)
     assert File.exists? Path.join [webpath, "#{Kind.boot}"]
@@ -27,8 +27,5 @@ defmodule Tube.Test do
     
     assert File.exists? Lovmx.root Lovmx.web "test"
   end
-  
-  # # test "Bridge.pull to get `webspace` pages.",
-  # # do: IT.assert_web_page Tube.get(IT.web)
-  
+
 end

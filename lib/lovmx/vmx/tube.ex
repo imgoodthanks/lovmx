@@ -42,7 +42,7 @@ defmodule Tube do
     # build the path
     root = Lovmx.project path
 
-    #Logger.debug "Tube.read: #{root}"
+    Logger.debug "Tube.read: #{root}"
 
     # either read the file, or list the dir
     if File.exists? root do
@@ -75,7 +75,7 @@ defmodule Tube do
     
     # writing to data's home, or holospace?
     if is_nil holospace do
-      holospace = data.keycode
+      holospace = Data.address data
     end
     path = Lovmx.path [holospace, Kind.boot]
     
@@ -100,7 +100,7 @@ defmodule Tube do
   end
   
   # @doc "Write raw `native` data to the root of the Multiverse / Unix file system."
-  # def multi(native, aboslute, secret)
+  # def orbit(native, aboslute, secret)
   
   def start_link(_) do
     # An agent that we'll eventually pass around to the *all* the Holo servers...
