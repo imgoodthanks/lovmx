@@ -5,11 +5,43 @@ defmodule Pipe.Test do
 
   ## Data
   
-  test "Pipe.page bot creates a page from [list]", do:
+  test "Pipe.magic bot creates a page from %Data{}", do:
+		assert is_binary Pipe.page Data.new("# yo"), "yo"
+    
+    
+  test "Pipe.page bot creates a page from %Data{}", do:
 		assert is_binary Pipe.page ["lol", "nub"]
+    
+  test "Pipe.page bot creates a page from %Data{} at `holospace`", do:
+		assert is_binary Pipe.page Data.new
+
+  test "Pipe.page bot creates a page from [list]", do:
+    assert is_binary Pipe.page ["lol", "nub"]
+
+  test "Pipe.page bot creates a page from []", do:
+    assert is_binary Pipe.page []
+
+  test "Pipe.page bot creates a page", do:
+    assert is_binary Pipe.page
+
+  test "Pipe.page bot creates a page from a Map %{}", do:
+    assert is_binary Pipe.page Map.new
 
   test "Pipe.page bot creates a page from binary", do:
-		assert is_binary Pipe.page "lol"
+    assert is_binary Pipe.page "lol"
+
+  test "Pipe.page bot creates a page from any `thing`", do:
+    assert is_binary Pipe.page HashDict.new
+
+
+  test "Pipe.html bot returns HTML from [list]", do:
+    assert is_binary Pipe.html Data.new, "about"
+
+  test "Pipe.html bot returns HTML from [list]", do:
+    assert is_binary Pipe.html Data.new(nil, Kind.link), "about"
+    
+  test "Pipe.html bot returns HTML from [list]", do:
+    assert is_binary Pipe.html ["lol", "nub"]
 
   test "Pipe.html bot returns HTML from [list]", do:
 		assert is_binary Pipe.html ["lol", "nub"]
@@ -23,17 +55,43 @@ defmodule Pipe.Test do
   test "Pipe.html bot returns HTML from a PID", do:
 		assert is_binary Pipe.html self
 
+
   test "Pipe.down returns HTML from binary", do:
 		assert is_binary Pipe.down "lol"
 
-  test "Pipe.json returns JSON for lists", do:
-		assert is_binary Pipe.json Data.new
+
+  test "Pipe.json returns JSON from lists", do:
+		assert is_binary Pipe.json [Data.new]
+
+  test "Pipe.json returns JSON for `thing`", do:
+    assert is_binary Pipe.json HashDict.new
+
+
+  test "Pipe.text bot returns text for empty list", do:
+		assert is_binary Pipe.text []
+
+  test "Pipe.text bot returns text for [data]", do:
+    assert is_binary Pipe.text [Data.new]
+
+  test "Pipe.text bot returns text for Data links", do:
+    assert is_binary Pipe.text Data.new(nil, Kind.link)
+
+  test "Pipe.text bot returns text for Data", do:
+    assert is_binary Pipe.text Data.new
+
+  test "Pipe.text bot returns text for binary", do:
+    assert is_binary Pipe.text "lol"
+
+  test "Pipe.text bot returns text for atoms", do:
+    assert is_binary Pipe.text :lol
 
   test "Pipe.text bot returns text", do:
-		assert is_binary Pipe.text Data.new
+    assert is_binary Pipe.text HashDict.new
 
+                      
   test "Pipe.drop(data, signal) controls a flow.", do:
 		assert is_nil Pipe.drop Data.new
+
 
   test "Pipe.debug bot returns text", do:
 		assert is_binary Pipe.text Data.new

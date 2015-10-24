@@ -40,6 +40,7 @@ defmodule Lovmx.Mixfile do
       :webassembly,
       :maru,
       :moment,
+      :monadex,
     ]]
   end
 
@@ -53,27 +54,31 @@ defmodule Lovmx.Mixfile do
   #
   # Type `mix help deps` for more examples and options
   defp deps do
-    [ {:uuid,         "~> 1.0", override: false}, 
-      {:cowboy,       [hex_app: :cowboy]},
-      {:plug,         [optional: false, hex: :plug]},
-      {:ibrowse,      github: "cmullaparthi/ibrowse", tag: "v4.1.2"},
-      {:httpotion,    "~> 2.1.0"},
-      {:mongodb_ecto, "~> 0.1"},
-      {:ecto,         "~> 1.0"},
-      {:poison,       hex: :poison, override: false},
-      {:webassembly,  "~> 0.5.0"},
-      {:maru,         "~> 0.8"},
-      {:moment,       github: "atabary/moment"},
-      {:pretty_hex,   github: "polsab/pretty_hex"},
-      {:cmark,        hex: :cmark},
+    [ {:uuid,             "~> 1.0", override: false}, 
+      {:cowboy,           [hex_app: :cowboy]},
+      {:plug,             [optional: false, hex: :plug]},
+      {:ibrowse,          github: "cmullaparthi/ibrowse", tag: "v4.1.2"},
+      {:httpotion,        "~> 2.1.0"},
+      {:mongodb_ecto,     "~> 0.1"},
+      {:ecto,             "~> 1.0"},
+      {:poison,           hex: :poison, override: false},
+      {:webassembly,      "~> 0.5.0"},
+      {:maru,             "~> 0.8"},
+      {:moment,           github: "atabary/moment"},
+      {:pretty_hex,       github: "polsab/pretty_hex"},
+      {:cmark,            hex: :cmark},
+                          
+      {:connection,       "1.0.0-rc.1", [optional: false, hex: :connection]},
+      {:socket,           github: "meh/elixir-socket"},
+      {:monadex,          github: "rob-brown/MonadEx"},
+      {:cuid,             "~> 0.1.0"},
+      {:blocking_queue,   github: "joekain/BlockingQueue"},
       
+      {:excoveralls,  "~> 0.3",     only: [:dev, :test]},
       # {:exrm,         "~> 0.19.6"},
       # {:earmark,      ">= 0.0.0",   only: [:dev, :test]},
       # {:ex_doc,       ">= 0.0.0",   only: :dev},
-      {:excoveralls,  "~> 0.3",     only: [:dev, :test]},
       # {:dialyze,      "~> 0.2.0"},
-      # {:socket,       github: "meh/elixir-socket"},
-      # {:connection,   "1.0.0-rc.1", [optional: false, hex: :connection]},
       # {:fleet_api,    github: "jordan0day/fleet-api"},
     ]
   end

@@ -32,7 +32,7 @@ defmodule Pipe do
   def page(data = %Data{}) do
     page data, data.keycode
   end
-  def page(data = %Data{}, holospace, secret \\ nil) do  
+  def page(data = %Data{}, holospace, secret \\ nil) do
     # build page/results
     page = Enum.join([
       Cake.kit("html/header.html"),
@@ -71,8 +71,8 @@ defmodule Pipe do
       Cake.kit("html/footer.html"),
     ])
   end
-  def page(data) do
-    page(inspect data)
+  def page(thing) do
+    page(inspect thing)
   end
   
   @doc "Create HTML snippets."
@@ -95,7 +95,6 @@ defmodule Pipe do
       text(data)
     end
   end
-
   def html(things, holospace, secret) when is_list(things) do
     Enum.join Enum.map things, &(html &1, holospace, secret)
   end
@@ -118,9 +117,6 @@ defmodule Pipe do
   def json(effects) do
     Poison.encode!([inspect(effects)])
   end
-  def json do
-    json "#nada: #{inspect self}"
-  end
   
   @doc "Render args as debug/text."
   def text([]) do
@@ -142,49 +138,40 @@ defmodule Pipe do
     PrettyHex.pretty_hex data.home
   end
   def text(data) when is_atom(data) or is_binary(data) do
-    data
-  end
-  def text(data) do
-    PrettyHex.pretty_hex inspect data
-  end
-  @doc "Render args as debug/text."
-  def text([]) do
-"""
-```
-[]
-```
-"""
-  end
-  def text(things) when is_list(things) do
-    Enum.join Enum.map things, &(text &1)
+    """
+    ```
+    #data:
+    #{data}
+    ```
+    """
   end
   def text(data = %Data{}) do
-"""
-```
-#warp // <a href='warp/#{data.tick}/#{data.keycode}' class='automagic'>#{data.keycode}</a>
+    """
+    ```
+    #warp // <a href='warp/#{data.tick}/#{data.keycode}' class='automagic'>#{data.keycode}</a>
 
-#tick // #{data.tick}
+    #tick // #{data.tick}
 
-#help // #{data.help}
+    #help // #{data.help}
 
-#meta // #{inspect data.meta}
+    #meta // #{inspect data.meta}
 
-#boom // #{inspect data.boom}
+    #boom // #{inspect data.boom}
 
-#data // #{inspect data.thing}
+    #data // #{inspect data.thing}
 
-#code // #{inspect length(data.code)} codes
+    #code // #{inspect length(data.code)} codes
 
-```
-"""
+    ```
+    """
   end
   def text(data) do
-"""
-```
-#data:
-#{inspect data}
-```
-"""
+    """
+    ```
+    #data:
+    #{inspect PrettyHex.pretty_hex inspect data}
+    ```
+    """
   end
   
   @doc "Drop `data` to /dev/null."

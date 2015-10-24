@@ -1,4 +1,4 @@
-defmodule Mix.Test do 
+defmodule Platform.Test do 
   use ExUnit.Case
   
   test ":help returned by option parsing with -h and --help options" do

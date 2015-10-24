@@ -128,8 +128,6 @@ defmodule Machine do
 #     {:reply, Agent.get(agent, &(&1)), agent}
 #   end
 #
-
-
     
   @doc "Machine"  
   def start_link(data = %Data{}) do
