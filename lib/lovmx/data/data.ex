@@ -49,7 +49,7 @@ defmodule Data do
     pull: %{},    # *startup* input (aka ROM)
     code: [],     # [functions] current program
     push: %{},    # *output* ports  (aka Post)
-    native: nil,  # *computed* data (aka CPU)
+    thing: nil,  # *computed* data (aka CPU)
     
     tick: 0,      # epoch/time/version
     roll: [],     # *previous* data (aka Backup)
@@ -60,25 +60,25 @@ defmodule Data do
 
   ## Creating Data - See `flow.ex` and `pipe.ex` for more about data flows.
   
-  @doc "Use `Data.new` to create new Data from native `real` data."
-  def new(native \\ nil, kind \\ Kind.boot, meta \\ %{}) do
+  @doc "Use `Data.new` to create new Data from thing `real` data."
+  def new(thing \\ nil, kind \\ Kind.boot, meta \\ %{}) do
     data = %Data{
         keycode: Help.path(["data", Help.keycode]),
            kind: kind,
            time: Moment.now,
            life: Help.long,
            meta: Map.merge(%{}, meta || %{}),
-         native: native
+         thing: thing
     }
     |> Holo.x
   end
   
-  @doc "Restart Data w/ new `native`."
-  def renew(data = %Data{}, native) do
+  @doc "Restart Data w/ new `thing`."
+  def renew(data = %Data{}, thing) do
     # save a rollback version
     data = Data.tick(data)
     #update internal data
-    data = put_in(data.native, native)
+    data = put_in(data.thing, thing)
 
     data
   end
@@ -124,11 +124,11 @@ defmodule Data do
     |> Holo.x
   end
   
-  @doc "Return *current* `data.native`."
-  def native(data = %Data{}) do
+  @doc "Return *current* `data.thing`."
+  def thing(data = %Data{}) do
     # todo: get the data from holo
     
-    data.native
+    data.thing
   end
     
   @doc "Return inside `data` at `path`."

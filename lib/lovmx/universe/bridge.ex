@@ -89,7 +89,7 @@ defmodule Bridge do
     else
       Logger.debug "Bridge.GET // #{holospace}"
       
-      resp conn, 200, Pipe.page Holo.space(holospace)
+      resp conn, 200, Pipe.page Holo.space
     end
   end
   
@@ -103,8 +103,8 @@ defmodule Bridge do
     path = Help.root Help.web [holospace]
 
     Logger.debug "Bridge.POST // #{holospace}"
-
-    resp conn, 200, Pipe.page Holo.space(holospace)
+    
+    resp conn, 200, Pipe.page Holo.share(conn, holospace)
   end
   
   @doc "Even the Universe misses things."

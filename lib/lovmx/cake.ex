@@ -255,7 +255,7 @@ defmodule Cake do
 
     # best effort the file..
     case Path.extname(path) do
-      ".exs"    -> {data, _} = Code.eval_file(path)        
+      ".exs"    -> {data, _} = Code.eval_file(path)
       ".eex"    -> EEx.eval_string Tube.read(path), assigns: []
       ".magic"  -> Tube.read(path) |> Cake.magic
       _ ->
@@ -274,31 +274,31 @@ defmodule Cake do
   def magic(text) when is_binary(text) do
     magic Data.new text
   end
-  def magic(data = %Data{native: text}) when is_binary(text) do
-    ##Logger.debug "Cake.magic: #{inspect text} // #{inspect data}"
+  def magic(data = %Data{thing: text}) when is_binary(text) do
+    Logger.warn "Cake.magic: #{inspect data.keycode}"
     
     # we are a superset of markdown, so mark it first..
     text = Pipe.down(text)
-    ##Logger.debug "Cake.magic2: #{inspect text} // #{inspect data}"
+    #Logger.debug "Cake.magic2: #{inspect text} // #{inspect data}"
     
-    # our magicdown regex.
-    match = ~r/[^|\s]{0,}\@([a-z0-9]{2,})\>\s([a-z0-9\#\%\?\s]{2,})/i
-
-    # compile Data + markup from original simple text
-    cake = Regex.replace match, text, fn(cap, code, opts) ->
-      {data, replace} = x(data, cap, code, opts)
-      
-      replace
-    end
-    #Logger.debug "Cake.magic3: #{inspect text} // #{inspect data}"
+    # # our magicdown regex.
+    # match = ~r/[^|\s]{0,}\@([a-z0-9]{2,})\>\s([a-z0-9\#\%\?\s]{2,})/i
+    #
+    # # compile Data + markup from original simple text
+    # cake = Regex.replace match, text, fn(cap, code, opts) ->
+    #   {data, replace} = x(data, cap, code, opts)
+    #
+    #   replace
+    # end
+    # Logger.debug "Cake.magic3: #{inspect text} // #{inspect data}"
     
     # then flow it baby
-    cake
-    |> Flow.into(data)
+    text 
+    |> Flow.into(data) 
   end
   def magic(nada) when is_nil(nada) do
     # there is no magic here.. :(
-    
+
     nil
   end
   

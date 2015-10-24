@@ -89,7 +89,7 @@ defmodule Machine do
 #   def handle_call({list, holospace, secret, duration}, source, agent) do
 #     data = Agent.get(agent, &(&1))
 #
-#     {:reply, data.native, agent}
+#     {:reply, data.thing, agent}
 #   end
 #
 #   def handle_call({pull, holospace, secret, duration}, source, agent) do
@@ -148,8 +148,8 @@ defmodule Machine do
     
     link
   end
-  def start_link(native) do
-    start_link(Data.new native)
+  def start_link(thing) do
+    start_link(Data.new thing)
   end
    
 end

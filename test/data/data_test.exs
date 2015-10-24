@@ -4,7 +4,7 @@ defmodule Data.Test do
   ## Examples
   
   test "Use `Data.new` to create and then `Data.renew` to update `data`", do:
-		%Data{native: "yep"} = Data.new("nada") |> Data.renew "yep"
+		%Data{thing: "yep"} = Data.new("nada") |> Data.renew "yep"
     
   ## APIs
 
@@ -12,7 +12,7 @@ defmodule Data.Test do
 		%Data{} = Data.new
     
   test "Use `Data.renew` to add a help message.", do:
-		assert %Data{native: :reboot} = Data.renew Data.new("whoa"), :reboot
+		assert %Data{thing: :reboot} = Data.renew Data.new("whoa"), :reboot
         
   test "Use `Data.kind` to mutate the data type using custom or Kind types.", do:
 		assert %Data{kind: :lols} = Data.kind Data.new, :lols
@@ -54,13 +54,13 @@ defmodule Data.Test do
 		assert is_nil Data.path Data.new, "lol"
 
   test "Use `Data.path` to pull *all* of holospace for updates to `data`.", do:
-		assert %Data{native: "lol"} = Data.new "lol"
+		assert %Data{thing: "lol"} = Data.new "lol"
     
   test "Use `Data.path` to pull *all* of holospace for updates to `data`.", do:
 		assert %Data{} = Data.path "lol", Data.new
 
-  test "Use `Data.native` to pull *all* of holospace for updates to `data`.", do:
-		assert is_nil Data.native Data.new
+  test "Use `Data.thing` to pull *all* of holospace for updates to `data`.", do:
+		assert is_nil Data.thing Data.new
           
   test "Use `Data.clone` to push *all* of holospace with updated `data`.", do:
 		assert %Data{} = Data.clone Data.new
@@ -75,7 +75,7 @@ defmodule Data.Test do
   # do: assert %Data{} = Data.roll Data.tick(Holo.share Data.new), 0
 
   # test "Data.jump(binary) to forecast future versions of Bot.",
-  # do: assert "<p>@lol</p>" = Bot.jump Data.new, "related", fn x -> Cake.magic x end, fn t -> Holo.fuzzy t.native end
+  # do: assert "<p>@lol</p>" = Bot.jump Data.new, "related", fn x -> Cake.magic x end, fn t -> Holo.fuzzy t.thing end
 
   # test "Data.stub(binary) returns Bot full of Cake.",
   # do: assert "<p>@lol</p>" = Bot.stub

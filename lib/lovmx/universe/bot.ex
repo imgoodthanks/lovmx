@@ -10,7 +10,7 @@ defmodule Bot do
   Bot are animated and friendly little helpers.
 
   Bot like to eat `Cake` and write code for `Data` and `Player`s
-  and should be considered when interacting with any native, 
+  and should be considered when interacting with any thing, 
   static, primitive, or holospace based object(s) in need of 
   holographic intelligence.
 

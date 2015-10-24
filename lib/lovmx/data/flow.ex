@@ -19,13 +19,13 @@ defmodule Flow do
     
   ## IN
   
-  @doc "Put `native` *INTO* `data.native`."
-  def i(native, data = %Data{}) do
-    into(native, data)
+  @doc "Put `thing` *INTO* `data.thing`."
+  def i(thing, data = %Data{}) do
+    into(thing, data)
   end
-  def into(native, data = %Data{}) do
+  def into(thing, data = %Data{}) do
     data
-    |> Data.renew(native)
+    |> Data.renew(thing)
     |> Holo.x
   end
     
@@ -36,11 +36,11 @@ defmodule Flow do
     |> Holo.x(holospace, secret)
   end
   
-  @doc "Put `native` *INTO* `data.pull` at `signal`."
-  def take(native, data = %Data{}, signal \\ nil, secret \\ nil) when is_atom(signal) or is_binary(signal) do
-    #Logger.debug "Flow.take // #{data.keycode} // #{signal} // #{inspect native}"
+  @doc "Put `thing` *INTO* `data.pull` at `signal`."
+  def take(thing, data = %Data{}, signal \\ nil, secret \\ nil) when is_atom(signal) or is_binary(signal) do
+    #Logger.debug "Flow.take // #{data.keycode} // #{signal} // #{inspect thing}"
 
-    put_in(data.pull, Map.put(data.pull, signal, native))
+    put_in(data.pull, Map.put(data.pull, signal, thing))
     |> Holo.x
   end
   

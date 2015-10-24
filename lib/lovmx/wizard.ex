@@ -12,7 +12,8 @@ defmodule Wizard do
   """
 
   use GenServer
-
+  use Magic
+  
   @doc """
   Wizard - A Holographic Hail to the Wizard.king.
   """
@@ -23,7 +24,7 @@ defmodule Wizard do
   @doc "Use `Holo.bang` to start Holospace."
   def bang(path \\ "README.magic", opts \\ []) do
     GenServer.cast WizardServer, {:bang, path, opts}
-
+    
     self
   end
 
@@ -67,7 +68,7 @@ defmodule Wizard do
   ## Callbacks
   
   def handle_cast({:bang, path, opts}, agent) do
-    Logger.info "Wizard.bang // #{inspect path}"
+    Logger.info "Wizard.bang // #{inspect Help.project path}"
     
     # are we reloading an existing Holospace?
     reboot = Keyword.get(opts, :reboot, false)
@@ -77,8 +78,11 @@ defmodule Wizard do
     end
     
     # compute the initial holospace network
-    Cake.mix Help.project path
-    
+    "README.magic"
+    |> read # read the file
+    |> magic # compile magicdown (markdown+) into data/bot
+    |> share "help"# send it into holospace
+
     # Second Creation of Waitforit.
     Task.async fn -> 
       Wizard.tick(self) 

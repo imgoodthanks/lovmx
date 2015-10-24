@@ -6,7 +6,7 @@ defmodule Freezer.Test do
   test "Freezer.put to make an empty box w/ data" do
     blob = Freezer.put "README.magic", "unknown", "test.ex"
 
-    assert %Data{kind: "unknown", native: "test.ex", home: home} = blob
+    assert %Data{kind: "unknown", thing: "test.ex", home: home} = blob
     assert Regex.match? ~r/^blob/i, blob.home
 
     assert File.exists? Help.root Help.web blob.home

@@ -1,14 +1,11 @@
 use Magic
 require Logger
 
+Holo.share Data.new "WHY"
+Logger.debug "BOOT.exs"
+
 # Chapter 3. Flowing Data
 ## Setup the README.
-
-"README.magic"
-|> read # read the file
-|> magic # compile magicdown (markdown+) into data/bot
-|> move "help" # move the bot into the `help` holospace
-|> share # send it into holospace
 
 # # LovMx + ILvMx.
 # ## Welcome to Holospace.

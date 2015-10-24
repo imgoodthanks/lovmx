@@ -4,7 +4,7 @@ defmodule Flow.Test do
   ## Flow Controls (aka poor man's state machine)
 
   test "Flow.into(data, signal) controls a flow.", do:
-		assert %Data{native: "whoa"} = "whoa" |> Flow.into Data.new("lol")
+		assert %Data{thing: "whoa"} = "whoa" |> Flow.into Data.new("lol")
 
   test "Flow.pull(data, signal) controls a flow.", do:
 		assert %Data{pull: %{"about" => :boot}} = Flow.pull Data.new, "about"

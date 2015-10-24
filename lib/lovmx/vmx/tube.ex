@@ -85,22 +85,22 @@ defmodule Tube do
     data
   end
 
-  @doc "Write raw `native` data to `$project/<path>`."
-  def write(native, path \\ nil, secret \\ nil) when is_nil(path) or is_atom(path) or is_binary(path) do
+  @doc "Write raw `thing` data to `$project/<path>`."
+  def write(thing, path \\ nil, secret \\ nil) when is_nil(path) or is_atom(path) or is_binary(path) do
     absolute = Help.root Help.web path
 
     # create the enclosing path
     File.mkdir_p Path.dirname absolute
 
     # write the data out
-    File.write! absolute, Help.freeze(native), [:write]
+    File.write! absolute, Help.freeze(thing), [:write]
     #Logger.debug "Tube.write: #{Help.path([absolute, Kind.boot])}"
 
-    native
+    thing
   end
   
-  # @doc "Write raw `native` data to the root of the Multiverse / Unix file system."
-  # def orbit(native, aboslute, secret)
+  # @doc "Write raw `thing` data to the root of the Multiverse / Unix file system."
+  # def orbit(thing, aboslute, secret)
   
   def start_link(_) do
     # An agent that we'll eventually pass around to the *all* the Holo servers...

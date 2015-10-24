@@ -36,7 +36,7 @@ defmodule Pipe do
     # build page/results
     page = Enum.join([
       Cake.kit("html/header.html"),
-      html(data.native),
+      html(data.thing),
       Cake.kit("html/footer.html"),
     ])
     
@@ -78,17 +78,17 @@ defmodule Pipe do
   @doc "Create HTML snippets."
   def html(data, holospace \\ "/", secret \\ nil)
   
-  def html(data = %Data{native: data}, holospace, secret) when is_list(data) do
+  def html(data = %Data{thing: data}, holospace, secret) when is_list(data) do
     html Enum.map data, &(html &1)
   end
   def html(data = %Data{kind: :link}, holospace, secret) do
     ####Holo.share "Pipe.html #{inspect data}"
     "<code class=\"data\">
-    <a href='#{Help.path [holospace, data.native]}'>#{data.native}</a>
+    <a href='#{Help.path [holospace, data.thing]}'>#{data.thing}</a>
     </code>"
   end
-  def html(data = %Data{native: %Data{kind: kind, meta: path}}, holospace, secret) when is_binary(path) do
-    #Holo.share "Pipe.html %Data{native: %Data{kind: kind, meta: path}}"
+  def html(data = %Data{thing: %Data{kind: kind, meta: path}}, holospace, secret) when is_binary(path) do
+    #Holo.share "Pipe.html %Data{thing: %Data{kind: kind, meta: path}}"
     if Freezer.extension(kind) do
       "<img src='#{path}'>"
     else
@@ -135,7 +135,7 @@ defmodule Pipe do
   end
   def text(data = %Data{kind: :link}) do
 """
-#{data.native}
+#{data.thing}
 """
   end
   def text(data = %Data{home: home}) when is_pid(home) do
@@ -171,7 +171,7 @@ defmodule Pipe do
 
 #boom // #{inspect data.boom}
 
-#data // #{inspect data.native}
+#data // #{inspect data.thing}
 
 #code // #{inspect length(data.code)} codes
 

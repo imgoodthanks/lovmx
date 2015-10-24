@@ -2,7 +2,7 @@ defmodule Cake.Test do
   use ExUnit.Case
   
   test "Use `Cake.magic` to add magic and make Bot ready for work.", do:
-		assert %Data{native: list} = Cake.magic "@list. img"
+		assert %Data{thing: list} = Cake.magic "@list. img"
 
   ## Types
 
@@ -27,7 +27,7 @@ defmodule Cake.Test do
   test "Kind.boom", do: assert :boom == Kind.boom
  
   test "Cake does cool stuff", do:
-		assert %Data{native: "<h1>lol</h1>\n"} = Cake.magic Data.new "# lol"
+		assert %Data{thing: "<h1>lol</h1>\n"} = Cake.magic Data.new "# lol"
 
   test "Cake does nil stuff", do:
 		assert is_nil Cake.magic nil

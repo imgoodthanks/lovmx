@@ -34,7 +34,7 @@ defmodule Holo do
     GenServer.call HoloServer, {Kind.pull, holospace, secret}
   end
   
-  # @doc "Use `Holo.data <signal>` to return *ALL* `<data>.native` at `holospace`."
+  # @doc "Use `Holo.data <signal>` to return *ALL* `<data>.thing` at `holospace`."
   # def data(machine, secret \\ nil, duration \\ Help.tock) when is_pid(machine) do
   #   compute machine, secret, duration
   # end
@@ -73,7 +73,9 @@ defmodule Holo do
     
     data
   end
-  def share(data = %Data{}, holospace \\ nil, secret \\ nil, duration \\ Help.long) do
+  def share(thing, holospace \\ nil, secret \\ nil, duration \\ Help.long) do
+    Logger.debug "Holo:share // #{inspect data}"    
+    
     GenServer.call HoloServer, {Kind.push, data, holospace, secret, duration}
   end
   
@@ -108,7 +110,7 @@ defmodule Holo do
     map = Agent.get(agent, &(&1))
     thing = Map.get(map, holospace)
     
-    Logger.debug "Holo!pull // #holospace // #{inspect thing}"
+    #Logger.debug "Holo!pull // #holospace // #{inspect thing}"
     
     case thing do
       thing when is_pid(thing) ->
@@ -117,8 +119,10 @@ defmodule Holo do
         {:reply, thing, agent}
     end
   end
-
+  
   def handle_call({:push, data = %Data{}, holospace, secret, duration}, source, agent) do
+    Logger.debug "Holo:push // #{inspect data}"    
+    
     # we need a namespace to share over..
     if is_nil holospace do
       holospace = data.keycode
@@ -141,6 +145,24 @@ defmodule Holo do
     
     # return the data
     {:reply, data, agent}
+  end
+  def handle_call({:push, thing, holospace, secret, duration}, source, agent) do
+    Logger.debug "Holo:push // #{inspect data}"    
+    
+    # we need a namespace to share over..
+    if is_nil holospace do
+      holospace = Help.keycode
+    end
+
+    # update map/space
+    :ok = Agent.update agent, fn map ->
+      Map.put map, holospace, thing
+    end
+    
+    # TODO: send a :push to holospace
+    
+    # return the data
+    {:reply, thing, agent}
   end
   
   def handle_cast({:drop}, agent) do

@@ -8,7 +8,7 @@ padding: 0;
 html,
 header,
 footer {
-background: rgb(240, 240, 240);
+background: rgb(9, 9, 10);
 }
 
 body {
@@ -124,6 +124,7 @@ text-align: left;
 box-shadow: 0 0 1px #000000;
 -moz-box-shadow: 0 0 1px #000000;
 border: 1px solid rgba(23, 23, 23, 0.87);
+	margin-bottom: 10px;
 }
 
 input[type=submit] {
@@ -135,6 +136,8 @@ border-width: 1px;
 padding: 10px 20px;
 -moz-box-shadow: 0 0 1px rgba(56, 146, 239, 0.79);
 box-shadow: 0 0 1px rgba(56, 146, 239, 0.79);
+	float: left;
+	margin-right: 20px;
 }
 
 form {
