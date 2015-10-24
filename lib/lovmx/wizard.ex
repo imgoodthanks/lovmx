@@ -126,7 +126,7 @@ defmodule Wizard do
     ## DESTROY
     
     if destroy_holospace do
-      GenServer.cast HoloServer, {:reset, destroy_holospace, destroy_universe}
+      GenServer.cast HoloServer, {:drop}
     end
 
     if destroy_universe do

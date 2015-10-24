@@ -186,7 +186,7 @@ defmodule Pipe do
 ```
 """
   end
-    
+  
   @doc "Drop `data` to /dev/null."
   def drop(whatever) do
     # todo: track noops to help manage machines

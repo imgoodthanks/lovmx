@@ -154,6 +154,7 @@ defmodule Holo do
     
     {:noreply, agent}
   end
+  
   def handle_cast({:drop, holospace, secret}, agent) do
     # get the map
     map = Agent.get(agent, &(&1))
