@@ -72,12 +72,12 @@ defmodule Wizard do
     # are we reloading an existing Holospace?
     reboot = Keyword.get(opts, :reboot, false)
     
-    if reboot and File.exists?(Lovmx.project ["priv", "holospace.term"]) do
-      archive = Lovmx.thaw Tube.read Lovmx.path ["priv", "holospace.term"]
+    if reboot and File.exists?(Help.project ["priv", "holospace.term"]) do
+      archive = Help.thaw Tube.read Help.path ["priv", "holospace.term"]
     end
     
     # compute the initial holospace network
-    Cake.mix Lovmx.project path
+    Cake.mix Help.project path
     
     # Second Creation of Waitforit.
     Task.async fn -> 
@@ -114,8 +114,8 @@ defmodule Wizard do
     Logger.info "Wizard.freeze"
     
     Holo.space
-    |> Lovmx.freeze
-    |> Tube.write(Lovmx.path ["priv", "holospace.term"])
+    |> Help.freeze
+    |> Tube.write(Help.path ["priv", "holospace.term"])
     
     {:noreply, agent}
   end
@@ -131,23 +131,23 @@ defmodule Wizard do
 
     if destroy_universe do
       # copy the boot folder over
-      File.rm_rf Lovmx.project ["priv", "static"]
+      File.rm_rf Help.project ["priv", "static"]
       # freshly copy static stuff no matter what
-      File.cp_r  Lovmx.project(["lib", "base"]), Lovmx.project ["priv", "static"]
+      File.cp_r  Help.project(["lib", "base"]), Help.project ["priv", "static"]
 
       Logger.info "!reset // #universe // #{inspect Moment.now}"
     end
     
     ## RECREATE
 
-    path = Lovmx.project Lovmx.web "help"
+    path = Help.project Help.web "help"
     
     # We want docs/help to be everywhere in the project, 
     # so re-copy dev/docs to holospace.
     
     File.mkdir_p path
-    File.cp_r Lovmx.project(["doc"]), path
-    File.ln_s Lovmx.project(Lovmx.web "doc"), path
+    File.cp_r Help.project(["doc"]), path
+    File.ln_s Help.project(Help.web "doc"), path
 
     Logger.info "!reset // #help // #{inspect Moment.now}"
     

@@ -27,14 +27,14 @@ defmodule Data.Test do
 		data = Data.new
     |> Data.tick
     
-    assert Lovmx.path [data, "#{0}"] == Data.address(data)
+    assert Help.path [data, "#{0}"] == Data.address(data)
   end
   
   test "Use `Data.address(data, tick: previous)` to get a specific Data version string." do
 		data = Data.new
     |> Data.tick
     
-    assert Lovmx.path [data, "#{0}"] == Data.address(data, tick: :back)
+    assert Help.path [data, "#{0}"] == Data.address(data, tick: :back)
   end
   
   # test "Use `Data.tick` and `Data.roll` to play other versions of `data`." do

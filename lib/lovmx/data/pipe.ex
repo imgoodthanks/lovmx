@@ -41,7 +41,7 @@ defmodule Pipe do
     ])
     
     # write the page to whatever it wanted
-    #Tube.save page, Lovmx.web(holospace)
+    #Tube.save page, Help.web(holospace)
     
     page
   end
@@ -84,7 +84,7 @@ defmodule Pipe do
   def html(data = %Data{kind: :link}, holospace, secret) do
     ####Holo.share "Pipe.html #{inspect data}"
     "<code class=\"data\">
-    <a href='#{Lovmx.path [holospace, data.native]}'>#{data.native}</a>
+    <a href='#{Help.path [holospace, data.native]}'>#{data.native}</a>
     </code>"
   end
   def html(data = %Data{native: %Data{kind: kind, meta: path}}, holospace, secret) when is_binary(path) do

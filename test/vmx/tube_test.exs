@@ -6,13 +6,13 @@ defmodule Tube.Test do
 		assert is_list Tube.get "img"
 
   test "Use `Tube.read` to list directories", do:
-		assert [%Data{}|_] = Tube.read Lovmx.web "img"
+		assert [%Data{}|_] = Tube.read Help.web "img"
   
   test "Use `Tube.save` to create files at `path`." do
     data = Tube.save Data.new("machine")
   
     # check botpath
-    webpath = Lovmx.root Lovmx.web Data.address(data)
+    webpath = Help.root Help.web Data.address(data)
   
     assert File.exists?(webpath) and File.dir?(webpath)
     assert File.exists? Path.join [webpath, "#{Kind.boot}"]
@@ -25,7 +25,7 @@ defmodule Tube.Test do
   test "Use `Tube.write` to create files at `path`." do
     Tube.write "lol", "test"
     
-    assert File.exists? Lovmx.root Lovmx.web "test"
+    assert File.exists? Help.root Help.web "test"
   end
 
 end

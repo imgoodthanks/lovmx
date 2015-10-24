@@ -48,7 +48,7 @@ defmodule Bot do
   end
   
   def pull(data = %Data{}) do
-    Tube.read Lovmx.web ["#{data.tick}", data.keycode]
+    Tube.read Help.web ["#{data.tick}", data.keycode]
   end
   def pull(data = %Data{home: machine}, holospace \\ nil, secret \\ nil, duration \\ nil) when is_pid(machine) do
     GenServer.call data.home, {:pull, holospace, secret, duration}

@@ -26,7 +26,7 @@ defmodule Holo.Test do
     assert %Data{home: "machine"} = Holo.move Data.new, "machine"
 
   test "Use `Holo.share <holospace>` to return holospace data." do
-    key = Lovmx.keycode
+    key = Help.keycode
 
     one = "one" |> Data.new |> Holo.share key
     assert one = Holo.space(key)

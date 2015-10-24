@@ -35,7 +35,7 @@ defmodule Holo do
   end
   
   # @doc "Use `Holo.data <signal>` to return *ALL* `<data>.native` at `holospace`."
-  # def data(machine, secret \\ nil, duration \\ Lovmx.tock) when is_pid(machine) do
+  # def data(machine, secret \\ nil, duration \\ Help.tock) when is_pid(machine) do
   #   compute machine, secret, duration
   # end
   
@@ -73,7 +73,7 @@ defmodule Holo do
     
     data
   end
-  def share(data = %Data{}, holospace \\ nil, secret \\ nil, duration \\ Lovmx.long) do
+  def share(data = %Data{}, holospace \\ nil, secret \\ nil, duration \\ Help.long) do
     GenServer.call HoloServer, {Kind.push, data, holospace, secret, duration}
   end
   

@@ -9,7 +9,7 @@ defmodule Freezer.Test do
     assert %Data{kind: "unknown", native: "test.ex", home: home} = blob
     assert Regex.match? ~r/^blob/i, blob.home
 
-    assert File.exists? Lovmx.root Lovmx.web blob.home
+    assert File.exists? Help.root Help.web blob.home
   end
 
 end

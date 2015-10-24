@@ -78,8 +78,8 @@ defmodule Bridge do
       holospace = "/"
     end
 
-    holospace = Lovmx.path(holospace)
-    path = Lovmx.root Lovmx.web [holospace]
+    holospace = Help.path(holospace)
+    path = Help.root Help.web [holospace]
 
     #Logger.debug "Bridge.holospace: #{holospace}"
 
@@ -99,8 +99,8 @@ defmodule Bridge do
       holospace = "/"
     end
 
-    holospace = Lovmx.path(holospace)
-    path = Lovmx.root Lovmx.web [holospace]
+    holospace = Help.path(holospace)
+    path = Help.root Help.web [holospace]
 
     Logger.debug "Bridge.POST // #{holospace}"
 

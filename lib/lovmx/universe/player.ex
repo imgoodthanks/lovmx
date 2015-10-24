@@ -11,20 +11,20 @@ defmodule Player do
   """
 
   @doc "Sweet prince."
-  def anon(secret \\ Lovmx.keycode) do
+  def anon(secret \\ Help.keycode) do
     Data.new
     |> Holo.move secret
   end
 
   # @doc "Get details from the Player."
-  # def quiz(topic, secret \\ Lovmx.keycode) do
+  # def quiz(topic, secret \\ Help.keycode) do
   #   topic
   #   |> Data.new(secret)
   #   |> Holo.space
   # end
   #
   # @doc "Sweet prince."
-  # def items(secret \\ Lovmx.keycode) do
+  # def items(secret \\ Help.keycode) do
   #   Holo.space("player")
   # end
   #

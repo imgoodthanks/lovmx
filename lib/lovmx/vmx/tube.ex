@@ -21,7 +21,7 @@ defmodule Tube do
     regex = ~r/^https\:/i
 
     # an external web call
-    if Regex.match?(regex, Lovmx.path(holospace)) do
+    if Regex.match?(regex, Help.path(holospace)) do
       try do
         HTTPotion.get(holospace).body
       rescue x ->
@@ -30,7 +30,7 @@ defmodule Tube do
     else
       # an internal lovmx call
       holospace
-      |> Lovmx.web
+      |> Help.web
       |> read
     end
   end
@@ -40,7 +40,7 @@ defmodule Tube do
   @doc "Read private/project-based files from `$project/<path>`."
   def read(path, _secret \\ nil) do
     # build the path
-    root = Lovmx.project path
+    root = Help.project path
 
     Logger.debug "Tube.read: #{root}"
 
@@ -48,7 +48,7 @@ defmodule Tube do
     if File.exists? root do
       case File.dir? root do
         false ->
-          Lovmx.thaw File.read!(root)
+          Help.thaw File.read!(root)
 
         true  ->
           {:ok, files} = File.ls root
@@ -77,24 +77,24 @@ defmodule Tube do
     if is_nil holospace do
       holospace = Data.address data
     end
-    path = Lovmx.path [holospace, Kind.boot]
+    path = Help.path [holospace, Kind.boot]
     
-    write Lovmx.freeze(data), path, secret
-    #Logger.debug "Tube.save: #{Lovmx.path([holospace, Kind.boot])}"
+    write Help.freeze(data), path, secret
+    #Logger.debug "Tube.save: #{Help.path([holospace, Kind.boot])}"
     
     data
   end
 
   @doc "Write raw `native` data to `$project/<path>`."
   def write(native, path \\ nil, secret \\ nil) when is_nil(path) or is_atom(path) or is_binary(path) do
-    absolute = Lovmx.root Lovmx.web path
+    absolute = Help.root Help.web path
 
     # create the enclosing path
     File.mkdir_p Path.dirname absolute
 
     # write the data out
-    File.write! absolute, Lovmx.freeze(native), [:write]
-    #Logger.debug "Tube.write: #{Lovmx.path([absolute, Kind.boot])}"
+    File.write! absolute, Help.freeze(native), [:write]
+    #Logger.debug "Tube.write: #{Help.path([absolute, Kind.boot])}"
 
     native
   end
@@ -112,7 +112,7 @@ defmodule Tube do
     
     
     ## SSL Checkup.
-    Bridge.kick secure: File.exists? Lovmx.root "priv/ssl/cert.pem"
+    Bridge.kick secure: File.exists? Help.root "priv/ssl/cert.pem"
     
     link
   end

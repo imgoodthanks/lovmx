@@ -1,2 +1,2 @@
 #!/bin/bash
-mix run -e 'Unix.run(["-h"])'
+mix run -e 'Platform.Unix.run(["-h"])'

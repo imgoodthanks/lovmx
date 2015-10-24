@@ -8,7 +8,7 @@ defmodule Lovmx.Test do
   ## Examples
   
   # test "Use `Lovmx` to share code + data in Holospace." do
-  #   key = Lovmx.keycode
+  #   key = Help.keycode
   #   data = Data.new key
   #
   #
@@ -19,44 +19,44 @@ defmodule Lovmx.Test do
 		assert is_binary "README.magic" |> Tube.read
     
   # test "Use `Data.help` to add a help to the Hello World ",
-  # do: assert Regex.match? ~r/magic/i, inspect Lovmx.help
+  # do: assert Regex.match? ~r/magic/i, inspect Help.help
   
   # test "Does cool stuff",
   # do: assert %Data{} = "#yolo" |> new |> Data.code(fn data -> Data.renew data, Cake.magic(data.native) end) |> boot |> compute
   #
   ## Boring API
 
-  test "generic", do: assert Lovmx.generic
+  test "generic", do: assert Help.generic
 
-  test "tick",    do: assert Lovmx.tick > 0
-  test "tock",    do: assert Lovmx.tock > Lovmx.tick
-  test "long",    do: assert Lovmx.long > Lovmx.tock
+  test "tick",    do: assert Help.tick > 0
+  test "tock",    do: assert Help.tock > Help.tick
+  test "long",    do: assert Help.long > Help.tock
 
   test "keycode for UUIDs", do:
-		assert Regex.match? Lovmx.keycode_regex, Lovmx.keycode
+		assert Regex.match? Help.keycode_regex, Help.keycode
   
   test "root", do:
-		assert is_binary Lovmx.root("README.magic")
+		assert is_binary Help.root("README.magic")
 
   test "path [list]", do:
-		assert is_binary Lovmx.path ["silly", "rabbit"]
+		assert is_binary Help.path ["silly", "rabbit"]
 
   test "path? is_binary", do:
-		assert Lovmx.path? "/nub"
+		assert Help.path? "/nub"
 
   test "is_path is_binary in", do:
-		assert Lovmx.tock > 0
+		assert Help.tock > 0
 
   test "is_path in", do:
-		assert not Lovmx.is_path ".."
+		assert not Help.is_path ".."
 
   test "is_path", do:
-		assert Lovmx.is_path "/nub"
+		assert Help.is_path "/nub"
 
   test "freeze is_binary", do:
-		assert is_binary Lovmx.freeze %{}
+		assert is_binary Help.freeze %{}
 
   test "thaw is_function", do:
-		assert is_function Lovmx.thaw(Lovmx.freeze fn -> "lol" end)
+		assert is_function Help.thaw(Help.freeze fn -> "lol" end)
 
 end

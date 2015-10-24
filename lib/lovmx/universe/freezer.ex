@@ -22,14 +22,14 @@ defmodule Freezer do
   
   @doc "Create a Binary box (aka large file)."
   def put(path, mime, name) do
-  	{binsum, _}   = System.cmd("/usr/bin/shasum", ["-a", "512224", Lovmx.path?(path)])
+  	{binsum, _}   = System.cmd("/usr/bin/shasum", ["-a", "512224", Help.path?(path)])
     binsum        = String.split(binsum, "  ", parts: 2) |> List.first
 
     # the public path
-    binspace = Lovmx.path ["blob", "#{ binsum }#{ ext(mime) }"]
+    binspace = Help.path ["blob", "#{ binsum }#{ ext(mime) }"]
     
     # write the file..
-    File.write! (Lovmx.root Lovmx.web binspace), File.read!(path), [:write]
+    File.write! (Help.root Help.web binspace), File.read!(path), [:write]
     #Logger.debug "Freezer.put: #{path} kind: #{kind} name: #{name}]"
     
     # create the box

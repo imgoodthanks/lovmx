@@ -63,10 +63,10 @@ defmodule Data do
   @doc "Use `Data.new` to create new Data from native `real` data."
   def new(native \\ nil, kind \\ Kind.boot, meta \\ %{}) do
     data = %Data{
-        keycode: Lovmx.path(["data", Lovmx.keycode]),
+        keycode: Help.path(["data", Help.keycode]),
            kind: kind,
            time: Moment.now,
-           life: Lovmx.long,
+           life: Help.long,
            meta: Map.merge(%{}, meta || %{}),
          native: native
     }
@@ -193,7 +193,7 @@ defmodule Data do
       end
     end
     
-    Lovmx.path [data.keycode, "#{version}"]
+    Help.path [data.keycode, "#{version}"]
   end
   
   @doc "Rollback `data` to a previous version."  
@@ -201,7 +201,7 @@ defmodule Data do
     roll address(data, opts)
   end
   def roll(holospace) when is_atom(holospace) or is_binary(holospace) do
-    Tube.read Lovmx.web holospace
+    Tube.read Help.web holospace
   end
   
   # @doc "Jump data to an unknown future if exe `code` passes `test`."

@@ -10,7 +10,7 @@ defmodule IT do
   end
 
   def assert_keycode(uuid) do
-    assert Regex.match? Lovmx.keycode_regex, uuid
+    assert Regex.match? Help.keycode_regex, uuid
   end
 
   def assert_web_page(binary) do

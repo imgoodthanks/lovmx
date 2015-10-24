@@ -20,7 +20,7 @@ defmodule Machine do
   end
   
   @doc "Machine"
-  def compute(machine, secret \\ nil, duration \\ Lovmx.tock) when is_pid(machine) do
+  def compute(machine, secret \\ nil, duration \\ Help.tock) when is_pid(machine) do
     GenServer.call machine, {flow, secret, duration}
   end
   def compute(nada, _, _) when is_nil(nada) do
@@ -56,7 +56,7 @@ defmodule Machine do
     
     # # COMPUTE: exe Data.code and effects
     # Enum.map data.code, fn x ->
-    #   Lovmx.thaw(x).(data)
+    #   Help.thaw(x).(data)
     # end
     #
     # # update map/space

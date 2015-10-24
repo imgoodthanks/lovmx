@@ -269,14 +269,14 @@ require Logger
 #   namespace do
 #     route_param :holospace do
 #       get do
-#         holospace = Lovmx.path params[:holospace]
+#         holospace = Help.path params[:holospace]
 #
 #         data
 #         Holo.fuzzy params[:holospace]
 #       end
 #       route_param :subpath do
 #         get do
-#           holospace = Lovmx.path [params[:holospace], params[:subpath]]
+#           holospace = Help.path [params[:holospace], params[:subpath]]
 #
 #           spawn(params[:holospace], params[:subpath], Data.new holospace)
 #
