@@ -181,17 +181,17 @@ defmodule Kind do
   """
   
   ## Flow Controls
-  def data, do: :json # object/data/json
-  def drop, do: :drop # nil/nada/noop/drop
   def boot, do: :boot # new/fresh
-  def lock, do: :lock # lock/secret
+  def data, do: :json # object/data/json
   def meta, do: :meta # meta/control
+  def lock, do: :lock # lock/secret
   def list, do: :list # show/head/etc
   def pull, do: :pull # pull/get/read 
-  def code, do: :code # source/code
   def push, do: :push # push/once/post/update
+  def code, do: :code # source/code
   def flow, do: :flow # run/exe/produce
   def wait, do: :wait # promise/future  
+  def drop, do: :drop # nil/nada/noop/drop
   
   ## Data Prototypes
   def text, do: :text # binary/text

@@ -1,6 +1,288 @@
 use Magic
 require Logger
 
+@cake)README.cake
+
+  # Chapter 1: ILvMx 
+ ## Orbital Magic for Cloud Apps.
+### A programmable Code + Data + Item Server
+
+https://lovmx.com
+
+ILvMx &rarr; Internet Love and #virtual Magic #exchange
+is an open source server for creating functionally minded 
+cloud apps with global code + data + item storage, or 
+what we call Orbital Magic for Cloud Apps.
+
+
+tl;dr upload and visually create extremely fast web apps 
+
+# Welcome to the LovMx
+
+use Magic
+
+# A simple example
+# - create a data/bot
+# - code magic on README.magic
+# - that we read and flow into data, with the :cake type
+# - then Pipe it to create a page
+# - then we compile/compute the data
+# - then we put it online in nubspace at `readme`
+
+code(fn data ->
+  "README.magic"
+  |> read
+  |> into data, Kind.cake
+  |> magic
+  |> page "readme.html"
+end)
+|> take "See `README.magic` for more info."
+|> x
+|> orbit "readme"
+
+
+Galaxies, Bots, Beams, Items, and more, oh boy.
+
+## Fast Five
+
+1) [x] Open Source - Everything from the app, to the server, to the org is open source.
+2) [x] Global Namespace + Code + Data - An open source non-profit Galactic Multiverse of code + data.
+3) [x] Functional Reactive Programming - Completely Async Beam, Event, and Loop based execution.
+4) [x] Persistent Data Structures - Fully Reversable State Machine w/ Rollback and Jump support.
+5) [x] Divinely Fast - Diskbased Static Object Graph because web servers love files.
+
+## welcome to #nubspace
+
+#server
+http://www.lovmx.com
+
+> Logger.debug "Type LovMx.help to get started!"
+
+LovMx is an Orbital Magic server and Web Theme Park (with optional Story Attraction!).
+
+
+## Mission
+
+Reboot the web of tomorrow with modern design, development, and codified moral and 
+ethical principles so tomorrow's web doesn't suck as much as today's internet does. Let's
+build it together in a fun Adventurama style open source galactic multiverse, with Clouds and 
+Castles, Bots, Items, Beams, and other fun stuff. We call it Nubspace so nobody takes it too
+serious, and we code it with powerful languages like Elixir, JavaScript, and Markdown style
+programming and plain text and common sense languages too.
+
+[#about](/about)
+
+# Chapter 2: #[lovmx](//lovmx.com)
+
+```
+# playing with a web theme park
+$ git clone https://github.com/lolnub/lovmx
+$ cd lovmx
+$ vagrant up
+$ mix test
+$ iex -S mix
+```
+
+  # ILvMx
+ ## Internet Love and #virtual Magic #exchange
+### Orbital Magic for Cloud Apps.
+
+LovMx is a nonprofit global namespace of code + data + blob storage.
+
+ILvMx takes place in many of the great holograms of Nubspace,
+which we've mapped out here:
+
+
+## Objects    (tree of life)
+########################################################          
+## app     (api/endpoints)
+- Cake        // compile text/bot
+- Galaxy      // static/dynamic
+- Holo        // %{path: [things]}
+  
+## data       
+- Bot         // code + data
+- Item        // binary files
+- Holo      // user/agent/auth
+
+## vmx        (dispatch/vmx)
+- Beam        // packets/events/actions
+- Machine     // bot.keycode -> <machine/pid>
+- Warp        // nubspace/objects
+              
+## warp       (adapt/emit)
+- Data        // ecto/db/postgres
+- Drive       // static/disk
+- Web         // https/network
+
+
+## API/Beams  (primary dimensions)
+########################################################
+- app         // three main objects
+- data        // experience/reality
+- vmx         // code/data/consciousness
+- warp        // adapters/switches
+
+
+## Data/Datas
+########################################################
+# - meta  // packet to get/list/meta
+# - data  // packet to get/once/fastest/static
+# - code  // packet to sub/code on
+# - ping  // packet to sub/code/ping on
+# - push  // packet to put/once
+# - boot  // packet to put/loop/wait/mult/etc.
+# - stop  // packet to kill/stop/forget/etc.
+  
+## Subscribe / Reactive Flows
+########################################################
+Warps adapt/read/write/switch to the Galaxy.
+|> Boot objects interact inside Galaxys.
+|> Galaxys pub/sub to Data/Datas.
+|> Data/Datas proxy to Machines for exe. 
+|> Machines emit to Warps.
+|> Warps adapt/read/write/switch to the Galaxy.
+
+
+## Publish / Proactive Flows
+########################################################
+Item.new
+|> Bot.boot
+|> Bot.cake
+|> Bot.code
+|> Flow.x
+|> Bot.mix
+|> Data.page
+|> Data.json
+|> Galaxy.subscribe
+
+
+## Spiral Out.
+
+
+ # Chapter 3: Getting Started.
+## Programming your Orbital Magic server.
+
+LovMx is an Orbital Magic server written in Elixir. The goal
+is to provide a nonprofit global namespace of code + data + 
+blob storage for open source developers.
+
+The general layout of the framework looks like this:
+
+## Objects    (tree of life)
+########################################################
+ 
+## app     (api/endpoints)
+- Cake        // compile text/bot
+- Galaxy      // static/dynamic
+- Holo        // %{path: [things]}
+  
+## data       
+- Bot         // code + data
+- Item        // binary files
+- Holo      // user/agent/auth
+
+## vmx        (dispatch/vmx)
+- Beam        // packets/events/actions
+- Machine     // bot.keycode -> <machine/pid>
+- Warp        // nubspace/objects
+              
+## warp       (adapt/emit)
+- Data        // ecto/db/postgres
+- Drive       // static/disk
+- Web         // https/network
+
+Where each level of the framework/hologram flows from a
+high level `#app` API downward through the `#data` APIs
+and mutates inside the `#vmx` (or private LovMx API) and
+finally stops or loops back toward the `#warp` APIs.
+
+Your APP will do these things:
+
+- create a `lib/drive/<assets>` directory
+- put static html/js/css assets into that directory
+- create an `lib/drive/auto.cake` text file
+- start on the console lovmx and visit using your web browser
+- define your galaxy + write your Cake apps by creating multiple `lib/drive/<module>.cake` files as needed
+- upload assets as needed
+- self host your app w/ an elixir runtime
+- upload your `drive` to lovmx.com for web-based magic
+- network your `drive` w/ lolnub.app for true orbital magic
+
+
+ # Chapter 4: Actually Getting Started.
+## Actually Programming your Orbital Magic server.
+
+Remembering the Tree of Life aboce, each dimension of the
+framework/hologram flows from a higher level `#app` API 
+downward through the `#data` APIs, mutating inside the 
+`#vmx` (or private LovMx API) and finally looping back 
+toward the `#warp` APIs.
+
+
+Let's play:
+
+```
+$ mix new lovevmx
+$ cd lovevmx
+
+# add {:lovmx, git: "../lovmx"} to `mix.exs` `defp deps` section or:
+# defp deps do
+#   [{:lovmx, git: "../lovmx"}]
+# end
+
+$ mix deps.update --all
+$ mix test
+# 1 tests, 0 failures
+
+# add `:lovmx` to `mix.exs` `def application` `applications:` section or:
+# def application do
+#   [applications: [:logger, :lovmx]]
+# end
+
+# add postgres/ecto config to `config/config.exs`
+# config :lovmx, Warp.Pipe.Repo,
+#   database: "lovmx",
+#   username: "lovmx",
+#   password: "lovmx",
+#   hostname: "localhost"
+
+$ mix test
+# 1 tests, 0 failures
+```
+
+Creating a new Cake app.
+
+# #
+# # @cake)example
+# #
+# # An example Cake doc, written on an iPad,
+# # in front of a beautiful lake, under the mountains,
+# # with some basic (aka static) example text here.
+# #
+# # # Add the standard lovmx header.
+# # @kit)html/header
+# #
+# #
+# # # splice contents of nubspace `blob` (as text)
+# # @warp)blob
+# # ```
+# # #warp!bot/121313-123131-1213313-121323/data
+# #
+# # //lolnub.com/blob/123.jpg
+# # //lolnub.com/blob/345.jpg
+# # ```
+# # ```
+# # #ping!bot/898989-898989-8908080-898790/data
+# #
+# # Does player want to upload a blob?
+# # //lolnub.com/bot/898989/_/upload
+# # ```
+# #
+# # # Import a custom footer (use absolute path) from `lib`
+# # @kit)lib/drive/html/footer
+
+
 # Chapter 3. Flowing Data
 ## Setup the README.
 

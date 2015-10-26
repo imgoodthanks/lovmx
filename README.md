@@ -30,5 +30,4 @@ Yeah that sounds right.
 
 Welcome to Holospace. Here, take this map...
 
-
 # See `README.magic` for more info.

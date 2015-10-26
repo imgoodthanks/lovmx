@@ -72,7 +72,7 @@ defmodule Bridge do
     end
   end
 
-  @doc "Route *all* generic PULL signals from HTTPS."  
+  @doc "GET: Route *all* generic PULL signals from HTTPS."  
   def call(conn = %Plug.Conn{method: "GET", path_info: holospace}, agent) do
     if holospace in [[], [""], nil] do
       holospace = "/"
@@ -93,18 +93,31 @@ defmodule Bridge do
     end
   end
   
-  @doc "Route *all* generic PUSH signals from HTTPS."  
+  @doc "POST: Route *all* generic PUSH signals from HTTPS."  
   def call(conn = %Plug.Conn{method: "POST", path_info: holospace}, agent) do
     if holospace in [[], [""], nil] do
       holospace = "/"
     end
-
+    
     holospace = Help.path(holospace)
     path = Help.root Help.web [holospace]
-
-    Logger.debug "Bridge.POST // #{holospace}"
     
-    resp conn, 200, Pipe.page Holo.share(conn, holospace)
+    # first parse the conn for params/binaries/etc
+    conn = Plug.Parsers.call conn, parsers: @parsers, limit: @upload_limit
+
+    # grab our payload(s)
+    data = conn.params["data"]
+    code = conn.params["code"]
+
+    # create the item
+    if data do
+      Freezer.put(data.path, data.content_type, data.filename)
+      |> Holo.share(holospace)
+    end
+    
+    Logger.debug "Bridge.POST // #{holospace} // #{inspect conn.params}"
+    
+    resp conn, 200, Pipe.page Holo.share(conn.params, holospace)
   end
   
   @doc "Even the Universe misses things."
