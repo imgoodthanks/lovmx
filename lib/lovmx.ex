@@ -32,7 +32,7 @@ defmodule Lovmx do
   We host a public data service (ilvmx.com).
   We give away the best Web Theme Park on the net. (lolnub.com)
   
-  Welcome to Holospace. Here, take this map...
+  Welcome to Cloudspace. Here, take this map...
 
   See `README.magic` or @readme inside LovMx for more.
   
@@ -60,13 +60,13 @@ defmodule Lovmx do
 
   # In Galaxy mode the server will search #todo for other 
   # LovMx nodes and automatically begin participating
-  # in the network via establishing Holo + Tube links.
+  # in the network via establishing Cloud + Cloud links.
 
   # todo: much of the networking, discovery/propgation, and
   # auth parts and in need of good love. But the ideas and
   # proof of concepts should be mostly stubbed.
   
-  https://en.wikipedia.org/wiki/Holography
+  https://en.wikipedia.org/wiki/Cloudgraphy
   https://en.wikipedia.org/wiki/Functional_reactive_programming
   https://github.com/flowbased/flowbased.org/wiki
   https://github.com/flowbased/flowbased.org/wiki/Concepts
@@ -85,9 +85,8 @@ defmodule Lovmx do
     # Define workers and child supervisors to be supervised
     children = [
       worker(Wizard,     [self]), # janitor
-      worker(Holo,       [self]), # io/internal
-      worker(Machine,    [self]), # code/data/compute
-      worker(Tube,       [self]), # io/external
+      worker(Machine,    [self]), # code/data/exe
+      worker(Cloud,      [self]), # io/internal
     ]
 
     # See http://elixir-lang.org/docs/stable/elixir/Supervisor.html
@@ -114,14 +113,14 @@ defmodule Lovmx do
 
   @doc "Readme first. Don't panic."
   def help do
-    "README.magic" |> Tube.read |> Cake.magic
+    "README.magic" |> Cloud.read |> Cake.magic
   end
 
   ## Exit
 
   @doc "Good night sweet prince."
   def terminate(message, data) do
-    #####Holo.share "Lovmx.terminate: #{inspect data} message: #{inspect message}"
+    #####Cloud.share "Lovmx.terminate: #{inspect data} message: #{inspect message}"
     
     # todo: properly shutdown the Bridge
     # Plug.Adapters.Cowboy.shutdown Bridge.HTTPS

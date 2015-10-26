@@ -84,10 +84,10 @@ defmodule Data.Test do
 		assert %Data{} = Data.boom "whoops"
   
   # test "Data.roll to return a previous version of Bot.",
-  # do: assert %Data{} = Data.roll Data.tick(Holo.share Data.new), 0
+  # do: assert %Data{} = Data.roll Data.tick(Cloud.share Data.new), 0
 
   # test "Data.jump(binary) to forecast future versions of Bot.",
-  # do: assert "<p>@lol</p>" = Bot.jump Data.new, "related", fn x -> Cake.magic x end, fn t -> Holo.fuzzy t.thing end
+  # do: assert "<p>@lol</p>" = Bot.jump Data.new, "related", fn x -> Cake.magic x end, fn t -> Cloud.fuzzy t.thing end
 
   # test "Data.stub(binary) returns Bot full of Cake.",
   # do: assert "<p>@lol</p>" = Bot.stub

@@ -46,9 +46,9 @@ defmodule Machine do
         {key, value} when is_atom(key) and is_atom(value) ->
           {key, value}
 
-        # put in dynamic/holospace data via a Holo.space
+        # put in dynamic/holospace data via a Cloud.space
         {key, value} when is_atom(key) or is_binary(key) ->
-          {key, Holo.space(key)}
+          {key, Cloud.space(key)}
 
         # TODO: better support here
         _ -> 
@@ -70,7 +70,7 @@ defmodule Machine do
           GenServer.call key, {Kind.pull, key, secret, duration}
 
         {key, value} when is_atom(value) or is_binary(value) ->
-          Holo.x(data, key, secret)
+          Cloud.x(data, key, secret)
           
         _ -> nil
       end
@@ -154,7 +154,7 @@ defmodule Machine do
     
     # update the data to include our Machine home
     :ok = Agent.update agent, fn data -> 
-      Holo.home data, machine 
+      Cloud.home data, machine 
     end
     
     link

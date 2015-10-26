@@ -4,7 +4,7 @@ defmodule Wizard.Test do
   test "Wizard.king returns the WizardServer singleton.", do: 
     assert is_pid Wizard.king
 
-  test "Use `Wizard.bang` to start Holospace", do: 
+  test "Use `Wizard.bang` to start Cloudspace", do: 
     assert is_pid Wizard.bang
   
   test "Wizard.tick cooks the eggs.", do: 

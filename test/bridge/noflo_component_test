@@ -66,8 +66,8 @@ defmodule NoFlo.Component.Test do
   ##
   ## Answer to the list command, sent when all available components have been sent via component messages. Payload contains the number of components on the runtime.
   #
-  #test "Tube.getsource",
-  #do: assert Tube.getsource %Data{}
+  #test "Cloud.getsource",
+  #do: assert Cloud.getsource %Data{}
   #
   ## getsource
   ##

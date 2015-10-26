@@ -1,7 +1,7 @@
 defmodule NoFlo.Network.Test do
   use ExUnit.Case
 
-  # Holo protocol
+  # Cloud protocol
   ## http://noflojs.org/documentation/protocol/
   
   # Protocol for starting and stopping FBP networks, and finding out about their state.
@@ -18,8 +18,8 @@ defmodule NoFlo.Network.Test do
 #   # secret: access token to authorize the user
 #
 #
-#   test "Tube.getstatus",
-#   do: assert Tube.getstatus %Data{}
+#   test "Cloud.getstatus",
+#   do: assert Cloud.getstatus %Data{}
 #
 #   # getstatus
 #   #

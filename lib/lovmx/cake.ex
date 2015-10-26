@@ -213,7 +213,7 @@ defmodule Cake do
   ## Sugary sweet Cloud App texting language
   ### Build industrial strength Orbital Magic apps in Seconds.
   
-  All energy/matter/vibration of Holospace is Cake.
+  All energy/matter/vibration of Cloudspace is Cake.
   And it's Cake all the way down. Except for the `binary`
   that sits below Cake and which *ALL* calls should return. 
   Then it looks more like: CakeN > CakeN+1 > binary.
@@ -230,7 +230,7 @@ defmodule Cake do
   very own Castle server (aka VPN/VPS) or connected to one of the 
   community free, shared, and moderated Castles.
     
-  All energy/matter/vibration of Holospace is Cake.
+  All energy/matter/vibration of Cloudspace is Cake.
   And it's Cake all the way down. Except for the `binary`
   that sits below Cake and which *ALL* calls should return. 
   Then it looks more like: Cake > Cake > binary.
@@ -256,8 +256,8 @@ defmodule Cake do
     # best effort the file..
     case Path.extname(path) do
       ".exs"    -> {data, _} = Code.eval_file(path)
-      ".eex"    -> EEx.eval_string Tube.read(path), assigns: []
-      ".magic"  -> Tube.read(path) |> Cake.magic
+      ".eex"    -> EEx.eval_string Cloud.read(path), assigns: []
+      ".magic"  -> Cloud.read(path) |> Cake.magic
       _ ->
         Data.boom("#weird `#{path}` *seems* to have a problem...")
     end
@@ -312,7 +312,7 @@ defmodule Cake do
   # end
   # def x(data = %Data{}, signal, "list", path) do
   #   # get the list
-  #   list = Holo.space(path)
+  #   list = Cloud.space(path)
   #   #Logger.debug "#list // #{inspect list}"
   #
   #   {Data.renew(data, list), Pipe.text(list)}
@@ -350,11 +350,11 @@ defmodule Magic do
       Code.ensure_loaded Pipe
       import Pipe
 
-      Code.ensure_loaded Holo
-      import Holo
+      Code.ensure_loaded Cloud
+      import Cloud
       
-      Code.ensure_loaded Tube
-      import Tube
+      Code.ensure_loaded Cloud
+      import Cloud
       
       Code.ensure_loaded Machine
       import Machine

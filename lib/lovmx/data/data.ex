@@ -70,7 +70,7 @@ defmodule Data do
            meta: Map.merge(%{}, meta || %{}),
          thing: thing
     }
-    |> Holo.x
+    |> Cloud.x
   end
   
   @doc "Restart Data w/ new `thing`."
@@ -89,7 +89,7 @@ defmodule Data do
     
     # save + update
     data = put_in(data.roll, Enum.concat(data.roll, [Data.address(data)]))
-    |> Holo.x
+    |> Cloud.x
     
     # are we completely rebooting this tick?
     if reboot = Keyword.get(opts, :reboot, false) do
@@ -104,13 +104,13 @@ defmodule Data do
     
     # Update the world.
     data = put_in(data.tick, data.tick + 1)
-    |> Holo.x
+    |> Cloud.x
   end
   
   @doc "Use `Kind.meta` controls to help the data flow."
   def meta(data = %Data{}, signal, effect \\ nil) do
     put_in(data.meta, Map.put(data.meta, signal, effect))
-    |> Holo.x
+    |> Cloud.x
   end
 
   @doc "Use `Data.kind` to mutate the data type using custom or Kind types."
@@ -121,7 +121,7 @@ defmodule Data do
   @doc "Readme first."
   def help(data = %Data{}, message) do
     put_in(data.help, Enum.concat(data.help, [message]))
-    |> Holo.x
+    |> Cloud.x
   end
   
   @doc "Return *current* `data.thing`."
@@ -201,7 +201,7 @@ defmodule Data do
     roll address(data, opts)
   end
   def roll(holospace) when is_atom(holospace) or is_binary(holospace) do
-    Tube.read Help.web holospace
+    Cloud.read Help.web holospace
   end
   
   # @doc "Jump data to an unknown future if exe `code` passes `test`."
@@ -211,7 +211,7 @@ defmodule Data do
   #   if test.(result) do
   #     data = put_in(data.jump, Map.put(data.jump, holospace, result))
   #     |> Data.tick
-  #     |> Holo.x
+  #     |> Cloud.x
   #   else
   #     data
   #   end

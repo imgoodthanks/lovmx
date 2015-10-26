@@ -15,13 +15,13 @@ defmodule Wizard do
   use Magic
   
   @doc """
-  Wizard - A Holographic Hail to the Wizard.king.
+  Wizard - A Cloudgraphic Hail to the Wizard.king.
   """
   def king do
     Process.whereis WizardServer
   end
   
-  @doc "Use `Holo.bang` to start Holospace."
+  @doc "Use `Cloud.bang` to start Cloudspace."
   def bang(path \\ "README.magic", opts \\ []) do
     GenServer.cast WizardServer, {:bang, path, opts}
     
@@ -40,7 +40,7 @@ defmodule Wizard do
     self
   end
 
-  @doc "Save Holospace to `priv/holospace.term`."
+  @doc "Save Cloudspace to `priv/holospace.term`."
   def freeze do
     GenServer.cast WizardServer, :freeze
     
@@ -52,7 +52,7 @@ defmodule Wizard do
   
   *thundering sounds*
   
-  Accepts an atom `:holospace` for destroying the dynamic Holospace and
+  Accepts an atom `:holospace` for destroying the dynamic Cloudspace and
   `:universe` for destroying the static file system Universe.
   """
   def reset(opts \\ []) do
@@ -70,11 +70,11 @@ defmodule Wizard do
   def handle_cast({:bang, path, opts}, agent) do
     Logger.info "Wizard.bang // #{inspect Help.project path}"
     
-    # are we reloading an existing Holospace?
+    # are we reloading an existing Cloudspace?
     reboot = Keyword.get(opts, :reboot, false)
     
     if reboot and File.exists?(Help.project ["priv", "holospace.term"]) do
-      archive = Help.thaw Tube.read Help.path ["priv", "holospace.term"]
+      archive = Help.thaw Cloud.read Help.path ["priv", "holospace.term"]
     end
     
     # compute the initial holospace network
@@ -93,14 +93,14 @@ defmodule Wizard do
   
   def handle_cast(:tick, agent) do
     #Logger.info "Wizard:tick"
-    #Holo.x self, "wizard/tick"
+    #Cloud.x self, "wizard/tick"
     
     {:noreply, agent}
   end
   
   def handle_cast(:tock, agent) do
     #Logger.info "Wizard:tock"
-    #Holo.x self, "wizard/tock"
+    #Cloud.x self, "wizard/tock"
 
     # TODO: "janitorial tasks"
     # - archive magic
@@ -117,9 +117,9 @@ defmodule Wizard do
   def handle_cast(:freeze, agent) do
     Logger.info "Wizard.freeze"
     
-    Holo.space
+    Cloud.space
     |> Help.freeze
-    |> Tube.write(Help.path ["priv", "holospace.term"])
+    |> Cloud.write(Help.path ["priv", "holospace.term"])
     
     {:noreply, agent}
   end
@@ -130,7 +130,7 @@ defmodule Wizard do
     ## DESTROY
     
     if destroy_holospace do
-      GenServer.cast HoloServer, {:drop}
+      GenServer.cast CloudServer, {:drop}
     end
 
     if destroy_universe do

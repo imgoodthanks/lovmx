@@ -7,16 +7,16 @@ defmodule Lovmx.Test do
   
   ## Examples
   
-  # test "Use `Lovmx` to share code + data in Holospace." do
+  # test "Use `Lovmx` to share code + data in Cloudspace." do
   #   key = Help.keycode
   #   data = Data.new key
   #
   #
-  #   assert is_pid Holo.home(data, machine).home
+  #   assert is_pid Cloud.home(data, machine).home
   # end
   
   test "Use Lovmx to Cake from Cake.kit.", do:
-		assert is_binary "README.magic" |> Tube.read
+		assert is_binary "README.magic" |> Cloud.read
     
   # test "Use `Data.help` to add a help to the Hello World ",
   # do: assert Regex.match? ~r/magic/i, inspect Help.help

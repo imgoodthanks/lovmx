@@ -34,7 +34,7 @@ defmodule Freezer do
     
     # create the box
     Data.new(name, mime)
-    |> Holo.move(binspace)
+    |> Cloud.move(binspace)
   end
   
   # Custom Freezer stuff.

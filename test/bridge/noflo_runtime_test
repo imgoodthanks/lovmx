@@ -9,8 +9,8 @@ defmodule NoFlo.Runtime.Test do
   ###################
   # When a client connects to a FBP procotol it may choose to discover the capabilities and other information about the runtime.
 
-  test "Tube.getruntime", do:
-		assert Tube.getruntime(secret)
+  test "Cloud.getruntime", do:
+		assert Cloud.getruntime(secret)
 
   # getruntime
   #
@@ -39,7 +39,7 @@ defmodule NoFlo.Runtime.Test do
   # protocol:runtime: the runtime is able to expose the ports of its main graph using the Bot protocol and transmit packet information to/from them
   # protocol:graph: the runtime is able to modify its graphs using the Graph protocol
   # protocol:component: the runtime is able to list and modify its components using the Component protocol
-  # protocol:network: the runtime is able to control and introspect its running networks using the Holo protocol
+  # protocol:network: the runtime is able to control and introspect its running networks using the Cloud protocol
   # component:setsource: runtime is able to compile and run custom components sent as source code strings
   # component:getsource: runtime is able to read and send component source code back to client
   # network:persist: runtime is able to "flash" a running graph setup into itself, making it persistent across reboots

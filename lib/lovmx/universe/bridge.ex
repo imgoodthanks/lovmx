@@ -48,7 +48,7 @@ defmodule Bridge do
     {:ok, agent} = Agent.start_link fn -> Map.new end
     
     # broadcast ourself
-    #Holo.share agent, "tube/agent"
+    #Cloud.share agent, "tube/agent"
 
     agent
   end
@@ -89,7 +89,7 @@ defmodule Bridge do
     else
       Logger.debug "Bridge.GET // #{holospace}"
       
-      resp conn, 200, Pipe.page Holo.space
+      resp conn, 200, Pipe.page Cloud.space
     end
   end
   
@@ -112,12 +112,12 @@ defmodule Bridge do
     # create the item
     if data do
       Freezer.put(data.path, data.content_type, data.filename)
-      |> Holo.share(holospace)
+      |> Cloud.share(holospace)
     end
     
     Logger.debug "Bridge.POST // #{holospace} // #{inspect conn.params}"
     
-    resp conn, 200, Pipe.page Holo.share(conn.params, holospace)
+    resp conn, 200, Pipe.page Cloud.share(conn.params, holospace)
   end
   
   @doc "Even the Universe misses things."

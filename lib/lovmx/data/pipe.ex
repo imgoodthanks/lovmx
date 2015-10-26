@@ -4,7 +4,7 @@ defmodule Pipe do
   
   @moduledoc """
   # Pipe
-  ## Push Data through a series of tubes and Holospace Port(s).
+  ## Push Data through a series of tubes and Cloudspace Port(s).
   ### Pipe(s) manage the Data/Output life cycle.
   
   Tree of Life:
@@ -25,7 +25,7 @@ defmodule Pipe do
   @doc "Pipe to a Cake/Magic document."
   def magic(data = %Data{}, holospace, secret \\ nil) do
     Cake.magic(data)
-    |> Tube.save(holospace, secret)
+    |> Cloud.save(holospace, secret)
   end
   
   @doc "Create static HTML pages."
@@ -41,7 +41,7 @@ defmodule Pipe do
     ])
     
     # write the page to whatever it wanted
-    #Tube.save page, Help.web(holospace)
+    #Cloud.save page, Help.web(holospace)
     
     page
   end
@@ -82,13 +82,13 @@ defmodule Pipe do
     html Enum.map data, &(html &1)
   end
   def html(data = %Data{kind: :link}, holospace, secret) do
-    ####Holo.share "Pipe.html #{inspect data}"
+    ####Cloud.share "Pipe.html #{inspect data}"
     "<code class=\"data\">
     <a href='#{Help.path [holospace, data.thing]}'>#{data.thing}</a>
     </code>"
   end
   def html(data = %Data{thing: %Data{kind: kind, meta: path}}, holospace, secret) when is_binary(path) do
-    #Holo.share "Pipe.html %Data{thing: %Data{kind: kind, meta: path}}"
+    #Cloud.share "Pipe.html %Data{thing: %Data{kind: kind, meta: path}}"
     if Freezer.extension(kind) do
       "<img src='#{path}'>"
     else
@@ -177,7 +177,7 @@ defmodule Pipe do
   @doc "Drop `data` to /dev/null."
   def drop(whatever) do
     # todo: track noops to help manage machines
-    # Holo.noop whatever
+    # Cloud.noop whatever
     
     nil
   end

@@ -6,7 +6,7 @@
 #   # Warp
 #   ## Extensible Storage/Transport Component(s)
 #
-#   Warp(s) read/write/store Data directly to the Holo drive.
+#   Warp(s) read/write/store Data directly to the Cloud drive.
 #   Warp(s) also mutate and forward data. For example the Mac
 #   client uses an Obj-C Class SparseBundleFreezer for it's
 #   storage needs so we need to have a server-side Warp/map

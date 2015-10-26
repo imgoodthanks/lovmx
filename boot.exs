@@ -1,14 +1,14 @@
 use Magic
 require Logger
 
-Holo.share Data.new "WHY"
+Cloud.share Data.new "WHY"
 Logger.debug "BOOT.exs"
 
 # Chapter 3. Flowing Data
 ## Setup the README.
 
 # # LovMx + ILvMx.
-# ## Welcome to Holospace.
+# ## Welcome to Cloudspace.
 # ### Orbital Magic for Cloud Apps.
 #
 # LovMx + ILvMx are free and open source nonprofit projects
@@ -37,7 +37,7 @@ Logger.debug "BOOT.exs"
 #
 # Yeah that sounds right.
 #
-# Welcome to Holospace. Here, take this map...
+# Welcome to Cloudspace. Here, take this map...
 #
 # # Chapter 1. LovMx Tree of Life.
 #
@@ -56,9 +56,9 @@ Logger.debug "BOOT.exs"
 # - Player // user agents
 #
 # # vmx
-# - Holo // global namespace of code + data storage
+# - Cloud // global namespace of code + data storage
 # - Machine // the virtual/physical code/server object
-# - Tube // input/output API endpoints
+# - Cloud // input/output API endpoints
 #
 # # hyperverse
 # - Cake // All energy/matter/movement
@@ -83,7 +83,7 @@ Logger.debug "BOOT.exs"
 # ```
 # pattern |  in              out   | side effects
 # ––––––––|––––––––––––––––––––––––|–––––––––––––––––––––––––
-# data    |  Holo \       / Tube   | output |> html/json/etc
+# data    |  Cloud \       / Cloud   | output |> html/json/etc
 # ––––––––|––––––––––––––––––––––––|–––––––––––––––––––––––––
 # actual  |        Machine         | files/sockets/https
 # ––––––––|––––––––––––––––––––––––|–––––––––––––––––––––––––
@@ -103,7 +103,7 @@ Logger.debug "BOOT.exs"
 # data = Fridge.push data
 #
 # ### Push it to the Web.
-# data = Tube.post data, "a/test/file"
+# data = Cloud.post data, "a/test/file"
 #
 #
 # # Chapter 3. Flowing Data
@@ -157,9 +157,9 @@ Logger.debug "BOOT.exs"
 # |> Data.new(Kind.auto)
 # |> Flow.x("#create a data/flow that we can push/pull/animate with")
 # |> Flow.r("#pipe a magic down (markdown+) like file at `data.pull.magic`")
-# |> Flow.i(Kind.magic, Pipe.down Holo.read "README.magic")
+# |> Flow.i(Kind.magic, Pipe.down Cloud.read "README.magic")
 # |> Flow.i(Kind.text, "checkout `Data#types` or just use custom data here to works"),
-# |> Flow.i(Kind.html, Holo.compile)
+# |> Flow.i(Kind.html, Cloud.compile)
 # |> Flow.i(Kind.code, Data.code do
 #   bot
 #   |> Flow.r("#pipe a magic down (markdown+) like file at `data.pull.magic`")
@@ -170,7 +170,7 @@ Logger.debug "BOOT.exs"
 # |> Flow.i(Kind.code, Data.code)
 # |> Flow.r("#text", "let's create a web page first")
 # |> Flow.o(Web.post)
-# |> Holo.x
+# |> Cloud.x
 #
 # # That should be fairly clear.
 #
@@ -193,30 +193,30 @@ Logger.debug "BOOT.exs"
 #
 # # Storing stuff publically from the Computer or server."
 #
-# Holo.push "about", Holo.read "README.magic"
+# Cloud.push "about", Cloud.read "README.magic"
 #
 # # Reading stuff from the public Computer or server drives."
 #
-# Holo.space "about"
+# Cloud.space "about"
 #
 # # Creating stuff in memory only.
 #
-# fn bot -> Holo.compile "https://reddit.com/r/#{bot.pull.uri}" end
+# fn bot -> Cloud.compile "https://reddit.com/r/#{bot.pull.uri}" end
 # |> Data.code
-# |> Holo.x
-# |> Holo.x "whateverpath", "whateverpassword"
+# |> Cloud.x
+# |> Cloud.x "whateverpath", "whateverpassword"
 #
 # # Reading all scenes from private memory.
-# Holo.y
+# Cloud.y
 #
 # # Exe *all* `data.code` for *all* lower holospace.
-# Holo.z "whateverpath", "whateverpassword"
+# Cloud.z "whateverpath", "whateverpassword"
 #
 # # Any memories there or that exist?
-# Holo.p "whateverpath"
+# Cloud.p "whateverpath"
 #
 # # *WHAT* is there exactly?
-# Holo.d "whateverpath"
+# Cloud.d "whateverpath"
 #
 # # Create web pages and JSON stuff
 #
@@ -231,11 +231,11 @@ Logger.debug "BOOT.exs"
 #
 # # Chapter 4. Maru Routers for advanced data flows.
 #
-# Working Code showing how to process routes in Holospace + add content.
+# Working Code showing how to process routes in Cloudspace + add content.
 # ########################################################################
 #
 # ```
-# Holo.x "Chapter 4. // basically do all of the stuff above.."
+# Cloud.x "Chapter 4. // basically do all of the stuff above.."
 #
 # defmodule Readme.Web do
 #
@@ -249,7 +249,7 @@ Logger.debug "BOOT.exs"
 #
 #   https://maru.readme.io
 #
-#   Universe(s) are the *center* of `Holo.Holospace` where all
+#   Universe(s) are the *center* of `Cloud.Cloudspace` where all
 #   *UNIQUE* code/data/flows are *merged* into a single cohesive
 #   Universe-wide hologram to be namespaced, stored, and experienced.
 #
@@ -268,7 +268,7 @@ Logger.debug "BOOT.exs"
 #         holospace = Help.path params[:holospace]
 #
 #         data
-#         Holo.fuzzy params[:holospace]
+#         Cloud.fuzzy params[:holospace]
 #       end
 #       route_param :subpath do
 #         get do
@@ -276,7 +276,7 @@ Logger.debug "BOOT.exs"
 #
 #           spawn(params[:holospace], params[:subpath], Data.new holospace)
 #
-#           Holo.fuzzy params[:holospace]
+#           Cloud.fuzzy params[:holospace]
 #         end
 #       end
 #     end
@@ -284,7 +284,7 @@ Logger.debug "BOOT.exs"
 #
 #   # A stub into the Universe below...
 #   get do
-#     Holo.read "README.magic"
+#     Cloud.read "README.magic"
 #   end
 #
 # end

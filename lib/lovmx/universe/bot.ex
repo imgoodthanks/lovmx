@@ -44,7 +44,7 @@
 #   end
 #
 #   def pull(data = %Data{}) do
-#     Tube.read Help.web ["#{data.tick}", data.keycode]
+#     Cloud.read Help.web ["#{data.tick}", data.keycode]
 #   end
 #   def pull(data = %Data{home: machine}, holospace \\ nil, secret \\ nil, duration \\ nil) when is_pid(machine) do
 #     GenServer.call data.home, {:pull, holospace, secret, duration}
@@ -61,7 +61,7 @@
 #   def wait(data = %Data{home: machine}, holospace \\ nil, secret \\ nil, duration \\ nil) when is_pid(machine) do
 #     # TODO: item this up
 #     Data.code(data, fn x ->
-#       Holo.share x, IO.gets :stdin
+#       Cloud.share x, IO.gets :stdin
 #     end)
 #   end
 #

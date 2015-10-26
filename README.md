@@ -28,6 +28,6 @@ completely open source and transparent.*
 
 Yeah that sounds right.
 
-Welcome to Holospace. Here, take this map...
+Welcome to Cloudspace. Here, take this map...
 
 # See `README.magic` for more info.

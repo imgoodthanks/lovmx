@@ -22,13 +22,13 @@ defmodule Bridge.Test do
   test "Bridge.kick(secure: true)" do
     server_path = Bridge.kick secure: true
 
-    IT.assert_web_page Tube.get "https://localhost:8443/"
+    IT.assert_web_page Cloud.get "https://localhost:8443/"
   end
   
   # test "Bridge.kick(secure: false)" do
   #   Bridge.kick secure: false
   #
-  #   IT.assert_web_page Tube.get "http://localhost:8443/"
+  #   IT.assert_web_page Cloud.get "http://localhost:8443/"
   # end
 
 end
