@@ -25,3 +25,5 @@ use Mix.Config
 
 # config :maru, Lovmx.API,
 #   port: 8880
+
+config :lovmx, port: 8443
