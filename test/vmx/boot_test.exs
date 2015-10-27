@@ -28,5 +28,8 @@ defmodule Boot.Test do
 
   test "Use `Boot.forget <holospace>` to forget *ALL* holospace data.", do:
     assert "nolols" == Boot.forget("nolols", "passcode")
-      
+  
+  test "Use `Boot.capture` to exclusively put something in holospace.", do:
+    assert %Data{} = Boot.capture Data.new("lockdown"), "ctf"
+    
 end

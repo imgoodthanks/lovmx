@@ -14,7 +14,7 @@ defmodule Kind.Test do
   test "Kind.flow", do: assert :flow == Kind.flow
   test "Kind.wait", do: assert :wait == Kind.wait
 
-  test "Kind.data", do: assert :json == Kind.data
+  test "Kind.data", do: assert :data == Kind.data
   test "Kind.text", do: assert :text == Kind.text
   test "Kind.link", do: assert :link == Kind.link
   test "Kind.html", do: assert :html == Kind.html

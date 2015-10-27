@@ -4,8 +4,8 @@ defmodule Boot do
   
   @moduledoc """
   # Boot
-  ## Memory Management
-  ###  Global Namespace of Code + Data.
+  ## Holospace Management
+  ### Global Namespace Code + Data stored in RAM.
   
   Boot renders the local Universe (aka your App) by
   routing Player data to Machine code and graphing,
@@ -20,7 +20,6 @@ defmodule Boot do
   """  
 
   use GenServer
-  import Kind
     
   ## Bootspace (internal web-readable static/dynamic storage)
   
@@ -38,6 +37,12 @@ defmodule Boot do
   # def data(machine, secret \\ nil, duration \\ Help.tock) when is_pid(machine) do
   #   compute machine, secret, duration
   # end
+  
+  @doc "Use `Holo.capture` to *EXCLUSIVELY* capture `nubspace`."
+  def capture(data = %Data{}, holospace, secret \\ nil, duration \\ Help.long) do
+    # Compile + pull *all* `data.pull` and push to the Machine for exe
+    GenServer.call BootServer, {Kind.lock, data, holospace, secret, duration}
+  end
   
   @doc "Use `Boot.list <holospace>` to return a [list] of things at `holospace`."
   def list(holospace \\ "/", secret \\ nil) when is_atom(holospace) or is_binary(holospace) do
@@ -90,6 +95,35 @@ defmodule Boot do
     {:reply, match, agent}
   end
   
+  def handle_call({:lock, data = %Data{}, holospace, secret, duration}, source, agent) do
+    Logger.debug "Boot:lock #{inspect self} // #{inspect holospace} // #{inspect data}"
+
+    # extract our map that we reset shortly
+    map = Agent.get(agent, &(&1))
+
+    # we need a namespace to share over..
+    if is_nil holospace do
+      holospace = data.keycode
+    end
+
+    if Map.has_key?(map, holospace) do
+      # return the data
+      {:reply, Data.boom(data, "Boot:lock // holospace is already taken: #{inspect holospace}"), agent}
+    else
+      # set that data to live at holospace and be static
+      data = data
+      |> Data.home(holospace)
+      |> Data.kind(Kind.data)
+      
+      # exclusively put data into space
+      :ok = Agent.update agent, fn map ->
+        Map.put map, holospace, data
+      end
+      
+      {:reply, data, agent}
+    end
+  end
+  
   def handle_call({:pull, holospace, secret}, source, agent) do
     map = Agent.get(agent, &(&1))
     data = Map.get(map, holospace)
@@ -140,9 +174,7 @@ defmodule Boot do
     {:reply, data, agent}
   end
   
-  def handle_call({:push, thing, holospace, secret, duration}, source, agent) do
-    Logger.debug "Boot:push // #{inspect data}"    
-    
+  def handle_call({:push, thing, holospace, secret, duration}, source, agent) do    
     # we need a namespace to share over..
     if is_nil holospace do
       holospace = Help.keycode

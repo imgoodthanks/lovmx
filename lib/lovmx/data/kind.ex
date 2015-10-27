@@ -24,7 +24,7 @@ defmodule Kind do
   ## Controls
   
   def boot, do: :boot # new/fresh
-  def data, do: :json # object/data/json
+  def data, do: :data # object/data/json
   def meta, do: :meta # meta/control
   def lock, do: :lock # lock/secret
   def list, do: :list # show/head/etc

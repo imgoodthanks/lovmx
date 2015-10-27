@@ -4,7 +4,7 @@ defmodule Drive do
   
   @moduledoc """
    # Drive
-  ## OS-level Blob Storage.
+  ## Disk or OS-level File/Blob Storage.
 
   Store and read items from the hard drives.
 

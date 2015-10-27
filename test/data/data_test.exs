@@ -13,8 +13,11 @@ defmodule Data.Test do
     
   test "Use `Data.renew` to add a help message.", do:
 		assert %Data{thing: :reboot} = Data.renew Data.new("whoa"), :reboot
-  
-  test "Use `Data.home` to add a help message." do
+
+  test "Use `Data.home <holospace>` to move data to a new holospace.", do:
+		assert %Data{thing: :reboot} = Data.renew Data.new("whoa"), :reboot
+    
+  test "Use `Data.home <machine>` to move data to a new process." do
     data = Data.new
     machine = Machine.boot data
   
