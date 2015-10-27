@@ -6,12 +6,7 @@ defmodule Cake do
   # Cake
   ## Sugary sweet Cloud App texting language
   ### Build industrial strength Orbital Magic apps in Seconds.
-  
-  All energy/matter/vibration of Bootspace is Cake.
-  And it's Cake all the way down. Except for the `binary`
-  that sits below Cake and which *ALL* calls should return. 
-  Then it looks more like: CakeN > CakeN+1 > binary.
-  
+
   Cake is a fun + simple Cloud App texting language for bringing
   Orbital Magic to your app. The idea is we type mostly plain 
   English code words like @share> homevideo.mp4 to activate ILvMx 
@@ -96,21 +91,19 @@ defmodule Cake do
     nil
   end
   
-  # def x(data = %Data{}, signal, "code", source) do
-  #   #Logger.debug "#path // #{inspect signal} // #{inspect data}"
-  #
-  #   data = Data.code(data, source)
-  #   #Logger.debug "#code // #{inspect source }"
-  #
-  #   {data, Pipe.text(source)}
-  # end
-  # def x(data = %Data{}, signal, "list", path) do
-  #   # get the list
-  #   list = Boot.space(path)
-  #   #Logger.debug "#list // #{inspect list}"
-  #
-  #   {Data.renew(data, list), Pipe.text(list)}
-  # end
+  def x(data = %Data{}, signal, "code", source) do
+    data = Bot.code(data, source)
+    #Logger.debug "#code // #{inspect source }"
+
+    {data, Pipe.text(source)}
+  end
+  def x(data = %Data{}, signal, "list", path) do
+    # get the list
+    list = Boot.space(path)
+    #Logger.debug "#list // #{inspect list}"
+
+    {Data.renew(data, list), Pipe.text(list)}
+  end
   def x(data = %Data{}, signal, "boot", opts) do
     Logger.warn "#boot // #{inspect signal}  #{inspect opts}"
     

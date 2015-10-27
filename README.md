@@ -1,33 +1,34 @@
 # LovMx + ILvMx.
 ## Orbital Magic for Cloud Apps.
-### LoveMx + Internet Love and #virtual Magic #exchange
 
-LovMx + ILvMx are free and open source nonprofit projects 
-to host a global namespace of code/data/blobs.
+# Orbital Magic for Cloud Apps.
+## A programmable Code + Data + Item Server
 
-We are fun (silljays.com).
-We develop a cloud app server (this project).
-We develop a reference cloud app client (lolnub.app). 
-We host a public data service (ilvmx.com).
-We give away the best Web Theme Park on the net. (lolnub.com)
+https://lovmx.com
 
-In a nutshell, we wanna build: 
- 
-*An Elixir-based Wolfram Language 
-powered by a Twitter like network 
-of Markdown-style documents 
-for Clients connected to their own private VPN/VM
-running an Orbital Magic framework written in the 
-sexiest language/runtime in the world, oh my dear love Erlang/Elixir, 
-for the purpose of creating a grassroots network
-of Code + Data + Data storage aka Cake Apps 
-written by commerce and community 
-in a *meticulously* namespaced 
-v2v storage-based network made 
-completely open source and transparent.*
+ILvMx &rarr; Internet Love and #virtual Magic #exchange
+are an open source server for creating functionally minded 
+cloud apps with global code + data + item storage, or 
+what we call Orbital Magic for Cloud Apps.
 
-Yeah that sounds right.
+tl;dr upload and visually create extremely fast web apps 
 
-Welcome to Bootspace. Here, take this map...
 
-# See `README.magic` for more info.
+A simple example
+- create a data/bot
+- code magic on README.magic
+- that we read and flow into data, with the :cake type
+- then Pipe it to create a page
+- then we compile/compute the data
+- then we put it online in nubspace at `readme`
+
+code(fn data ->
+  "README.magic"
+  |> read
+  |> into data, Kind.cake
+  |> magic
+  |> page "readme.html"
+end)
+|> take "See `README.magic` for more info."
+|> x
+|> orbit "readme"

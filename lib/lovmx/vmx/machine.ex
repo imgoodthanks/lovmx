@@ -120,47 +120,47 @@ defmodule Machine do
     # Init + Compile + Exe a full Data/Flow..
     data = Agent.get agent, &(&1)
     
-    # # PULL: Data.pull things into here
-    # {_, pull_list} = Enum.map_reduce data.pull, Map.new, fn {key, value}, current ->
-    #   Logger.debug ">>> // #{inspect key} // #{inspect value} // #{inspect current}"
-    #   case {key, value} do
-    #     # put in static/atomic data via a straight data.pull -> `value`
-    #     {key, value} when is_atom(key) and is_atom(value) ->
-    #       {key, value}
-    #
-    #     # put in dynamic/holospace data via a Boot.space
-    #     {key, value} when is_atom(key) or is_binary(key) ->
-    #       {key, Boot.space(key)}
-    #
-    #     # TODO: better support here
-    #     _ ->
-    #       {key, Kind.drop}
-    #   end
-    # end
-    # Logger.debug "Machine:pull_list // #{inspect pull_list}"
-    #
-    # # COMPUTE: exe Data.code and effects
-    # Enum.map data.code, fn x ->
-    #   Help.thaw(x).(data)
-    # end
-    #
-    # # Update all nubspace that this data has just pinged
-    # Enum.each data.push, fn {key, value} ->
-    #   case {key, value} do
-    #     # a process, so send a :data message
-    #     {key, value} when is_pid(value) ->
-    #       GenServer.call key, {Kind.pull, key, secret, duration}
-    #
-    #     {key, value} when is_atom(value) or is_binary(value) ->
-    #       Flow.x(data, key, secret)
-    #
-    #     _ -> nil
-    #   end
-    # end
-    # Logger.debug "Machine:push_list // #{inspect data.push}"
-    #
-    # # update map/space
-    # :ok = Agent.update agent, fn data -> data end
+    # PULL: Data.pull things into here
+    {_, pull_list} = Enum.map_reduce data.pull, Map.new, fn {key, value}, current ->
+      Logger.debug ">>> // #{inspect key} // #{inspect value} // #{inspect current}"
+      case {key, value} do
+        # put in static/atomic data via a straight data.pull -> `value`
+        {key, value} when is_atom(key) and is_atom(value) ->
+          {key, value}
+
+        # put in dynamic/holospace data via a Boot.space
+        {key, value} when is_atom(key) or is_binary(key) ->
+          {key, Boot.space(key)}
+
+        # TODO: better support here
+        _ ->
+          {key, Kind.drop}
+      end
+    end
+    Logger.debug "Machine:pull_list // #{inspect pull_list}"
+
+    # COMPUTE: exe Data.code and effects
+    Enum.map data.code, fn x ->
+      Help.thaw(x).(data)
+    end
+
+    # Update all nubspace that this data has just pinged
+    Enum.each data.push, fn {key, value} ->
+      case {key, value} do
+        # a process, so send a :data message
+        {key, value} when is_pid(value) ->
+          GenServer.call key, {Kind.pull, key, secret, duration}
+
+        {key, value} when is_atom(value) or is_binary(value) ->
+          Flow.x(data, key, secret)
+
+        _ -> nil
+      end
+    end
+    Logger.debug "Machine:push_list // #{inspect data.push}"
+
+    # update map/space
+    :ok = Agent.update agent, fn data -> data end
       
     {:reply, data, agent}
   end
