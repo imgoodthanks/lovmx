@@ -96,15 +96,23 @@ defmodule Cloud do
     holospace = Help.path(holospace)
     path = Help.root Help.web [holospace]
 
-    #Logger.debug "Cloud.holospace: #{holospace}"
-
     if File.exists?(path) and not File.dir?(path) do
       # use plug/send_file here for OS-level support
       send_file conn, 200, path
-    else
-      Logger.debug "Cloud.GET // #{holospace}"
-
-      resp conn, 200, Pipe.page Boot.space
+    else      
+      # we have a dynamic request
+      case data = Boot.space(holospace) do
+        data when is_list(data) ->
+          resp conn, 200, Pipe.page data
+        
+        data = %Data{kind: :link, thing: thing} when is_atom(thing) or is_binary(thing) ->
+          redirect conn, thing
+          
+        data = %Data{} ->
+          resp conn, 200, Pipe.page data
+          
+          _ -> send_resp(conn, 200, Pipe.page(data))
+      end
     end
   end
 
@@ -129,10 +137,23 @@ defmodule Cloud do
       Freezer.put(data.path, data.content_type, data.filename)
       |> Cloud.share(holospace)
     end
-
+    
     Logger.debug "Cloud.POST // #{holospace} // #{inspect conn.params}"
 
     resp conn, 200, Pipe.page Cloud.share(conn.params, holospace)
+  end
+  
+  @doc """  
+  Sends redirect response to provided url String
+  <snip>
+  Redirect pulled and modified from Phoenix:
+  /phoenix/blob/eae9c5dfcb81875c5bcb5b2ee5bdbd5eb9898bd9/lib/phoenix/controller/connection.ex
+  """
+  def redirect(conn, url), do: redirect(conn, :found, url)
+  def redirect(conn, status, url) do
+    conn
+    |> put_resp_header("Location", url)
+    |> send_resp(301, url)
   end
   
   match _ do
