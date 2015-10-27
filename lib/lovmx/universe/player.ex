@@ -7,25 +7,25 @@ defmodule Player do
   ## Interactive User Agent Component(s)
   
   Advanced Bot-like creatures that create and destroy 
-  inside the LovMx Orbital Cloudspace Network. ;)
+  inside the LovMx Orbital Bootspace Network. ;)
   """
 
   @doc "Sweet prince."
   def anon(secret \\ Help.keycode) do
     Data.new
-    |> Cloud.move secret
+    |> Boot.move secret
   end
 
   # @doc "Get details from the Player."
   # def quiz(topic, secret \\ Help.keycode) do
   #   topic
   #   |> Data.new(secret)
-  #   |> Cloud.space
+  #   |> Boot.space
   # end
   #
   # @doc "Sweet prince."
   # def items(secret \\ Help.keycode) do
-  #   Cloud.space("player")
+  #   Boot.space("player")
   # end
   #
   # @doc "Ask/broadcast to please take stuff from `player`."
@@ -39,7 +39,7 @@ defmodule Player do
   # def handle_cast({:data, source, holospace, secret}, computer) do
   #   #Cloud.share "Player.handle_call::grab: #{holospace} (#{inspect source})"
   #
-  #   #send source, Cloud.space(computer, holospace, secret)
+  #   #send source, Boot.space(computer, holospace, secret)
   #
   #   {:noreply, computer}
   # end

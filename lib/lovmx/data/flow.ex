@@ -4,8 +4,8 @@ defmodule Flow do
   
   @moduledoc """
   # Flow
-  ## Actions/Events
-  ### Computable Input/Output for Data.
+  ## Action/Event Graph
+  ### FBP Graph
   
   A data flow is the basic layout of an `application` or are the 
   Modules you need to define and respond to the various other 
@@ -13,10 +13,28 @@ defmodule Flow do
   all the available framework signals. 
   
   For example a Bot produces something that Flows into a Pipe and
-  out to the Cloud module for the world (Universe/Multiverse) to
+  out to the Flow module for the world (Universe/Multiverse) to
   see and use.
   """
+  
+  use GenServer
+  
+  ## META
+  
+  @doc "Use `Flow.space` to return *everything* in Bootspace share."
+  def map do
+    GenServer.call FlowServer, {Kind.meta}
+  end
+  
+  @doc "Broadcast `thing` *OUT* to the universe in the *BACKGROUND*."
+  def x(data = %Data{}, holospace \\ nil, secret \\ nil) do
+    # Task.async fn ->
+    #   GenServer.call FlowServer, {Kind.push, data, holospace, secret}
+    # end
     
+    data
+  end
+  
   ## IN
   
   @doc "Put `thing` *INTO* `data.thing`."
@@ -26,14 +44,12 @@ defmodule Flow do
   def into(thing, data = %Data{}) do
     data
     |> Data.renew(thing)
-    |> Cloud.x
   end
     
   @doc "Map `holospace` *INTO* `data.pull`."
   def pull(data = %Data{}, holospace, secret \\ nil) when is_atom(holospace) or is_binary(holospace) do
     # embed that to the current player process.
     put_in(data.pull, Map.put(data.pull, holospace, Kind.boot))
-    |> Cloud.x(holospace, secret)
   end
   
   @doc "Put `thing` *INTO* `data.pull` at `signal`."
@@ -41,14 +57,13 @@ defmodule Flow do
     #Logger.debug "Flow.take // #{data.keycode} // #{signal} // #{inspect thing}"
 
     put_in(data.pull, Map.put(data.pull, signal, thing))
-    |> Cloud.x
   end
   
   @doc "Walk `holospace` and put into `data.pull`."
   def walk(data, holospace \\ "/", secret \\ nil) when is_atom(holospace) or is_binary(holospace) do
     #Logger.debug "Flow.push // #{holospace} // #{inspect data}"
 
-    list = Cloud.space(holospace, secret)
+    list = Flow.space(holospace, secret)
   
     unless Enum.empty? list do
       data = List.first Enum.map list, fn path ->
@@ -57,22 +72,51 @@ defmodule Flow do
     end
     
     # flow it babe
-    Cloud.x data, holospace, secret
+    Flow.x data, holospace, secret
   end
     
   ## OUT
-  
+    
   @doc "From `data` *to* `machine` or `holospace` in the *BACKGROUND*."
   def push(data = %Data{}, holospace, secret \\ nil) do
     put_in(data.push, Map.put(data.push, holospace, Kind.push))
-    |> Cloud.x(holospace, secret)
+    |> Flow.x(holospace, secret)
   end
   
-  # @doc "From `data` *to* `machine` or `holospace` and *WAIT*."
-  # def wait(data = %Data{}, holospace, secret \\ nil) do
-  #   # todo: call/receive for a data/signal from `holospace`
-  #   put_in(data.push, Map.put(data.push, holospace, Kind.wait))
-  #   |> Cloud.x(holospace, secret)
-  # end
+  @doc "From `data` *to* `machine` or `holospace` and *WAIT*."
+  def wait(data = %Data{}, holospace, secret \\ nil) do
+    # todo: call/receive for a data/signal from `holospace`
+    put_in(data.push, Map.put(data.push, holospace, Kind.wait))
+    |> Flow.x(holospace, secret)
+  end
+  
+  ## Callbacks
+  
+  def handle_call({:meta}, source, agent) do
+    {:reply, Agent.get(agent, &(&1)), agent}
+  end
+  
+  def handle_call({:push, data = %Data{}, _holospace, _secret, duration}, source, agent) do
+    Logger.debug "Flow:push #{inspect data.keycode}"    
+
+    # update map/space
+    :ok = Agent.update agent, fn map ->
+      Map.put map, data.keycode, data
+    end
+    
+    # return the data
+    {:reply, data, agent}
+  end
+  
+  def start_link(_) do
+    # An agent that we'll eventually pass around to the *all* the Flow servers...
+    link = {:ok, agent} = Agent.start_link(fn -> Map.new end)
+    
+    # Keep the map in memory for fluffiness.
+    link = {:ok, holo} = GenServer.start_link(Flow, agent, name: FlowServer, debug: [])
+    Logger.info "Flow.start_link #{inspect link}"
+    
+    link
+  end
   
 end

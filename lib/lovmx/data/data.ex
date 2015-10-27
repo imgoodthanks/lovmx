@@ -5,6 +5,7 @@ defmodule Data do
   @moduledoc """
   # Data
   ## Tree of Life.
+  ### Computable Input/Output.
   
   Data is both a particle (module) *and* a wave (capture/flow). 
   Data changes, thats the secret. We create Data and we *change* 
@@ -57,7 +58,7 @@ defmodule Data do
     ping: %{}     # *latest/social* (aka Social)
 
   @derive [Enumerable]
-
+  
   ## Creating Data - See `flow.ex` and `pipe.ex` for more about data flows.
   
   @doc "Use `Data.new` to create new Data from thing `real` data."
@@ -70,9 +71,9 @@ defmodule Data do
            meta: Map.merge(%{}, meta || %{}),
          thing: thing
     }
-    |> Cloud.x
+    |> Flow.x
   end
-  
+    
   @doc "Restart Data w/ new `thing`."
   def renew(data = %Data{}, thing) do
     # save a rollback version
@@ -89,7 +90,7 @@ defmodule Data do
     
     # save + update
     data = put_in(data.roll, Enum.concat(data.roll, [Data.address(data)]))
-    |> Cloud.x
+    |> Flow.x
     
     # are we completely rebooting this tick?
     if reboot = Keyword.get(opts, :reboot, false) do
@@ -104,13 +105,13 @@ defmodule Data do
     
     # Update the world.
     data = put_in(data.tick, data.tick + 1)
-    |> Cloud.x
+    |> Flow.x
   end
   
   @doc "Use `Kind.meta` controls to help the data flow."
   def meta(data = %Data{}, signal, effect \\ nil) do
     put_in(data.meta, Map.put(data.meta, signal, effect))
-    |> Cloud.x
+    |> Flow.x
   end
 
   @doc "Use `Data.kind` to mutate the data type using custom or Kind types."
@@ -121,7 +122,7 @@ defmodule Data do
   @doc "Readme first."
   def help(data = %Data{}, message) do
     put_in(data.help, Enum.concat(data.help, [message]))
-    |> Cloud.x
+    |> Flow.x
   end
   
   @doc "Return *current* `data.thing`."
@@ -138,26 +139,7 @@ defmodule Data do
   def path(path, data = %Data{}) when is_atom(path) or is_binary(path) do
     Map.get data.pull, path
   end
-  
-  def code(function) when is_function(function) do
-    code Data.new, function
-  end
-  def code(data = %Data{}, function) when is_function(function) do
-    # todo: better update meta
-    Data.tick put_in(data.code, Enum.concat(data.code, [function]))
-  end
-  def code(block = [do: _]) do
-    code Data.new, block
-  end
-  def code(data = %Data{}, block = [do: _]) do
-    code data, fn data ->
-      block
-    end
-  end
-  def code(data = %Data{home: machine}, holospace \\ nil, secret \\ nil, duration \\ nil) when is_pid(machine) do
-    GenServer.call data.home, {:code, holospace, secret, duration}
-  end
-  
+    
   @doc "Morph Data into whatever `function` returns."
   def morph(data = %Data{}, function) when is_function(function) do
     # Data can morph, return whatever Data or other thing from function
@@ -201,21 +183,21 @@ defmodule Data do
     roll address(data, opts)
   end
   def roll(holospace) when is_atom(holospace) or is_binary(holospace) do
-    Cloud.read Help.web holospace
+    Drive.read Help.web holospace
   end
   
-  # @doc "Jump data to an unknown future if exe `code` passes `test`."
-  # def jump(data = %Data{}, holospace, code, test) do
-  #   result = code.(data)
-  #
-  #   if test.(result) do
-  #     data = put_in(data.jump, Map.put(data.jump, holospace, result))
-  #     |> Data.tick
-  #     |> Cloud.x
-  #   else
-  #     data
-  #   end
-  # end
+  @doc "Jump data to an unknown future if exe `code` passes `test`."
+  def jump(data = %Data{}, holospace, code, test) do
+    result = code.(data)
+
+    if test.(result) do
+      data = put_in(data.jump, Map.put(data.jump, holospace, result))
+      |> Data.tick
+      |> Flow.x
+    else
+      data
+    end
+  end
   
   ## Meta/Error/Exception
   
@@ -229,5 +211,4 @@ defmodule Data do
     %{ data | boom: Enum.concat(data.boom, [error]) }
     |> Data.tick
   end
-  
 end

@@ -32,19 +32,19 @@ defmodule Lovmx do
   We host a public data service (ilvmx.com).
   We give away the best Web Theme Park on the net. (lolnub.com)
   
-  Welcome to Cloudspace. Here, take this map...
+  Welcome to Bootspace. Here, take this map...
 
   See `README.magic` or @readme inside LovMx for more.
   
   ## NOTES
   #############################################################
   
-  # Check out Bridge for a standard LovMx module, it also
+  # Check out Warp for a standard LovMx module, it also
   # works well as an example `Application` (aka the Elixir 
   # Module) you would need to write to use the LovMx on
   # your own.
 
-  # This Bridge uses the server flavor of OrbitalMagic 
+  # This Warp uses the server flavor of OrbitalMagic 
   # but we also have an awesome Maru based include for
   # building data APIs.. check out `lib/cake.ex` to see 
   # more about and how other Orbital Magic works.
@@ -86,7 +86,8 @@ defmodule Lovmx do
     children = [
       worker(Wizard,     [self]), # janitor
       worker(Machine,    [self]), # code/data/exe
-      worker(Cloud,      [self]), # io/internal
+      worker(Boot,       [self]), # code/data/exe
+      worker(Flow,       [self]), # io/internal
     ]
 
     # See http://elixir-lang.org/docs/stable/elixir/Supervisor.html
@@ -106,6 +107,9 @@ defmodule Lovmx do
     # Kickoff the First Creation of Init.
     Wizard.bang
     
+    # HTTPS kickoff.
+    Cloud.kick secure: File.exists? Help.root "priv/ssl/cert.pem"
+    
     link
   end
 
@@ -113,7 +117,7 @@ defmodule Lovmx do
 
   @doc "Readme first. Don't panic."
   def help do
-    "README.magic" |> Cloud.read |> Cake.magic
+    "README.magic" |> Drive.read |> Cake.magic
   end
 
   ## Exit
@@ -122,8 +126,8 @@ defmodule Lovmx do
   def terminate(message, data) do
     #####Cloud.share "Lovmx.terminate: #{inspect data} message: #{inspect message}"
     
-    # todo: properly shutdown the Bridge
-    # Plug.Adapters.Cowboy.shutdown Bridge.HTTPS
+    # todo: properly shutdown the Warp
+    # Plug.Adapters.Cowboy.shutdown Warp.HTTPS
     
     {:noreply, data}
   end

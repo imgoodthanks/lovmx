@@ -19,8 +19,8 @@ defmodule NoFlo.Runtime.Test do
   # secret: access token to authorize the user
   # Bots can handle access control by limiting capabilities based on the received token.
 
-  test "Bridge.runtime", do:
-		assert Bridge.runtime %Data{}
+  test "Warp.runtime", do:
+		assert Warp.runtime %Data{}
 
   # runtime
   #
@@ -46,8 +46,8 @@ defmodule NoFlo.Runtime.Test do
   # If the runtime is currently running a graph and it is able to speak the full Bot protocol, it should follow up with a ports message.
 
 
-  test "Bridge.ports", do:
-		assert Bridge.ports %Data{}
+  test "Warp.ports", do:
+		assert Warp.ports %Data{}
 
   # ports
   #
@@ -68,8 +68,8 @@ defmodule NoFlo.Runtime.Test do
   # required: boolean telling whether the port needs to be connected for the component to work
 
 
-  test "Bridge.packet", do:
-		assert Bridge.packet %Data{}
+  test "Warp.packet", do:
+		assert Warp.packet %Data{}
 
   # packet
   #

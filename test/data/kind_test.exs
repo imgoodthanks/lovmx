@@ -1,8 +1,5 @@
-defmodule Cake.Test do
+defmodule Kind.Test do
   use ExUnit.Case
-  
-  test "Use `Cake.magic` to add magic and make Bot ready for work.", do:
-		assert %Data{thing: list} = Cake.magic "@list. img"
 
   ## Types
 
@@ -25,18 +22,5 @@ defmodule Cake.Test do
   test "Kind.cake", do: assert :cake == Kind.cake
 
   test "Kind.boom", do: assert :boom == Kind.boom
- 
-  test "Cake does cool stuff", do:
-		assert %Data{thing: "<h1>lol</h1>\n"} = Cake.magic Data.new "# lol"
 
-  test "Cake does nil stuff", do:
-		assert is_nil Cake.magic nil
-
-  # test "Cake.magic `@boot> stuff`" do
-  #     data = "@boot> lol"
-  #   |> Cake.magic
-  #
-  #   assert is_pid data.home
-  # end
-  
 end

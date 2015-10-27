@@ -293,7 +293,7 @@ Creating a new Cake app.
 |> share # send it into holospace
 
 # # LovMx + ILvMx.
-# ## Welcome to Cloudspace.
+# ## Welcome to Bootspace.
 # ### Orbital Magic for Cloud Apps.
 #
 # LovMx + ILvMx are free and open source nonprofit projects
@@ -322,7 +322,7 @@ Creating a new Cake app.
 #
 # Yeah that sounds right.
 #
-# Welcome to Cloudspace. Here, take this map...
+# Welcome to Bootspace. Here, take this map...
 #
 # # Chapter 1. LovMx Tree of Life.
 #
@@ -337,7 +337,7 @@ Creating a new Cake app.
 #
 # # universe
 # - Bot // easily create code + data components w/ a variety of data
-# - Bridge // default HTTPS API server and NoFlo gateway
+# - Warp // default HTTPS API server and NoFlo gateway
 # - Player // user agents
 #
 # # vmx
@@ -442,7 +442,7 @@ Creating a new Cake app.
 # |> Data.new(Kind.auto)
 # |> Flow.x("#create a data/flow that we can push/pull/animate with")
 # |> Flow.r("#pipe a magic down (markdown+) like file at `data.pull.magic`")
-# |> Flow.i(Kind.magic, Pipe.down Cloud.read "README.magic")
+# |> Flow.i(Kind.magic, Pipe.down Drive.read "README.magic")
 # |> Flow.i(Kind.text, "checkout `Data#types` or just use custom data here to works"),
 # |> Flow.i(Kind.html, Cloud.compile)
 # |> Flow.i(Kind.code, Data.code do
@@ -455,7 +455,7 @@ Creating a new Cake app.
 # |> Flow.i(Kind.code, Data.code)
 # |> Flow.r("#text", "let's create a web page first")
 # |> Flow.o(Web.post)
-# |> Cloud.x
+# |> Flow.x
 #
 # # That should be fairly clear.
 #
@@ -478,18 +478,18 @@ Creating a new Cake app.
 #
 # # Storing stuff publically from the Computer or server."
 #
-# Cloud.push "about", Cloud.read "README.magic"
+# Cloud.push "about", Drive.read "README.magic"
 #
 # # Reading stuff from the public Computer or server drives."
 #
-# Cloud.space "about"
+# Boot.space "about"
 #
 # # Creating stuff in memory only.
 #
 # fn bot -> Cloud.compile "https://reddit.com/r/#{bot.pull.uri}" end
 # |> Data.code
-# |> Cloud.x
-# |> Cloud.x "whateverpath", "whateverpassword"
+# |> Flow.x
+# |> Flow.x "whateverpath", "whateverpassword"
 #
 # # Reading all scenes from private memory.
 # Cloud.y
@@ -516,11 +516,11 @@ Creating a new Cake app.
 #
 # # Chapter 4. Maru Routers for advanced data flows.
 #
-# Working Code showing how to process routes in Cloudspace + add content.
+# Working Code showing how to process routes in Bootspace + add content.
 # ########################################################################
 #
 # ```
-# Cloud.x "Chapter 4. // basically do all of the stuff above.."
+# Flow.x "Chapter 4. // basically do all of the stuff above.."
 #
 # defmodule Readme.Web do
 #
@@ -534,7 +534,7 @@ Creating a new Cake app.
 #
 #   https://maru.readme.io
 #
-#   Universe(s) are the *center* of `Cloud.Cloudspace` where all
+#   Universe(s) are the *center* of `Cloud.Bootspace` where all
 #   *UNIQUE* code/data/flows are *merged* into a single cohesive
 #   Universe-wide hologram to be namespaced, stored, and experienced.
 #
@@ -569,7 +569,7 @@ Creating a new Cake app.
 #
 #   # A stub into the Universe below...
 #   get do
-#     Cloud.read "README.magic"
+#     Drive.read "README.magic"
 #   end
 #
 # end

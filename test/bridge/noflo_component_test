@@ -29,12 +29,12 @@ defmodule NoFlo.Component.Test do
   # #
   # # secret: access token to authorize the user
   # """
-  # test "Bridge.list",
-  # do: assert Bridge.list %Data{}
+  # test "Warp.list",
+  # do: assert Warp.list %Data{}
 
 
-  #test "Bridge.component",
-  #do: assert Bridge.component %Data{}
+  #test "Warp.component",
+  #do: assert Warp.component %Data{}
   #
   ## component
   ##
@@ -59,8 +59,8 @@ defmodule NoFlo.Component.Test do
   ## addressable: boolean telling whether the port is an ArrayPort
   ## required: boolean telling whether the port needs to be connected for the component to work
   #
-  #test "Bridge.componentsready",
-  #do: assert Bridge.componentsready %Data{}
+  #test "Warp.componentsready",
+  #do: assert Warp.componentsready %Data{}
   #
   ## componentsready
   ##
@@ -77,8 +77,8 @@ defmodule NoFlo.Component.Test do
   ## secret: access token to authorize the user
   #
   #
-  #test "Bridge.source",
-  #do: assert Bridge.source %Data{}
+  #test "Warp.source",
+  #do: assert Warp.source %Data{}
   #
   ## source
   ##

@@ -21,7 +21,7 @@ defmodule Wizard do
     Process.whereis WizardServer
   end
   
-  @doc "Use `Cloud.bang` to start Cloudspace."
+  @doc "Use `Cloud.bang` to start Bootspace."
   def bang(path \\ "README.magic", opts \\ []) do
     GenServer.cast WizardServer, {:bang, path, opts}
     
@@ -40,7 +40,7 @@ defmodule Wizard do
     self
   end
 
-  @doc "Save Cloudspace to `priv/holospace.term`."
+  @doc "Save Bootspace to `priv/holospace.term`."
   def freeze do
     GenServer.cast WizardServer, :freeze
     
@@ -48,11 +48,11 @@ defmodule Wizard do
   end
     
   @doc """
-  WARNING: Destroy various parts of the Multiverse.
+  WARNING: Destroy various parts of the Universe + Bootspace.
   
   *thundering sounds*
   
-  Accepts an atom `:holospace` for destroying the dynamic Cloudspace and
+  Accepts an atom `:holospace` for destroying the dynamic Bootspace and
   `:universe` for destroying the static file system Universe.
   """
   def reset(opts \\ []) do
@@ -70,37 +70,37 @@ defmodule Wizard do
   def handle_cast({:bang, path, opts}, agent) do
     Logger.info "Wizard.bang // #{inspect Help.project path}"
     
-    # are we reloading an existing Cloudspace?
+    # are we reloading an existing Bootspace?
     reboot = Keyword.get(opts, :reboot, false)
     
     if reboot and File.exists?(Help.project ["priv", "holospace.term"]) do
-      archive = Help.thaw Cloud.read Help.path ["priv", "holospace.term"]
+      archive = Help.thaw Drive.read Help.path ["priv", "holospace.term"]
     end
     
-    # compute the initial holospace network
+    # First creation of the initial holospace network
     "README.magic"
     |> read # read the file
     |> magic # compile magicdown (markdown+) into data/bot
     |> share "help"# send it into holospace
-
+    
     # Second Creation of Waitforit.
     Task.async fn -> 
       Wizard.tick(self) 
     end
-    
+
     {:noreply, agent}
   end
   
   def handle_cast(:tick, agent) do
     #Logger.info "Wizard:tick"
-    #Cloud.x self, "wizard/tick"
+    #Flow.x self, "wizard/tick"
     
     {:noreply, agent}
   end
   
   def handle_cast(:tock, agent) do
     #Logger.info "Wizard:tock"
-    #Cloud.x self, "wizard/tock"
+    #Flow.x self, "wizard/tock"
 
     # TODO: "janitorial tasks"
     # - archive magic
@@ -117,9 +117,9 @@ defmodule Wizard do
   def handle_cast(:freeze, agent) do
     Logger.info "Wizard.freeze"
     
-    Cloud.space
+    Boot.space
     |> Help.freeze
-    |> Cloud.write(Help.path ["priv", "holospace.term"])
+    |> Drive.write(Help.path ["priv", "holospace.term"])
     
     {:noreply, agent}
   end

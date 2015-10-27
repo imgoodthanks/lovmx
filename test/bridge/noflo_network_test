@@ -7,8 +7,8 @@ defmodule NoFlo.Network.Test do
   # Protocol for starting and stopping FBP networks, and finding out about their state.
 
 
-  # test "Bridge.start",
-  # do: assert Bridge.start %Data{}
+  # test "Warp.start",
+  # do: assert Warp.start %Data{}
 
   # # start
 #   #
@@ -31,8 +31,8 @@ defmodule NoFlo.Network.Test do
 #
 #
 #
-#   test "Bridge.stop",
-#   do: assert Bridge.stop %Data{}
+#   test "Warp.stop",
+#   do: assert Warp.stop %Data{}
 #
 #   # stop
 #   #
@@ -43,8 +43,8 @@ defmodule NoFlo.Network.Test do
 #
 #
 #
-#   test "Bridge.persist",
-#   do: assert Bridge.persist %Data{}
+#   test "Warp.persist",
+#   do: assert Warp.persist %Data{}
 #
 #   # persist
 #   #
@@ -54,8 +54,8 @@ defmodule NoFlo.Network.Test do
 #
 #
 #
-#   test "Bridge.started",
-#   do: assert Bridge.started %Data{}
+#   test "Warp.started",
+#   do: assert Warp.started %Data{}
 #
 #   # started
 #   #
@@ -68,8 +68,8 @@ defmodule NoFlo.Network.Test do
 #   # uptime: (optional) time the network has been running, in seconds
 #
 #
-#   test "Bridge.status",
-#   do: assert Bridge.status %Data{}
+#   test "Warp.status",
+#   do: assert Warp.status %Data{}
 #
 #   # status
 #   #
@@ -83,8 +83,8 @@ defmodule NoFlo.Network.Test do
 #
 #
 #
-#   test "Bridge.stopped",
-#   do: assert Bridge.stopped %Data{}
+#   test "Warp.stopped",
+#   do: assert Warp.stopped %Data{}
 #
 #   # stopped
 #   #
@@ -98,8 +98,8 @@ defmodule NoFlo.Network.Test do
 #
 #
 #
-#   test "Bridge.debug",
-#   do: assert Bridge.debug %Data{}
+#   test "Warp.debug",
+#   do: assert Warp.debug %Data{}
 #
 #   # debug
 #   #
@@ -112,8 +112,8 @@ defmodule NoFlo.Network.Test do
 #
 #
 #
-#   test "Bridge.icon",
-#   do: assert Bridge.icon %Data{}
+#   test "Warp.icon",
+#   do: assert Warp.icon %Data{}
 #
 #   # icon
 #   #
@@ -125,8 +125,8 @@ defmodule NoFlo.Network.Test do
 #
 #
 #
-#   test "Bridge.output",
-#   do: assert Bridge.output %Data{}
+#   test "Warp.output",
+#   do: assert Warp.output %Data{}
 #
 #   # output
 #   #
@@ -138,8 +138,8 @@ defmodule NoFlo.Network.Test do
 #
 #
 #
-#   test "Bridge.error",
-#   do: assert Bridge.error %Data{}
+#   test "Warp.error",
+#   do: assert Warp.error %Data{}
 #
 #   # error
 #   #
@@ -149,8 +149,8 @@ defmodule NoFlo.Network.Test do
 #
 #
 #
-#   test "Bridge.processerror",
-#   do: assert Bridge.processerror %Data{}
+#   test "Warp.processerror",
+#   do: assert Warp.processerror %Data{}
 #
 #   # processerror
 #   #
@@ -162,8 +162,8 @@ defmodule NoFlo.Network.Test do
 #
 #
 #
-#   test "Bridge.connect",
-#   do: assert Bridge.connect %Data{}
+#   test "Warp.connect",
+#   do: assert Warp.connect %Data{}
 #
 #   # connect
 #   #
@@ -180,8 +180,8 @@ defmodule NoFlo.Network.Test do
 #   # subgraph (optional): subgraph identifier for the event. An array of node IDs
 #
 #
-#   test "Bridge.begingroup",
-#   do: assert Bridge.begingroup %Data{}
+#   test "Warp.begingroup",
+#   do: assert Warp.begingroup %Data{}
 #
 #   # begingroup
 #   #
@@ -200,8 +200,8 @@ defmodule NoFlo.Network.Test do
 #
 #
 #
-#   test "Bridge.pull",
-#   do: assert Bridge.pull %Data{}
+#   test "Warp.pull",
+#   do: assert Warp.pull %Data{}
 #
 #   # data
 #   #
@@ -220,8 +220,8 @@ defmodule NoFlo.Network.Test do
 #
 #
 #
-#   test "Bridge.endgroup",
-#   do: assert Bridge.endgroup %Data{}
+#   test "Warp.endgroup",
+#   do: assert Warp.endgroup %Data{}
 #
 #   # endgroup
 #   #
@@ -240,8 +240,8 @@ defmodule NoFlo.Network.Test do
 #
 #
 #
-#   test "Bridge.disconnect",
-#   do: assert Bridge.disconnect %Data{}
+#   test "Warp.disconnect",
+#   do: assert Warp.disconnect %Data{}
 #
 #   # disconnect
 #   #
@@ -262,8 +262,8 @@ defmodule NoFlo.Network.Test do
 #
 #
 #
-#   test "Bridge.edges",
-#   do: assert Bridge.edges %Data{}
+#   test "Warp.edges",
+#   do: assert Warp.edges %Data{}
 #
 #   # edges: list of selected edges, each containing
 #   # src: source node for the edge

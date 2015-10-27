@@ -1,30 +1,60 @@
 require Logger
 
 defmodule Cloud do
-  
+
   @moduledoc """
   # Cloud
-  ## Cloudspace Management
-  ### Cloud manages the entire dynamic + static hologram.
+  ## HTTP/HTTPS + NoFlo + Web.
   
-  Cloud renders the local Universe (aka your App) by
-  routing Player data to Machine code and graphing,
-  routing, and piping the side effects as needed.
-
-  Cloud signals into the Machine and other parts of the 
-  framework often in order to best get/create/update 
-  whatever your little heart asks for. Like magic, but 
-  with software boom.
+  Cloud(s) poly between the Cloud and Multiverse worlds, 
+  other NoFlo networks, other frameworks (Node/Rails), 
+  the Platform/Unix/Mac/Windows systems below, and other 
+  pipelines too.
+  """
   
-  tl;dr Global Namespace + Push Data into the Machine.
-  """  
+  # Cool Modules
+  use OrbitalMagic
 
-  use GenServer
-  import Kind
+  @parsers [Plug.Parsers.MULTIPART, Plug.Parsers.URLENCODED]
+  @upload 200_000_000
+  
+  # todo: add custom Cloud/Cloud support.
+  # todo: dynamically build @static from `lib/drive` BOM.
+  @static [
+    "blob",
+    "css",
+    "help",
+    "data",
+    "html",
+    "img",
+    "js",
+  ]
+
+  plug Plug.Logger
+  if Mix.env == :dev do
+    use Plug.Debugger
+  end
+  
+  # The result returned by init/1 is passed as second argument to call/2. Note that
+  # init/1 may be called during compilation and as such it must not return pids,
+  # ports or values that are not specific to the runtime.
+
+  @doc "We live in an HTTPS Multiverse."
+  def port, do: System.get_env("LOVMX_SECURE_PORT") || 8443
+
+  @doc "We need to Plug.init."
+  def init(secure_by_default \\ nil) do
+    {:ok, agent} = Agent.start_link fn -> Map.new end
+    
+    # broadcast ourself
+    #Cloud.share agent, "tube/agent"
+
+    agent
+  end
   
   ## Web
   
-  @doc "Return things from Web.Cloudspace or the internet."
+  @doc "Return things from Web.Bootspace or the internet."
   def get(holospace \\ "/", secret \\ nil) when is_atom(holospace) or is_binary(holospace) do
     regex = ~r/^https\:/i
 
@@ -39,260 +69,117 @@ defmodule Cloud do
       # an internal lovmx call
       holospace
       |> Help.web
-      |> read
+      |> Drive.read
     end
   end
   
-  ## Holospace (internal web-readable static/dynamic storage)
-  
-  @doc "Use `Cloud.space` to return *everything* in Cloudspace share."
-  def space do
-    GenServer.call CloudServer, {Kind.meta}
-  end
-  
-  @doc "Use `Cloud.space <signal>` to look at and return *SPECIFIC* data at `holospace`."
-  def space(holospace, secret \\ nil) when is_atom(holospace) or is_binary(holospace) do
-    GenServer.call CloudServer, {Kind.pull, holospace, secret}
-  end
-  
-  # @doc "Use `Cloud.data <signal>` to return *ALL* `<data>.thing` at `holospace`."
-  # def data(machine, secret \\ nil, duration \\ Help.tock) when is_pid(machine) do
-  #   compute machine, secret, duration
-  # end
-  
-  @doc "Use `Cloud.list <holospace>` to return a [list] of things at `holospace`."
-  def list(holospace \\ "/", secret \\ nil) when is_atom(holospace) or is_binary(holospace) do
-    GenServer.call CloudServer, {Kind.list, holospace, secret}
-  end
-  
-  @doc "Give `data` a new home at `process`."    
-  def home(data = %Data{}, process) when is_pid(process) do
-    # # say goodbye
-    # if not is_nil data.home and is_pid data.home and Process.alive? data.home do
-    #   Process.exit(data.home, :normal)
-    # end
+  @doc "We walk the Cloud."
+  def kick(opts \\ []) do
+    # todo: we developed in and *will ship* SSL/secure by default, 
+    # just want to do an easier release and need to get the SSL
+    # guide written up on lovmx.com first.
+    secure_by_default = Keyword.get opts, :secure, nil
     
-    # update the data
-    Data.tick(put_in data.home, process)
-    |> Cloud.x
-  end
-  
-  @doc "Move `data` to `holospace`."  
-  def move(data = %Data{}, holospace, secret \\ nil) when is_atom(holospace) or is_binary(holospace) do
-    # say goodbye
-    Cloud.forget(data.home, secret)
-    
-    put_in(data.home, holospace)
-    |> Cloud.x
-  end
-  
-  @doc "Use `Cloud.x` and `Cloud.share` to start a `Machine` at `holospace` with `data`."
-  def x(data = %Data{}, _holospace \\ nil, _secret \\ nil) do
-    # Task.async fn ->
-    #   Cloud.share(data)
-    # end
-    
-    data
-  end
-  def share(thing, holospace \\ nil, secret \\ nil, duration \\ Help.long) do
-    Logger.debug "Cloud:share // #{inspect data}"    
-    
-    GenServer.call CloudServer, {Kind.push, data, holospace, secret, duration}
-  end
-  
-  # @doc "Write raw `thing` data to the root of the Multiverse / Unix file system."
-  # def orbit(thing, aboslute, secret)
-  
-  @doc "WARNING: Destroy `holospace`. *thundering sounds*"
-  def forget(holospace \\ nil, secret \\ nil) when is_atom(holospace) or is_binary(holospace) do
-   # todo: return true if the thing has not spread to holospace
-   # otherwise radio "unable to erase" + remove the object
-   GenServer.cast CloudServer, {Kind.drop, holospace, secret}
-   
-   holospace
-  end
-  
-  ## File System
-    
-  @doc "Read private/project-based files from `$project/<path>`."
-  def read(path, _secret \\ nil) do
-    # build the path
-    root = Help.project path
-
-    Logger.debug "Cloud.read: #{root}"
-
-    # either read the file, or list the dir
-    if File.exists? root do
-      case File.dir? root do
-        false ->
-          Help.thaw File.read!(root)
-
-        true  ->
-          {:ok, files} = File.ls root
-
-          # fixup the basename to hide inside the warp drive
-          basename = Path.basename(path)
-          if Path.basename(path) == "static" do
-            basename = "/"
-          end
-
-          List.wrap(files)
-          |> Enum.map(fn x ->
-            Data.new(x, Kind.link, %{path: root})
-          end)
-      end
+    # hack: start the Cloud/API server until a proper API is in place
+    if secure_by_default do 
+      Plug.Adapters.Cowboy.https(Cloud, secure_by_default, port: Cloud.port,
+       otp_app: :lovmx,   
+      password: "secretlols",         # CHANGE YOUR PASSWORD TO YOUR SSL CERT PASSWORD
+       keyfile: "priv/ssl/key.pem",   # install the key and certificate
+      certfile: "priv/ssl/cert.pem")
     else
-      nil
+      Plug.Adapters.Cowboy.http(Cloud, secure_by_default, port: Cloud.port) 
+    end
+  end
+
+  @doc "GET: Route *all* generic PULL signals from HTTPS."  
+  def call(conn = %Plug.Conn{method: "GET", path_info: holospace}, agent) do
+    if holospace in [[], [""], nil] do
+      holospace = "/"
+    end
+
+    holospace = Help.path(holospace)
+    path = Help.root Help.web [holospace]
+
+    #Logger.debug "Cloud.holospace: #{holospace}"
+
+    if File.exists?(path) and not File.dir?(path) do
+      # use plug/send_file here for OS-level support
+      send_file conn, 200, path
+    else
+      Logger.debug "Cloud.GET // #{holospace}"
+      
+      resp conn, 200, Pipe.page Boot.space
     end
   end
   
-  @doc "Save `data` to `holospace` with Magic features."  
-  def save(data = %Data{}, holospace \\ nil, secret \\ nil) when is_nil(holospace) or is_atom(holospace) or is_binary(holospace) do
-    # TODO: support secrets
-    
-    # writing to data's home, or holospace?
-    if is_nil holospace do
-      holospace = Data.address data
+  @doc "POST: Route *all* generic PUSH signals from HTTPS."  
+  def call(conn = %Plug.Conn{method: "POST", path_info: holospace}, agent) do
+    if holospace in [[], [""], nil] do
+      holospace = "/"
     end
-    path = Help.path [holospace, Kind.boot]
     
-    write Help.freeze(data), path, secret
-    #Logger.debug "Cloud.save: #{Help.path([holospace, Kind.boot])}"
+    holospace = Help.path(holospace)
+    path = Help.root Help.web [holospace]
     
-    data
+    # first parse the conn for params/binaries/etc
+    conn = Plug.Parsers.call conn, parsers: @parsers, limit: @upload_limit
+
+    # grab our payload(s)
+    data = conn.params["data"]
+    code = conn.params["code"]
+
+    # create the item
+    if data do
+      Freezer.put(data.path, data.content_type, data.filename)
+      |> Cloud.share(holospace)
+    end
+    
+    Logger.debug "Cloud.POST // #{holospace} // #{inspect conn.params}"
+    
+    resp conn, 200, Pipe.page Cloud.share(conn.params, holospace)
   end
-
-  @doc "Write raw `thing` data to `$project/<path>`."
-  def write(thing, path \\ nil, secret \\ nil) when is_nil(path) or is_atom(path) or is_binary(path) do
-    absolute = Help.root Help.web path
-
-    # create the enclosing path
-    File.mkdir_p Path.dirname absolute
-
-    # write the data out
-    File.write! absolute, Help.freeze(thing), [:write]
-    #Logger.debug "Cloud.write: #{Help.path([absolute, Kind.boot])}"
-
-    thing
+  
+  @doc "Even the Universe misses things."
+  match _ do
+    # TODO: forward to the wizard for defensive purposes.
+    send_resp(conn, 404, "oops")
   end
+  
+  ## Saving
+  
+  #   @doc "Put things into Web.Nubspace."
+  #   def push(thing, nubspace \\ nil, lock \\ nil)
+  #   def push(bot = %Data{}, nubspace, lock) do
+  #     # /bot/example/json
+  #     Drive.push Data.json(["#{bot.tick}", bot.keycode, Bot.pull(bot)]), LovMx.data ["#{bot.tick}", bot.keycode, "json"]
+  #     # /bot/example/html
+  #     Drive.push Data.html(bot), LovMx.data ["#{bot.tick}", bot.keycode, "html"]
+  #
+  #     bot
+  #   end
+  #   def push(item = %Item{}, nubspace, lock) do
+  #     Drive.push Data.json([item.tick, item.keycode, item.data]), LovMx.data [item.tick, item.keycode, "json"]
+  #     # /bot/example/html
+  #     Drive.push Data.html(item), LovMx.data [item.meta, item.keycode, "html"]
+  #
+  #     item
+  #   end
   
   ## Callbacks
   
-  def handle_call({:meta}, source, agent) do
-    {:reply, Agent.get(agent, &(&1)), agent}
-  end
+  ## todo: <develop the NoFlo bridge here>
   
-  def handle_call({:list, holospace, secret}, source, agent) do
-    match = Agent.get(agent, &(&1))
-    |> Map.keys
-    |> Stream.filter(fn key -> key == holospace end)
-    |> Enum.to_list
-    |> List.wrap
-    
-    Logger.warn "Cloud!list // #holospace // #{inspect match}"
-    
-    {:reply, match, agent}
-  end
-  
-  def handle_call({:pull, holospace, secret}, source, agent) do
-    map = Agent.get(agent, &(&1))
-    thing = Map.get(map, holospace)
-    
-    #Logger.debug "Cloud!pull // #holospace // #{inspect thing}"
-    
-    case thing do
-      thing when is_pid(thing) ->
-        {:reply, Machine.compute(thing), agent}
-      _ -> 
-        {:reply, thing, agent}
-    end
-  end
-  
-  def handle_call({:push, data = %Data{}, holospace, secret, duration}, source, agent) do
-    Logger.debug "Cloud:push // #{inspect data}"    
-    
-    # we need a namespace to share over..
-    if is_nil holospace do
-      holospace = data.keycode
-    end
-    
-    # only start a machine if the data has no other home
-    if is_nil data.home do
-      machine = Machine.boot(data)
-    end
-    
-    # compile data in a second level Machine process
-    data = Machine.compute(machine, secret, duration)
-    
-    # update map/space
-    :ok = Agent.update agent, fn map ->
-      Map.put map, holospace, machine
-    end
-    
-    # TODO: send a :push to holospace
-    
-    # return the data
-    {:reply, data, agent}
-  end
-  def handle_call({:push, thing, holospace, secret, duration}, source, agent) do
-    Logger.debug "Cloud:push // #{inspect data}"    
-    
-    # we need a namespace to share over..
-    if is_nil holospace do
-      holospace = Help.keycode
-    end
-
-    # update map/space
-    :ok = Agent.update agent, fn map ->
-      Map.put map, holospace, thing
-    end
-    
-    # TODO: send a :push to holospace
-    
-    # return the data
-    {:reply, thing, agent}
-  end
-  
-  def handle_cast({:drop}, agent) do
-    # TODO: Process.exit :kill all machines in holospace.
-    
-    # recreate holospace if that's what the wiz says we should do...
-    :ok = Agent.update agent, fn x -> 
-      Map.new
-    end
-    Logger.info "Cloud!drop // #holospace // #{inspect Moment.now}"
-    
-    {:noreply, agent}
-  end
-  
-  def handle_cast({:drop, holospace, secret}, agent) do
-    # get the map
-    map = Agent.get(agent, &(&1))
-    
-    # remove holospace
-    :ok = Agent.update(agent, fn map -> 
-      if Map.has_key? map, holospace do
-        Map.delete map, holospace
-      end
-      
-      map
-    end)
-    
-    {:noreply, agent}
-  end
+  # def handle_call({:getruntime, secret}, source, agent) do
+  #   {:reply, secret, agent}
+  # end
   
   def start_link(_) do
-    # An agent that we'll eventually pass around to the *all* the Cloud servers...
-    link = {:ok, agent} = Agent.start_link(fn -> Map.new end)
-    
-    # Keep the map inmemory for fluffiness.
-    link = {:ok, holo} = GenServer.start_link(Cloud, agent, name: CloudServer, debug: [])
-    Logger.info "Cloud.start_link #{inspect link}"
-    
-    ## SSL Checkup.
-    Bridge.kick secure: File.exists? Help.root "priv/ssl/cert.pem"
-    
+    link = {:ok, cloud} = GenServer.start_link(Cloud, Map.new, name: CloudServer)
+    Logger.info "Cloud.start_link #{inspect cloud}"
+
     link
   end
   
 end
+
