@@ -23,9 +23,6 @@ defmodule Platform do
     ## Command line Love.
     """
   
-    # *SHINE*
-    use Magic
-  
     def run(argv) do
       # start the hologram
       Application.ensure_started :lovmx
@@ -49,11 +46,7 @@ defmodule Platform do
       case parse do
         {[help: true ], _, _} -> 
           :help
-      
-        # {[spider: path]} ->
-        #   # import files..
-        #   Bot.spider(Data.new, path)
-      
+
         {[mix: path], _, _} -> 
           path
           |> Cake.mix
@@ -62,13 +55,14 @@ defmodule Platform do
         
         {[magic: path], _, _} ->
           data = path
-          |> read
-          |> magic
-          |> page("#{path}.boot.html")
+          |> Drive.read
+          |> Cake.magic
+          |> Pipe.page("#{path}.boot.html")
         
           data
-          |> text
+          |> Pipe.text
           |> Logger.warn
+        
         _ -> :help
       end
     end

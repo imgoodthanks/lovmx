@@ -85,9 +85,9 @@ defmodule Lovmx do
     # Define workers and child supervisors to be supervised
     children = [
       worker(Wizard,     [self]), # janitor
+      worker(Flow,       [self]), # io/internal
       worker(Machine,    [self]), # code/data/exe
       worker(Boot,       [self]), # code/data/exe
-      worker(Flow,       [self]), # io/internal
     ]
 
     # See http://elixir-lang.org/docs/stable/elixir/Supervisor.html

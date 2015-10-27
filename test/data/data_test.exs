@@ -13,7 +13,14 @@ defmodule Data.Test do
     
   test "Use `Data.renew` to add a help message.", do:
 		assert %Data{thing: :reboot} = Data.renew Data.new("whoa"), :reboot
-        
+  
+  test "Use `Data.home` to add a help message." do
+    data = Data.new
+    machine = Machine.boot data
+  
+    assert is_pid Data.home(data, machine).home
+  end
+  
   test "Use `Data.kind` to mutate the data type using custom or Kind types.", do:
 		assert %Data{kind: :lols} = Data.kind Data.new, :lols
     

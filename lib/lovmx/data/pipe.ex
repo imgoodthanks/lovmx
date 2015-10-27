@@ -109,13 +109,13 @@ defmodule Pipe do
   def down(text) when is_binary(text) do
     Cmark.to_html(text)
   end
-
+  
   @doc "Create JSON for easy API/web access."
   def json([list]) when is_list(list) do
     Enum.map list, &(json &1)
   end
-  def json(effects) do
-    Poison.encode!([inspect(effects)])
+  def json(things) do
+    Poison.encode!([inspect(things)])
   end
   
   @doc "Render args as debug/text."

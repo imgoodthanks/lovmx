@@ -2,9 +2,10 @@ require Logger
 
 defmodule Magic do
   
-  @moduledoc "Use `Magic` to optimize your Elixir."
+  @moduledoc "Use `Magic` for easy Elixir."
   
-  defmacro __using__(_options) do
+  defmacro __using__(opts \\ []) do
+    
     quote do
       
       # data
@@ -27,9 +28,6 @@ defmodule Magic do
       import Help
       
       # VMX
-      
-      Code.ensure_loaded Cloud
-      import Cloud
           
       Code.ensure_loaded Drive
       import Drive
@@ -37,44 +35,35 @@ defmodule Magic do
       Code.ensure_loaded Boot
       import Boot
       
-      require Logger
-      
     end
-  end
-  
-end
-
-defmodule OrbitalMagic do
     
-  @moduledoc "Use `OrbitalMagic` for easy web apps."
-  
-  defmacro __using__(_options) do
-    quote do
-
-      import Plug.Conn
-      use Plug.Router
-      use Plug.Builder
-      plug :match
-      plug :dispatch
-      use WebAssembly
+    if Keyword.get(opts, :orbital, false) do
       
-    end
-  end
-  
-end
+      quote do
+        
+        import Plug.Conn
+        
+        use Plug.Router
+        use Plug.Builder
+        
+        plug :match
+        plug :dispatch
+        
+        use WebAssembly
 
-defmodule MaruMagic do
-  
-  @moduledoc "Use `MaruMagic` for easy HTTP APIs."
-  
-  defmacro __using__(_options) do
-    quote do
-
-      import Plug.Conn
-      use Maru.Router
-      plug Plug.Logger
-      use WebAssembly
+      end
     end
+    
+    # if Keyword.get(opts, :maru, false) do
+    #   quote do
+    #
+    #     import Plug.Conn
+    #     use Maru.Router
+    #     plug Plug.Logger
+    #     use WebAssembly
+    #
+    #   end
+    # end
+    
   end
-  
 end

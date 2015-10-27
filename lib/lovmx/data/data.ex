@@ -50,7 +50,7 @@ defmodule Data do
     pull: %{},    # *startup* input (aka ROM)
     code: [],     # [functions] current program
     push: %{},    # *output* ports  (aka Post)
-    thing: nil,  # *computed* data (aka CPU)
+    thing: nil,   # *computed* data (aka CPU)
     
     tick: 0,      # epoch/time/version
     roll: [],     # *previous* data (aka Backup)
@@ -82,6 +82,18 @@ defmodule Data do
     data = put_in(data.thing, thing)
 
     data
+  end
+  
+  @doc "Give `data` a new home at `process`."    
+  def home(data = %Data{}, process) when is_pid(process) do
+    # # say goodbye
+    # if not is_nil data.home and is_pid data.home and Process.alive? data.home do
+    #   Process.exit(data.home, :normal)
+    # end
+    
+    # update the data
+    Data.tick(put_in data.home, process)
+    |> Flow.x
   end
   
   @doc "Use `Data.tick` to create a temporal notation (aka version) of `data` at this time."
@@ -211,4 +223,5 @@ defmodule Data do
     %{ data | boom: Enum.concat(data.boom, [error]) }
     |> Data.tick
   end
+  
 end

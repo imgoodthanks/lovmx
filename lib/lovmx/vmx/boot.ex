@@ -24,13 +24,13 @@ defmodule Boot do
     
   ## Bootspace (internal web-readable static/dynamic storage)
   
-  @doc "Use `Boot.space` to return *everything* in Bootspace share."
-  def space do
-    GenServer.call BootServer, {Kind.meta}
+  @doc "Use `Boot.graph` to return all <signals>."
+  def graph do
+    GenServer.call BootServer, {Kind.meta, nil}
   end
   
   @doc "Use `Boot.space <signal>` to look at and return *SPECIFIC* data at `holospace`."
-  def space(holospace, secret \\ nil) when is_atom(holospace) or is_binary(holospace) do
+  def space(holospace \\ "/", secret \\ nil) when is_atom(holospace) or is_binary(holospace) do
     GenServer.call BootServer, {Kind.pull, holospace, secret}
   end
   
@@ -43,19 +43,7 @@ defmodule Boot do
   def list(holospace \\ "/", secret \\ nil) when is_atom(holospace) or is_binary(holospace) do
     GenServer.call BootServer, {Kind.list, holospace, secret}
   end
-  
-  @doc "Give `data` a new home at `process`."    
-  def home(data = %Data{}, process) when is_pid(process) do
-    # # say goodbye
-    # if not is_nil data.home and is_pid data.home and Process.alive? data.home do
-    #   Process.exit(data.home, :normal)
-    # end
     
-    # update the data
-    Data.tick(put_in data.home, process)
-    |> Flow.x
-  end
-  
   @doc "Move `data` to `holospace`."  
   def move(data = %Data{}, holospace, secret \\ nil) when is_atom(holospace) or is_binary(holospace) do
     # say goodbye
@@ -65,11 +53,11 @@ defmodule Boot do
     |> Flow.x
   end
   
-  @doc "Use `Boot.share` to start a `Machine` at `holospace` with `data`."
-  def share(thing, holospace \\ nil, secret \\ nil, duration \\ Help.long) do
-    Logger.debug "Boot:share // #{inspect data}"    
+  @doc "Use `Boot.boost` to start a `Machine` at `holospace` with `data`."
+  def boost(thing, holospace \\ nil, secret \\ nil, duration \\ Help.long) do
+    Logger.debug "Boot:boost // #{inspect thing}"    
     
-    GenServer.call BootServer, {Kind.push, data, holospace, secret, duration}
+    GenServer.call BootServer, {Kind.push, thing, holospace, secret, duration}
   end
   
   # @doc "Write raw `thing` data to the root of the Multiverse / Unix file system."
@@ -86,7 +74,7 @@ defmodule Boot do
     
   ## Callbacks
   
-  def handle_call({:meta}, source, agent) do
+  def handle_call({:meta, _secret}, source, agent) do
     {:reply, Agent.get(agent, &(&1)), agent}
   end
   
@@ -104,15 +92,13 @@ defmodule Boot do
   
   def handle_call({:pull, holospace, secret}, source, agent) do
     map = Agent.get(agent, &(&1))
-    thing = Map.get(map, holospace)
+    data = Map.get(map, holospace)
     
-    #Logger.debug "Boot!pull // #holospace // #{inspect thing}"
-    
-    case thing do
-      thing when is_pid(thing) ->
-        {:reply, Machine.data(thing), agent}
+    case data do
+      data when is_pid(data) ->
+        {:reply, Machine.data(data), agent}
       _ -> 
-        {:reply, thing, agent}
+        {:reply, data, agent}
     end
   end
   
@@ -131,13 +117,24 @@ defmodule Boot do
     
     # compile data in a second level Machine process
     data = Machine.data(machine, secret, duration)
-    
+        
     # update map/space
     :ok = Agent.update agent, fn map ->
-      Map.put map, holospace, machine
+      Map.update map, holospace, [machine], fn x -> Enum.concat x, [machine] end
     end
     
-    # TODO: send a :push to holospace
+    # send a :pull notice to holospace
+    Task.async fn ->
+      Enum.each list(holospace), fn thing ->
+        case thing do
+          # a process, so send a :data message
+          thing when is_pid(thing) ->
+            GenServer.call thing, {Kind.pull, data}
+            
+          _ -> nil
+        end
+      end
+    end
     
     # return the data
     {:reply, data, agent}

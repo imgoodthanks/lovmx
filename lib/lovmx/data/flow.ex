@@ -22,15 +22,15 @@ defmodule Flow do
   ## META
   
   @doc "Use `Flow.space` to return *everything* in Bootspace share."
-  def map do
+  def graph do
     GenServer.call FlowServer, {Kind.meta}
   end
   
   @doc "Broadcast `thing` *OUT* to the universe in the *BACKGROUND*."
-  def x(data = %Data{}, holospace \\ nil, secret \\ nil) do
-    # Task.async fn ->
-    #   GenServer.call FlowServer, {Kind.push, data, holospace, secret}
-    # end
+  def x(data = %Data{}, secret \\ nil) do
+    Task.async fn ->
+      GenServer.call FlowServer, {Kind.push, data, secret}
+    end
     
     data
   end
@@ -80,7 +80,7 @@ defmodule Flow do
   @doc "From `data` *to* `machine` or `holospace` in the *BACKGROUND*."
   def push(data = %Data{}, holospace, secret \\ nil) do
     put_in(data.push, Map.put(data.push, holospace, Kind.push))
-    |> Flow.x(holospace, secret)
+    |> Flow.x(secret)
   end
   
   @doc "From `data` *to* `machine` or `holospace` and *WAIT*."
@@ -96,7 +96,7 @@ defmodule Flow do
     {:reply, Agent.get(agent, &(&1)), agent}
   end
   
-  def handle_call({:push, data = %Data{}, _holospace, _secret, duration}, source, agent) do
+  def handle_call({:push, data = %Data{}, secret}, source, agent) do
     Logger.debug "Flow:push #{inspect data.keycode}"    
 
     # update map/space

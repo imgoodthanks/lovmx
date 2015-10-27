@@ -12,7 +12,6 @@ defmodule Wizard do
   """
 
   use GenServer
-  use Magic
   
   @doc """
   Wizard - A Cloudgraphic Hail to the Wizard.king.
@@ -79,9 +78,9 @@ defmodule Wizard do
     
     # First creation of the initial holospace network
     "README.magic"
-    |> read # read the file
-    |> magic # compile magicdown (markdown+) into data/bot
-    |> share "help"# send it into holospace
+    |> Drive.read # read the file
+    |> Cake.magic # compile magicdown (markdown+) into data/bot
+    |> Boot.boost "help"# send it into holospace
     
     # Second Creation of Waitforit.
     Task.async fn -> 

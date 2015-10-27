@@ -13,12 +13,11 @@ defmodule Cloud do
   """
   
   # Cool Modules
-  use OrbitalMagic
-
+  use Magic, orbital: true
+  
   @parsers [Plug.Parsers.MULTIPART, Plug.Parsers.URLENCODED]
   @upload 200_000_000
   
-  # todo: add custom Cloud/Cloud support.
   # todo: dynamically build @static from `lib/drive` BOM.
   @static [
     "blob",
@@ -30,7 +29,6 @@ defmodule Cloud do
     "js",
   ]
 
-  plug Plug.Logger
   if Mix.env == :dev do
     use Plug.Debugger
   end
@@ -46,9 +44,6 @@ defmodule Cloud do
   def init(secure_by_default \\ nil) do
     {:ok, agent} = Agent.start_link fn -> Map.new end
     
-    # broadcast ourself
-    #Cloud.share agent, "tube/agent"
-
     agent
   end
   
@@ -92,7 +87,7 @@ defmodule Cloud do
     end
   end
 
-  @doc "GET: Route *all* generic PULL signals from HTTPS."  
+  @doc "GET: Route *all* generic PULL signals from HTTPS."
   def call(conn = %Plug.Conn{method: "GET", path_info: holospace}, agent) do
     if holospace in [[], [""], nil] do
       holospace = "/"
@@ -108,20 +103,20 @@ defmodule Cloud do
       send_file conn, 200, path
     else
       Logger.debug "Cloud.GET // #{holospace}"
-      
+
       resp conn, 200, Pipe.page Boot.space
     end
   end
-  
-  @doc "POST: Route *all* generic PUSH signals from HTTPS."  
+
+  @doc "POST: Route *all* generic PUSH signals from HTTPS."
   def call(conn = %Plug.Conn{method: "POST", path_info: holospace}, agent) do
     if holospace in [[], [""], nil] do
       holospace = "/"
     end
-    
+
     holospace = Help.path(holospace)
     path = Help.root Help.web [holospace]
-    
+
     # first parse the conn for params/binaries/etc
     conn = Plug.Parsers.call conn, parsers: @parsers, limit: @upload_limit
 
@@ -134,37 +129,15 @@ defmodule Cloud do
       Freezer.put(data.path, data.content_type, data.filename)
       |> Cloud.share(holospace)
     end
-    
+
     Logger.debug "Cloud.POST // #{holospace} // #{inspect conn.params}"
-    
+
     resp conn, 200, Pipe.page Cloud.share(conn.params, holospace)
   end
   
-  @doc "Even the Universe misses things."
   match _ do
-    # TODO: forward to the wizard for defensive purposes.
     send_resp(conn, 404, "oops")
   end
-  
-  ## Saving
-  
-  #   @doc "Put things into Web.Nubspace."
-  #   def push(thing, nubspace \\ nil, lock \\ nil)
-  #   def push(bot = %Data{}, nubspace, lock) do
-  #     # /bot/example/json
-  #     Drive.push Data.json(["#{bot.tick}", bot.keycode, Bot.pull(bot)]), LovMx.data ["#{bot.tick}", bot.keycode, "json"]
-  #     # /bot/example/html
-  #     Drive.push Data.html(bot), LovMx.data ["#{bot.tick}", bot.keycode, "html"]
-  #
-  #     bot
-  #   end
-  #   def push(item = %Item{}, nubspace, lock) do
-  #     Drive.push Data.json([item.tick, item.keycode, item.data]), LovMx.data [item.tick, item.keycode, "json"]
-  #     # /bot/example/html
-  #     Drive.push Data.html(item), LovMx.data [item.meta, item.keycode, "html"]
-  #
-  #     item
-  #   end
   
   ## Callbacks
   

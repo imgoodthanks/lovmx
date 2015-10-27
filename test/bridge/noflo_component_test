@@ -6,8 +6,8 @@ defmodule NoFlo.Component.Test do
   # - graph: communications about graph changes
   # - component: communications about available components and changes to them
   # - network: communications related to running a FBP graph
-  #
-  #
+  
+  
   # # Messages
   # - Sub-protocol identifier (graph/component/network)
   # - Topic (for example, addnode)
@@ -29,8 +29,8 @@ defmodule NoFlo.Component.Test do
   # #
   # # secret: access token to authorize the user
   # """
-  # test "Warp.list",
-  # do: assert Warp.list %Data{}
+  test "Boot.list", do: 
+    assert Boot.space("secret")
 
 
   #test "Warp.component",
