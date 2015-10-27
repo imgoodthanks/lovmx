@@ -60,7 +60,7 @@ defmodule Boot do
   
   @doc "Use `Boot.boost` to start a `Machine` at `holospace` with `data`."
   def boost(thing, holospace \\ nil, secret \\ nil, duration \\ Help.long) do
-    Logger.debug "Boot:boost // #{inspect thing}"    
+    #Logger.debug "Boot:boost // #{inspect thing}"    
     
     GenServer.call BootServer, {Kind.push, thing, holospace, secret, duration}
   end

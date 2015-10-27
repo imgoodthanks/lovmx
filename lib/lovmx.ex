@@ -124,7 +124,7 @@ defmodule Lovmx do
 
   @doc "Good night sweet prince."
   def terminate(message, data) do
-    #####Cloud.share "Lovmx.terminate: #{inspect data} message: #{inspect message}"
+    #####Cloud.boost "Lovmx.terminate: #{inspect data} message: #{inspect message}"
     
     # todo: properly shutdown the Warp
     # Plug.Adapters.Cowboy.shutdown Warp.HTTPS

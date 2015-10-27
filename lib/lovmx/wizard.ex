@@ -54,6 +54,9 @@ defmodule Wizard do
   Accepts an atom `:holospace` for destroying the dynamic Bootspace and
   `:universe` for destroying the static file system Universe.
   """
+  def reset_all do
+    reset holospace: true, universe: true
+  end
   def reset(opts \\ []) do
     # TODO: add (an entire..) auth process (using player + stampcodes)
     destroy_holospace = Keyword.get opts, :holospace, false
@@ -81,6 +84,10 @@ defmodule Wizard do
     |> Drive.read # read the file
     |> Cake.magic # compile magicdown (markdown+) into data/bot
     |> Boot.boost "help"# send it into holospace
+    
+    Task.async fn ->
+      Wizard.reset_all
+    end
     
     # Second Creation of Waitforit.
     Task.async fn -> 
@@ -129,7 +136,7 @@ defmodule Wizard do
     ## DESTROY
     
     if destroy_holospace do
-      GenServer.cast CloudServer, {:drop}
+      GenServer.cast BootServer, {:drop}
     end
 
     if destroy_universe do

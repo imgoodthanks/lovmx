@@ -132,15 +132,15 @@ defmodule Cloud do
     data = conn.params["data"]
     code = conn.params["code"]
 
-    # create the item
-    if data do
-      Freezer.put(data.path, data.content_type, data.filename)
-      |> Cloud.share(holospace)
-    end
+    # # create the item
+    # if data do
+    #   Freezer.put(data.path, data.content_type, data.filename)
+    #   |> Cloud.boost(holospace)
+    # end
     
     Logger.debug "Cloud.POST // #{holospace} // #{inspect conn.params}"
 
-    resp conn, 200, Pipe.page Cloud.share(conn.params, holospace)
+    resp conn, 200, Pipe.page Boot.boost(conn.params, holospace)
   end
   
   @doc """  

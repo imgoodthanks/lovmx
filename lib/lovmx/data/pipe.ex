@@ -82,13 +82,13 @@ defmodule Pipe do
     html Enum.map data, &(html &1)
   end
   def html(data = %Data{kind: :link}, holospace, secret) do
-    ####Cloud.share "Pipe.html #{inspect data}"
+    ####Cloud.boost "Pipe.html #{inspect data}"
     "<code class=\"data\">
     <a href='#{Help.path [holospace, data.thing]}'>#{data.thing}</a>
     </code>"
   end
   def html(data = %Data{thing: %Data{kind: kind, meta: path}}, holospace, secret) when is_binary(path) do
-    #Cloud.share "Pipe.html %Data{thing: %Data{kind: kind, meta: path}}"
+    #Cloud.boost "Pipe.html %Data{thing: %Data{kind: kind, meta: path}}"
     if Freezer.extension(kind) do
       "<img src='#{path}'>"
     else

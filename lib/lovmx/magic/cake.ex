@@ -68,18 +68,16 @@ defmodule Cake do
     
     # we are a superset of markdown, so mark it first..
     text = Pipe.down(text)
-    #Logger.debug "Cake.magic2: #{inspect text} // #{inspect data}"
     
-    # # our magicdown regex.
-    # match = ~r/[^|\s]{0,}\@([a-z0-9]{2,})\>\s([a-z0-9\#\%\?\s]{2,})/i
-    #
-    # # compile Data + markup from original simple text
-    # cake = Regex.replace match, text, fn(cap, code, opts) ->
-    #   {data, replace} = x(data, cap, code, opts)
-    #
-    #   replace
-    # end
-    # Logger.debug "Cake.magic3: #{inspect text} // #{inspect data}"
+    # our magicdown regex.
+    match = ~r/[^|\s]{0,}\@([a-z0-9]{2,})\>\s([a-z0-9\#\%\?\s]{2,})/i
+
+    # compile Data + markup from original simple text
+    cake = Regex.replace match, text, fn(cap, code, opts) ->
+      {data, replace} = x(data, cap, code, opts)
+
+      replace
+    end
     
     # then flow it baby
     text 

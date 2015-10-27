@@ -44,6 +44,7 @@ text-rendering: optimizeLegibility;
 font: 24px 'Open Sans', "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Utkal, sans-serif;
 font-weight: 300;
 -webkit-font-smoothing: antialiased;
+border: none;
 }
 
 header h1,
@@ -119,14 +120,15 @@ input[type=file],
 input[type=password],
 input[type=password]:active {
 background-color: #000;
-	font-size: 18px;
+font-size: 18px;
 text-align: left;
 box-shadow: 0 0 1px #000000;
 -moz-box-shadow: 0 0 1px #000000;
 border: 1px solid rgba(23, 23, 23, 0.87);
 margin-bottom: 10px;
-	display: block;
-	padding: 5px 30px;
+display: block;
+padding: 10px 30px;
+	color: #e5e5e5;
 }
 
 input[type=submit] {
@@ -153,7 +155,7 @@ box-shadow: inset 0px 0px 10px rgb(0,0,0,1);
 }
 
 body input[type=password]:active {
-	transition: none;
+transition: none;
 }
 
 select {
@@ -312,7 +314,9 @@ margin-top: 20px;
 margin-bottom: 20px;
 }
 
-
+fieldset {
+padding: 0px;
+}
 
 code p {
 color: #c4c7c9;
@@ -425,13 +429,10 @@ margin-bottom: 10px;
 }
 
 #magic {
-background: url('../img/cursor.gif') 20px center no-repeat #000;
+background: url('../img/cursor.gif') 14px 10px no-repeat #000;
 border: 1px solid rgba(23, 23, 23, 0.87);
 display: block;
 min-width: 420px;
-top: 20px;
-right: 20px;
-left: 20px;
 -moz-box-shadow: 0 0 3px outer #111111;
 box-shadow: 0 0 3px #111111;
 opacity: 0.93;
