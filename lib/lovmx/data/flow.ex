@@ -97,7 +97,7 @@ defmodule Flow do
   end
   
   def handle_call({:push, data = %Data{}, secret}, source, agent) do
-    Logger.debug "Flow:push #{inspect data.keycode}"    
+    #Logger.debug "Flow:push #{inspect data.keycode}"    
 
     # update map/space
     :ok = Agent.update agent, fn map ->

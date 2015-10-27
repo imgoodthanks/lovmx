@@ -13,28 +13,17 @@ tl;dr upload and visually create extremely fast web apps.
 
 # Welcome to the LovMx
 
-```
+To start the LovMx:
 
-```
+  1. Install dependencies with `mix deps.get`
+  3. Start the Server with `iex -S mix`
 
+Now you can visit [`localhost:8443`](http://localhost:8443) from your browser.
 
-```
-use Magic
+## Learn more
 
-# A simple example
-# - create a data/bot
-# - code magic on README.magic
-# - that we read and flow into data, with the :cake type
-# - then Pipe it to create a page
-# - then we compile/compute the data
-# - then we put it online in nubspace at `readme`
-
-code(fn data ->
-  "README.magic"
-  |> read
-  |> into data, Kind.cake
-  |> magic
-  |> page "readme.html"
-end)
-|> boost "readme"
-```
+  * Official website: http://www.phoenixframework.org/
+  * Guides: http://phoenixframework.org/docs/overview
+  * Docs: http://hexdocs.pm/phoenix
+  * Mailing list: http://groups.google.com/group/phoenix-talk
+  * Source: https://github.com/phoenixframework/phoenix
