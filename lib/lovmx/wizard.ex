@@ -20,17 +20,21 @@ defmodule Wizard do
     Process.whereis WizardServer
   end
   
-  @doc "Use `Cloud.bang` to start Holospace."
+  @doc """
+  Use `Cloud.bang` to start Holospace.
+  """
   def bang(path \\ "README.magic", opts \\ []) do
     # hack/debug to reset everything each time the server starts
-    if Mix.env == :dev do
-      Wizard.reset_all!
-    end
+  if Mix.env == :dev do
+    Wizard.reset_all!
+  end
     
     GenServer.call WizardServer, {:bang, path, opts}, Help.long
   end
 
-  @doc "Two beams. Both have purpose."
+  @doc """
+  Two beams. Both have purpose.
+  """
   def tick(wizard) do
     GenServer.cast WizardServer, :tick
     
@@ -42,7 +46,9 @@ defmodule Wizard do
     self
   end
 
-  @doc "Save Holospace to `priv/holospace.term`."
+  @doc """
+  Save Holospace to `priv/holospace.term`.
+  """
   def freeze do
     GenServer.cast WizardServer, :freeze
     
@@ -65,14 +71,9 @@ defmodule Wizard do
     GenServer.call WizardServer, {:reset, destroy_holospace, destroy_universe}, Help.long
   end
   
-## Hack to reload the universe + holospace.
-if Mix.env == :dev do
-  
   def reset_all! do
     reset holospace: true, universe: true
   end
-
-end
   
   ## Callbacks
   
@@ -90,7 +91,7 @@ end
     "README.magic"
     |> Drive.read # read the file
     |> Cake.magic # compile magicdown (markdown+) into data/bot
-    |> Boot.boost "help"# send it into holospace
+    |> Holo.boost "help"# send it into holospace
 
     
     # Second Creation of Waitforit.
@@ -103,14 +104,12 @@ end
   
   def handle_cast(:tick, agent) do
     #Logger.info "Wizard:tick"
-    #Flow.x self, "wizard/tick"
     
     {:noreply, agent}
   end
   
   def handle_cast(:tock, agent) do
     #Logger.info "Wizard:tock"
-    #Flow.x self, "wizard/tock"
 
     # TODO: "janitorial tasks"
     # - archive magic
@@ -127,7 +126,7 @@ end
   def handle_cast(:freeze, agent) do
     Logger.info "Wizard.freeze"
     
-    Boot.space
+    Holo.space
     |> Help.freeze
     |> Drive.write(Help.path ["priv", "holospace.term"])
     
@@ -140,7 +139,7 @@ end
     ## DESTROY
     
     if destroy_holospace do
-      GenServer.cast BootServer, {:drop}
+      GenServer.cast HoloServer, {:drop}
     end
 
     if destroy_universe do

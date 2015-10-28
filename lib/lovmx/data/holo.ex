@@ -1,17 +1,17 @@
 require Logger
 
-defmodule Boot do
+defmodule Holo do
   
   @moduledoc """
-  # Boot
-  ## Holospace Management
+  # Holo
+  ## Holospace Data Management
   ### Global Namespace Code + Data stored in RAM.
   
-  Boot renders the local Universe (aka your App) by
+  Holo renders the local Universe (aka your App) by
   routing Player data to Machine code and graphing,
   routing, and piping the side effects as needed.
 
-  Boot signals into the Machine and other parts of the 
+  Holo signals into the Machine and other parts of the 
   framework often in order to best get/create/update 
   whatever your little heart asks for. Like magic, but 
   with software bugs.
@@ -23,17 +23,17 @@ defmodule Boot do
     
   ## Holospace (internal web-readable static/dynamic storage)
   
-  @doc "Use `Boot.graph` to return all <signals>."
+  @doc "Use `Holo.graph` to return all <signals>."
   def graph do
-    GenServer.call BootServer, {Kind.meta, nil}
+    GenServer.call HoloServer, {Kind.meta, nil}
   end
   
-  @doc "Use `Boot.space <signal>` to look at and return *SPECIFIC* data at `holospace`."
+  @doc "Use `Holo.space <signal>` to look at and return *SPECIFIC* data at `holospace`."
   def space(holospace \\ "/", secret \\ nil) when is_atom(holospace) or is_binary(holospace) do
-    GenServer.call BootServer, {Kind.pull, holospace, secret}
+    GenServer.call HoloServer, {Kind.pull, holospace, secret}
   end
   
-  # @doc "Use `Boot.data <signal>` to return *ALL* `<data>.thing` at `holospace`."
+  # @doc "Use `Holo.data <signal>` to return *ALL* `<data>.thing` at `holospace`."
   # def data(machine, secret \\ nil, duration \\ Help.tock) when is_pid(machine) do
   #   compute machine, secret, duration
   # end
@@ -41,28 +41,28 @@ defmodule Boot do
   @doc "Use `Holo.capture` to *EXCLUSIVELY* capture `nubspace`."
   def capture(data = %Data{}, holospace, secret \\ nil, duration \\ Help.long) do
     # Compile + pull *all* `data.pull` and push to the Machine for exe
-    GenServer.call BootServer, {Kind.lock, data, holospace, secret, duration}
+    GenServer.call HoloServer, {Kind.lock, data, holospace, secret, duration}
   end
   
-  @doc "Use `Boot.list <holospace>` to return a [list] of things at `holospace`."
+  @doc "Use `Holo.list <holospace>` to return a [list] of things at `holospace`."
   def list(holospace \\ "/", secret \\ nil) when is_atom(holospace) or is_binary(holospace) do
-    GenServer.call BootServer, {Kind.list, holospace, secret}
+    GenServer.call HoloServer, {Kind.list, holospace, secret}
   end
     
   @doc "Move `data` to `holospace`."  
   def move(data = %Data{}, holospace, secret \\ nil) when is_atom(holospace) or is_binary(holospace) do
     # say goodbye
-    Boot.forget(data.home, secret)
+    Holo.forget(data.home, secret)
     
     put_in(data.home, holospace)
     |> Flow.x
   end
   
-  @doc "Use `Boot.boost` to start a `Machine` at `holospace` with `data`."
+  @doc "Use `Holo.boost` to start a `Machine` at `holospace` with `data`."
   def boost(thing, holospace \\ nil, secret \\ nil, duration \\ Help.long) do
-    #Logger.debug "Boot:boost // #{inspect thing}"    
+    #Logger.debug "Holo:boost // #{inspect thing}"    
     
-    GenServer.call BootServer, {Kind.push, thing, holospace, secret, duration}
+    GenServer.call HoloServer, {Kind.push, thing, holospace, secret, duration}
   end
   
   # @doc "Write raw `thing` data to the root of the Multiverse / Unix file system."
@@ -72,7 +72,7 @@ defmodule Boot do
   def forget(holospace \\ nil, secret \\ nil) when is_atom(holospace) or is_binary(holospace) do
    # todo: return true if the thing has not spread to holospace
    # otherwise radio "unable to erase" + remove the object
-   GenServer.cast BootServer, {Kind.drop, holospace, secret}
+   GenServer.cast HoloServer, {Kind.drop, holospace, secret}
    
    holospace
   end
@@ -90,13 +90,13 @@ defmodule Boot do
     |> Enum.to_list
     |> List.wrap
     
-    Logger.warn "Boot!list // #holospace // #{inspect match}"
+    Logger.warn "Holo!list // #holospace // #{inspect match}"
     
     {:reply, match, agent}
   end
   
   def handle_call({:lock, data = %Data{}, holospace, secret, duration}, source, agent) do
-    Logger.debug "Boot:lock #{inspect self} // #{inspect holospace} // #{inspect data}"
+    Logger.debug "Holo:lock #{inspect self} // #{inspect holospace} // #{inspect data}"
 
     # extract our map that we reset shortly
     map = Agent.get(agent, &(&1))
@@ -108,7 +108,7 @@ defmodule Boot do
 
     if Map.has_key?(map, holospace) do
       # return the data
-      {:reply, Data.boom(data, "Boot:lock // holospace is already taken: #{inspect holospace}"), agent}
+      {:reply, Data.boom(data, "Holo:lock // holospace is already taken: #{inspect holospace}"), agent}
     else
       # set that data to live at holospace and be static
       data = data
@@ -137,7 +137,7 @@ defmodule Boot do
   end
   
   def handle_call({:push, data = %Data{}, holospace, secret, duration}, source, agent) do
-    Logger.debug "Boot:push // #{inspect data}"    
+    Logger.debug "Holo:push // #{inspect data}"    
     
     # we need a namespace to share over..
     if is_nil holospace do
@@ -197,7 +197,7 @@ defmodule Boot do
     :ok = Agent.update agent, fn x -> 
       Map.new
     end
-    Logger.info "Boot!drop // #holospace // #{inspect Moment.now}"
+    Logger.info "Holo!drop // #holospace // #{inspect Moment.now}"
     
     {:noreply, agent}
   end
@@ -219,12 +219,12 @@ defmodule Boot do
   end
   
   def start_link(_) do
-    # An agent that we'll eventually pass around to the *all* the Boot servers...
+    # An agent that we'll eventually pass around to the *all* the Holo servers...
     link = {:ok, agent} = Agent.start_link(fn -> Map.new end)
     
     # Keep the map inmemory for fluffiness.
-    link = {:ok, holo} = GenServer.start_link(Boot, agent, name: BootServer, debug: [])
-    Logger.info "Boot.start_link #{inspect link}"
+    link = {:ok, holo} = GenServer.start_link(Holo, agent, name: HoloServer, debug: [])
+    Logger.info "Holo.start_link #{inspect link}"
 
     link
   end

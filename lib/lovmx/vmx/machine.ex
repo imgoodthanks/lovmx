@@ -50,7 +50,7 @@ defmodule Machine do
   end
   
   # def wait(data = %Data{home: machine}, holospace \\ nil, secret \\ nil, duration \\ nil) when is_pid(machine) do
-  #   # TODO: register a callback w/ Boot to trigger on holospace, then hibernate
+  #   # TODO: register a callback w/ Holo to trigger on holospace, then hibernate
   # end
 
   def drop(machine, secret \\ nil) when is_pid(machine) do
@@ -95,9 +95,9 @@ defmodule Machine do
         {key, value} when is_atom(key) and is_atom(value) ->
           {key, value}
 
-        # put in dynamic/holospace data via a Boot.space
+        # put in dynamic/holospace data via a Holo.space
         {key, value} when is_atom(key) or is_binary(key) ->
-          {key, Boot.space(key)}
+          {key, Holo.space(key)}
           
         _ ->
           {key, Kind.drop}

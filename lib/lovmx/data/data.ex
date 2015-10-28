@@ -69,7 +69,7 @@ defmodule Data do
            time: Moment.now,
            life: Help.long,
            meta: Map.merge(%{}, meta || %{}),
-         thing: thing
+          thing: thing
     }
     |> Flow.x
   end

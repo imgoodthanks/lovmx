@@ -1,6 +1,6 @@
 %{"bbmustache": {:hex, :bbmustache, "1.0.3"},
   "blocking_queue": {:git, "https://github.com/joekain/BlockingQueue.git", "f47ad09b84d5542fde707230bf812f5061298eff", []},
-  "cmark": {:hex, :cmark, "0.5.6"},
+  "cmark": {:hex, :cmark, "0.5.7"},
   "conform": {:hex, :conform, "0.17.0"},
   "connection": {:hex, :connection, "1.0.0-rc.1"},
   "cowboy": {:hex, :cowboy, "1.0.3"},
@@ -12,7 +12,7 @@
   "ecto": {:hex, :ecto, "1.0.6"},
   "erlware_commons": {:hex, :erlware_commons, "0.15.0"},
   "ex_doc": {:hex, :ex_doc, "0.10.0"},
-  "excoveralls": {:hex, :excoveralls, "0.4.0"},
+  "excoveralls": {:hex, :excoveralls, "0.4.1"},
   "exjsx": {:hex, :exjsx, "3.2.0"},
   "exrm": {:hex, :exrm, "0.19.9"},
   "getopt": {:hex, :getopt, "0.8.2"},
@@ -37,5 +37,5 @@
   "relx": {:hex, :relx, "3.5.0"},
   "socket": {:git, "https://github.com/meh/elixir-socket.git", "5d6478616219bae4f5e87611859234cfd88e8417", []},
   "ssl_verify_hostname": {:hex, :ssl_verify_hostname, "1.0.5"},
-  "uuid": {:hex, :uuid, "1.0.1"},
+  "uuid": {:hex, :uuid, "1.1.0"},
   "webassembly": {:hex, :webassembly, "0.5.1"}}

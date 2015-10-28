@@ -29,8 +29,8 @@ defmodule NoFlo.Component.Test do
   # #
   # # secret: access token to authorize the user
   # """
-  test "Boot.list", do: 
-    assert Boot.space("secret")
+  test "Holo.list", do: 
+    assert Holo.space("secret")
 
 
   #test "Warp.component",

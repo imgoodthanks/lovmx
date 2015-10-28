@@ -87,7 +87,7 @@ defmodule Lovmx do
       worker(Wizard,     [self]), # janitor
       worker(Flow,       [self]), # io/internal
       worker(Machine,    [self]), # code/data/exe
-      worker(Boot,       [self]), # code/data/exe
+      worker(Holo,       [self]), # code/data/exe
     ]
 
     # See http://elixir-lang.org/docs/stable/elixir/Supervisor.html

@@ -13,19 +13,19 @@ defmodule Player do
   @doc "Sweet prince."
   def anon(secret \\ Help.keycode) do
     Data.new
-    |> Boot.move secret
+    |> Holo.move secret
   end
 
   # @doc "Get details from the Player."
   # def quiz(topic, secret \\ Help.keycode) do
   #   topic
   #   |> Data.new(secret)
-  #   |> Boot.space
+  #   |> Holo.space
   # end
   #
   # @doc "Sweet prince."
   # def items(secret \\ Help.keycode) do
-  #   Boot.space("player")
+  #   Holo.space("player")
   # end
   #
   # @doc "Ask/broadcast to please take stuff from `player`."
@@ -39,7 +39,7 @@ defmodule Player do
   # def handle_cast({:data, source, holospace, secret}, computer) do
   #   #Cloud.boost "Player.handle_call::grab: #{holospace} (#{inspect source})"
   #
-  #   #send source, Boot.space(computer, holospace, secret)
+  #   #send source, Holo.space(computer, holospace, secret)
   #
   #   {:noreply, computer}
   # end

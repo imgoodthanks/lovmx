@@ -26,7 +26,7 @@ defmodule Freezer do
     binsum        = String.split(binsum, "  ", parts: 2) |> List.first
 
     # the public path
-    binspace = Help.path ["blob", "#{ binsum }#{ ext(mime) }"]
+    binspace = Help.path ["bin", "#{ binsum }#{ ext(mime) }"]
     
     # write the file..
     File.write! (Help.root Help.web binspace), File.read!(path), [:write]
@@ -34,7 +34,7 @@ defmodule Freezer do
     
     # create the box
     Data.new(name, mime)
-    |> Boot.move(binspace)
+    |> Holo.move(binspace)
   end
   
   # Custom Freezer stuff.

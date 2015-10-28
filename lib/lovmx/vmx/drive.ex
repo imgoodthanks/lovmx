@@ -19,7 +19,7 @@ defmodule Drive do
     # build the path
     root = Help.project project_path
 
-    Logger.debug "Boot.read: #{root}"
+    Logger.debug "Holo.read: #{root}"
 
     # either read the file, or list the dir
     if File.exists? root do

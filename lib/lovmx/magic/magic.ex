@@ -32,8 +32,8 @@ defmodule Magic do
       Code.ensure_loaded Drive
       import Drive
       
-      Code.ensure_loaded Boot
-      import Boot
+      Code.ensure_loaded Holo
+      import Holo
       
     end
   

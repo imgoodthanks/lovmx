@@ -17,7 +17,7 @@ defmodule Cloud do
 
   # todo: dynamically build @static from `lib/drive` BOM.
   @static [
-    "blob",
+    "bin",
     "css",
     "help",
     "data",

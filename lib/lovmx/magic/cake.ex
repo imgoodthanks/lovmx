@@ -97,7 +97,7 @@ defmodule Cake do
   end
   def x(data = %Data{}, signal, "list", path) do
     # get the list
-    list = Boot.space(path)
+    list = Holo.space(path)
     #Logger.debug "#list // #{inspect list}"
 
     {Data.renew(data, list), Pipe.text(list)}

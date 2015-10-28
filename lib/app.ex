@@ -11,10 +11,9 @@ defmodule App do
   
   @doc "GET: Route *all* generic PULL signals from HTTPS."
   def call(conn = %Plug.Conn{method: "GET", path_info: holospace}, agent) do
-
-    if Mix.env == :dev do
-      Wizard.reset_all!
-    end
+    
+    # hack to reset universe on each request
+    Wizard.reset_all!
 
     if holospace in [[], [""], nil] do
       holospace = "/"
@@ -28,7 +27,7 @@ defmodule App do
       send_file conn, 200, path
     else
       # we have a dynamic request
-      case data = Boot.space(holospace) do
+      case data = Holo.space(holospace) do
         data when is_list(data) ->
           resp conn, 200, Pipe.page data
 
@@ -63,7 +62,7 @@ defmodule App do
     if data do
       #todo: add the code to the data
       Freezer.put(data.path, data.content_type, data.filename)
-      |> Boot.boost(conn.params, holospace)
+      |> Holo.boost(conn.params, holospace)
     end
 
     Logger.debug "Cloud.POST // #{holospace} // #{inspect conn.params}"
