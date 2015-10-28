@@ -33,7 +33,7 @@ end
   # The result returned by init/1 is passed as second argument to call/2. Note that
   # init/1 may be called during compilation and as such it must not return pids,
   # ports or values that are not specific to the runtime.
-
+  
   @doc "We live in an HTTPS Multiverse."
   def port do
     if Application.get_env(:lovmx, :https, false) do
@@ -103,7 +103,7 @@ end
       send_resp conn, 200, data
     end
   end
-
+  
   @doc """
   Sends redirect response to provided url String
   <snip>

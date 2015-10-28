@@ -65,7 +65,7 @@ defmodule App do
       |> Holo.boost(conn.params, holospace)
     end
 
-    Logger.debug "Cloud.POST // #{holospace} // #{inspect conn.params}"
+    #Logger.debug "Cloud.POST // #{holospace} // #{inspect conn.params}"
 
     resp conn, 200, Pipe.page Drive.read Help.web holospace
   end

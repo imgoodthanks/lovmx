@@ -41,7 +41,7 @@ defmodule Kind do
   def link, do: :link # a path/URI/link
   def html, do: :html # an html snippet
   def blob, do: :blob # static/binary
-  def cake, do: :cake # cake/magic
+  def cake, do: :cake # cake/magic/markdown+
   ## ^^^ cake is first class ^^^ 
   
   ## Exception

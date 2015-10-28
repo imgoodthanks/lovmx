@@ -99,7 +99,7 @@ defmodule Lovmx do
     
     Logger.info "Lovmx.Supervisor: #{inspect link}"
     children |> Enum.map fn child ->
-      Logger.debug "!supervisor // #{inspect supervisor} // #{inspect child}"
+      #Logger.debug "!supervisor // #{inspect supervisor} // #{inspect child}"
     end
     
     Logger.info  "Lovmx.start #{inspect link}"
@@ -124,7 +124,7 @@ defmodule Lovmx do
 
   @doc "Good night sweet prince."
   def terminate(message, data) do
-    #####Cloud.boost "Lovmx.terminate: #{inspect data} message: #{inspect message}"
+    #####Holo.boost "Lovmx.terminate: #{inspect data} message: #{inspect message}"
     
     # todo: properly shutdown the Warp
     # Plug.Adapters.Cowboy.shutdown Warp.HTTPS

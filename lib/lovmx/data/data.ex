@@ -202,7 +202,7 @@ defmodule Data do
   @doc "Jump data to an unknown future if exe `code` passes `test`."
   def jump(data = %Data{}, holospace, code, test) do
     result = code.(data)
-
+    
     if test.(result) do
       data = put_in(data.jump, Map.put(data.jump, holospace, result))
       |> Data.tick

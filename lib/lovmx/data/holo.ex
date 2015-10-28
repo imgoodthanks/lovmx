@@ -32,22 +32,22 @@ defmodule Holo do
   def space(data, secret \\ nil)
 
   def space(holospace, secret) when is_atom(holospace) or is_binary(holospace) do
-    Logger.debug ">>> Holo:space.binary // #{inspect holospace}"
+    #Logger.debug ">>> Holo:space.binary // #{inspect holospace}"
     
     GenServer.call HoloServer, {Kind.flow, holospace, secret}
   end
   def space(things, secret) when is_list(things) do
-    Logger.debug ">>> Holo:space.things // #{inspect things}"
+    #Logger.debug ">>> Holo:space.things // #{inspect things}"
   
     things
   end
   def space(data = %Data{kind: :blob, thing: filename}, secret) when is_binary(filename) do
-    Logger.debug ">>> Holo:space.MAGIC // #{inspect data}"
+    #Logger.debug ">>> Holo:space.MAGIC // #{inspect data}"
     
     Cake.magic data, secret
   end
   def space(data = %Data{}, secret) do
-    Logger.debug ">>> Holo:space.data // #{inspect data}"
+    #Logger.debug ">>> Holo:space.data // #{inspect data}"
   
     data
   end
@@ -109,7 +109,7 @@ defmodule Holo do
   end
   
   def handle_call({:lock, data = %Data{}, holospace, secret, duration}, source, agent) do
-    Logger.debug "Holo:lock #{inspect self} // #{inspect holospace} // #{inspect data}"
+    #Logger.debug "Holo:lock #{inspect self} // #{inspect holospace} // #{inspect data}"
 
     # extract our map that we reset shortly
     map = Agent.get(agent, &(&1))
@@ -141,7 +141,7 @@ defmodule Holo do
     map  = Agent.get(agent, &(&1))
     data = Map.get(map, holospace)
     
-    Logger.debug ">>> Holo:pull // #{inspect data}"    
+    #Logger.debug ">>> Holo:pull // #{inspect data}"    
     
     {:reply, data, agent}
   end
@@ -149,12 +149,12 @@ defmodule Holo do
   def handle_call({:flow, holospace, secret}, source, agent) do
     map  = Agent.get(agent, &(&1))
     data = Map.get(map, holospace)
-    Logger.debug ">>> Holo:flow // #{inspect data}"
+    #Logger.debug ">>> Holo:flow // #{inspect data}"
     
     case data do
       data when is_list(data) ->
         Enum.each data, fn x ->
-          Logger.debug "*** Holo:flow // #{inspect data}"
+          #Logger.debug "*** Holo:flow // #{inspect data}"
         end
         
         {:reply, data, agent}  
@@ -164,7 +164,7 @@ defmodule Holo do
   end
   
   def handle_call({:push, data = %Data{}, holospace, secret, duration}, source, agent) do
-    Logger.debug "Holo:push // #{inspect data}"    
+    #Logger.debug "Holo:push // #{inspect data}"    
     
     # we need a namespace to share over..
     if is_nil holospace do

@@ -94,17 +94,6 @@ defmodule Help do
     [web, [path]] |> path
   end
 
-  @doc "Return *<whatever/warp/* path (aka Inner World paths)."
-  def pull do
-    "data"
-  end
-  def pull(stuff) when is_list(stuff) do
-    pull(Path.join List.wrap stuff)
-  end
-  def pull(path) do
-    [pull, [path]] |> path
-  end
-
   @doc "Safely join path `stuff` and validate file existence OR throw via is_path()."
   def path(stuff = []) do
     "/"

@@ -59,7 +59,7 @@ defmodule Flow do
   
   @doc "Put `thing` *INTO* `data.pull` at `signal`."
   def take(thing, data = %Data{}, signal \\ nil, secret \\ nil) when is_atom(signal) or is_binary(signal) do
-    Logger.debug "Flow.take // #{data.keycode} // #{signal} // #{inspect thing}"
+    #Logger.debug "Flow.take // #{data.keycode} // #{signal} // #{inspect thing}"
 
     put_in(data.pull, Map.put(data.pull, signal, thing))
   end

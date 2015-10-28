@@ -147,7 +147,7 @@ defmodule Machine do
   end
   
   def handle_call({push, holospace, secret, duration}, source, agent) do
-    Logger.debug "Machine:push // #{inspect data.push}"
+    #Logger.debug "Machine:push // #{inspect data.push}"
     
     data = Agent.get agent, &(&1)
     

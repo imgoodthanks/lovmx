@@ -1,14 +1,6 @@
 defmodule Help.Test do
   use ExUnit.Case
   
-  # test "Use `Data.help` to add a help to the Hello World ",
-  # do: assert Regex.match? ~r/magic/i, inspect Help.help
-  
-  # test "Does cool stuff",
-  # do: assert %Data{} = "#yolo" |> new |> Data.code(fn data -> Data.update data, Cake.magic(data.thing) end) |> boot |> compute
-  #
-  ## Boring API
-
   test "generic", do: assert Help.generic
 
   test "tick",    do: assert Help.tick > 0

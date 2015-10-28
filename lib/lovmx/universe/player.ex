@@ -30,14 +30,14 @@ defmodule Player do
   #
   # @doc "Ask/broadcast to please take stuff from `player`."
   # def take(player, holospace, secret \\ nil) do
-  #   #Cloud.boost "Player::grab:bot:#{inspect player}"
+  #   #Holo.boost "Player::grab:bot:#{inspect player}"
   #
   #   ##GenServer.call(PlayerServer, {:data, self, holospace, secret})
   #
   #   player
   # end
   # def handle_cast({:data, source, holospace, secret}, computer) do
-  #   #Cloud.boost "Player.handle_call::grab: #{holospace} (#{inspect source})"
+  #   #Holo.boost "Player.handle_call::grab: #{holospace} (#{inspect source})"
   #
   #   #send source, Holo.space(computer, holospace, secret)
   #
@@ -46,12 +46,12 @@ defmodule Player do
   #
   # @doc "Anonymously grab and put stuff into `Player.items`."
   # def loot(player, data) do
-  #   #Cloud.boost "Player::grab:holospace:#{inspect player}"
+  #   #Holo.boost "Player::grab:holospace:#{inspect player}"
   #
   #   #GenServer.call(PlayerServer, {:loot, player})
   # end
   # def handle_call({:loot, player}, source, computer) do
-  #   ###Cloud.boost "Player.handle_call:::loot: #{inspect player} (#{inspect computer})"
+  #   ###Holo.boost "Player.handle_call:::loot: #{inspect player} (#{inspect computer})"
   #
   #   # TODO: grab stuff
   #

@@ -18,5 +18,8 @@ defmodule Wizard.Test do
   
   test "Wizard.reset nukes the eggs.", do: 
     assert is_pid Wizard.reset
+  
+  test "Wizard.reset_all! nukes the eggs.", do: 
+    assert is_pid Wizard.reset_all!
     
 end

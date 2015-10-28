@@ -47,18 +47,18 @@ defmodule Data.Test do
     assert Help.path [data, "#{0}"] == Data.address(data, tick: :back)
   end
   
-  # test "Use `Data.tick` and `Data.roll` to play other versions of `data`." do
-  #   first = data = Data.new("one")
-  #   assert %Data{roll: []} = data
-  #
-  #   # bump the data
-  #   data = Data.tick(data)
-  #   # get the new version
-  #   version = Data.address(data, tick: :back)
-  #   assert version in data.roll
-  #
-  #   assert first = Data.roll(data, tick: :back)
-  # end
+  test "Use `Data.tick` and `Data.roll` to play other versions of `data`." do
+    first = data = Data.new("one")
+    assert %Data{roll: []} = data
+
+    # bump the data
+    data = Data.tick(data)
+    # get the new version
+    version = Data.address(data, tick: :back)
+    assert version in data.roll
+    
+    #todo: assert Data.roll(Data.tick(data), tick: :back)
+  end
 
   test "Use `Data.path` to pull *all* of holospace for updates to `data`.", do:
 		assert is_nil Data.path Data.new, "lol"
@@ -81,22 +81,19 @@ defmodule Data.Test do
   test "Use `Data.boom` to create *an* error data.", do:
 		assert %Data{} = Data.boom "whoops"
   
-  # test "Data.roll to return a previous version of Bot.",
-  # do: assert %Data{} = Data.roll Data.tick(Cloud.boost Data.new), 0
+  # test "Data.roll to return a previous version of Data.",
+  # do: assert %Data{} = Data.roll Data.tick(Holo.boost Data.new), 0
 
-  # test "Data.jump(binary) to forecast future versions of Bot.",
-  # do: assert "<p>@lol</p>" = Bot.jump Data.new, "related", fn x -> Cake.magic x end, fn t -> Cloud.fuzzy t.thing end
-
-  # test "Data.stub(binary) returns Bot full of Cake.",
-  # do: assert "<p>@lol</p>" = Bot.stub
+  # test "Data.jump(binary) to forecast future versions of Data.",
+  # do: assert "<h1>lol</h1>\n" = Data.jump Data.new, "related", fn x -> Cake.magic("# lol") end, fn t -> t.kind == :cake end
 
   test "Use `Data.morph` to mutate data into whatever `fn` returns.", do:
 		assert is_binary Data.morph Data.new, fn x -> "lol" end
   
-  test "Use `Data.clone` to add boom/messages to `bot`.", do:
+  test "Use `Data.clone` to add boom/messages to `data`.", do:
 		assert %Data{} = Data.new |> Data.clone
 
-  test "Data.boom(binary) returns Bot full of Cake.", do:
+  test "Data.boom(binary) returns Data full of Cake.", do:
 		assert %Data{boom: ["@yourebugged"]} = Data.boom Data.new, "@yourebugged"
 
 end

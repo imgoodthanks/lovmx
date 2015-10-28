@@ -7,7 +7,8 @@ defmodule Holo.Test do
   # test "Use `Holo.boost` and `Holo.space` to get/set things in <holospace>." do
   #   data = %Data{} = Holo.boost Data.new, "whoa"
   #
-  #   assert data.home in Holo.space "whoa"
+  #
+  #   assert data in Holo.space data.keycod
   # end
   
   test "Use `Holo.list` to get a list of everything.", do: 

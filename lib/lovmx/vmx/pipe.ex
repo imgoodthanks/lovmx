@@ -35,7 +35,7 @@ defmodule Pipe do
   
   @doc "Create static HTML pages."  
   def page(things = %Stream{}) do
-    Logger.debug "Pipe.page #{inspect things}"
+    #Logger.debug "Pipe.page #{inspect things}"
     
     # create the binary/html
     things
@@ -62,7 +62,7 @@ defmodule Pipe do
     ])
   end
   def page(thing) do
-    Logger.debug "Pipe.page #{inspect thing}"
+    #Logger.debug "Pipe.page #{inspect thing}"
 
     page(inspect thing)
   end
@@ -72,13 +72,13 @@ defmodule Pipe do
     html Enum.map data, &(html &1)
   end
   def html(data = %Data{kind: :link}) do
-    ####Cloud.boost "Pipe.html #{inspect data}"
+    ####Holo.boost "Pipe.html #{inspect data}"
     "<code class=\"data\">
     <a href='#{Help.path [data.meta.base, data.thing]}'>#{data.thing}</a>
     </code>"
   end
   def html(data = %Data{thing: %Data{kind: kind, meta: path}}) when is_binary(path) do
-    #Cloud.boost "Pipe.html %Data{thing: %Data{kind: kind, meta: path}}"
+    #Holo.boost "Pipe.html %Data{thing: %Data{kind: kind, meta: path}}"
     if Freezer.extension(kind) do
       "<img src='#{path}'>"
     else
@@ -101,11 +101,8 @@ defmodule Pipe do
   end
   
   @doc "Create JSON for easy API/web access."
-  def json([list]) when is_list(list) do
-    Enum.map list, &(json &1)
-  end
   def json(things) do
-    Poison.encode!([inspect(things)])
+    Poison.encode!([things])
   end
   
   @doc "Render args as debug/text."
