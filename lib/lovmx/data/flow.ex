@@ -74,16 +74,16 @@ defmodule Flow do
     # flow it babe
     Flow.x data, holospace, secret
   end
-    
+  
   ## OUT
     
-  @doc "From `data` *to* `machine` or `holospace` in the *BACKGROUND*."
+  @doc "From `data` *to* `holospace` in the *BACKGROUND*."
   def push(data = %Data{}, holospace, secret \\ nil) do
     put_in(data.push, Map.put(data.push, holospace, Kind.push))
     |> Flow.x(secret)
   end
   
-  @doc "From `data` *to* `machine` or `holospace` and *WAIT*."
+  @doc "From `data` *to* `holospace` and *WAIT*."
   def wait(data = %Data{}, holospace, secret \\ nil) do
     # todo: call/receive for a data/signal from `holospace`
     put_in(data.push, Map.put(data.push, holospace, Kind.wait))

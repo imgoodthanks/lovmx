@@ -23,7 +23,18 @@ use Mix.Config
 #
 #     import_config "#{Mix.env}.exs"
 
-# config :maru, Lovmx.API,
-#   port: 8880
+# Default HTTPS Port 
+# todo: add better in-app support
+config :lovmx, 
+  https: true
 
-config :lovmx, port: 8443
+# In your config/config.exs file
+config :lovmx, Fridge.Repo,
+  adapter: Ecto.Adapters.Postgres,
+  database: "lovmx",
+  username: "postgres",
+  password: "postgres"
+  
+# # Config Maru
+# config :maru, Lovmx.App,
+#   port: 8880

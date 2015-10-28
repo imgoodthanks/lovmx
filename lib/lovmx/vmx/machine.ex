@@ -9,7 +9,6 @@ defmodule Machine do
   """
   
   use GenServer
-  use Connection
   import Kind
   
   

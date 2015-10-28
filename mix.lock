@@ -30,6 +30,7 @@
   "plug": {:hex, :plug, "1.0.2"},
   "poison": {:hex, :poison, "1.5.0"},
   "poolboy": {:hex, :poolboy, "1.5.1"},
+  "postgrex": {:hex, :postgrex, "0.9.1"},
   "pretty_hex": {:git, "https://github.com/polsab/pretty_hex.git", "33e3fb64a47a692a08a414fb043c56a9dfdf204e", []},
   "providers": {:hex, :providers, "1.4.1"},
   "ranch": {:hex, :ranch, "1.1.0"},

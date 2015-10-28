@@ -36,34 +36,51 @@ defmodule Magic do
       import Boot
       
     end
-    
-    if orbital = Keyword.get(opts, :orbital, false) do
-      
-      quote do
-        
-        import Plug.Conn
-        
-        use Plug.Router
-        use Plug.Builder
-        
-        plug :match
-        plug :dispatch
-        
-        use WebAssembly
-
-      end
-    end
-    
-    # if maru = Keyword.get(opts, :maru, false) do
-    #   quote do
-    #
-    #     import Plug.Conn
-    #     use Maru.Router
-    #     plug Plug.Logger
-    #     use WebAssembly
-    #
-    #   end
-    # end
+  
   end
 
+end
+
+defmodule OrbitalMagic do
+  
+  @moduledoc "Use `OrbitalMagic` for easy Plugs in Elixir."
+  
+  defmacro __using__(opts \\ []) do
+    
+    quote do
+      
+      import Plug.Conn
+
+      use Plug.Router
+      use Plug.Builder
+
+      plug :match
+      plug :dispatch
+
+      use WebAssembly
+
+    end
+    
+  end
+  
+end
+
+defmodule MaruMagic do
+  
+  @moduledoc "Use `MaruMagic` for easy APIs in Elixir."
+  
+  defmacro __using__(opts \\ []) do
+    
+    quote do
+
+      import Plug.Conn
+      use Maru.Router
+      plug Plug.Logger
+
+      use WebAssembly
+
+    end
+    
+  end
+  
 end

@@ -15,9 +15,9 @@ defmodule Drive do
   ## File System
   
   @doc "Read private/project-based files from `$project/<path>`."
-  def read(path, _secret \\ nil) do
+  def read(project_path, _secret \\ nil) do
     # build the path
-    root = Help.project path
+    root = Help.project project_path
 
     Logger.debug "Boot.read: #{root}"
 
@@ -31,8 +31,8 @@ defmodule Drive do
           {:ok, files} = File.ls root
 
           # fixup the basename to hide inside the warp drive
-          basename = Path.basename(path)
-          if Path.basename(path) == "static" do
+          basename = Path.basename(project_path)
+          if basename == "static" do
             basename = "/"
           end
 
@@ -63,8 +63,8 @@ defmodule Drive do
   end
 
   @doc "Write raw `thing` data to `$project/<path>`."
-  def write(thing, path \\ nil, secret \\ nil) when is_nil(path) or is_atom(path) or is_binary(path) do
-    absolute = Help.root Help.web path
+  def write(thing, project_path \\ nil, secret \\ nil) when is_nil(project_path) or is_atom(project_path) or is_binary(project_path) do
+    absolute = Help.root Help.web project_path
 
     # create the enclosing path
     File.mkdir_p Path.dirname absolute

@@ -32,8 +32,6 @@ defmodule Fridge.Model do
 
   use Ecto.Model
 
-  @primary_key {:id, :binary_id, autogenerate: true}
-
   schema "data" do
     field :key,                :string  #   :length => 40,    :key => true,   :auto_validation => false
     field :data,               :binary  #   :length => 80
@@ -44,8 +42,5 @@ end
 
 defmodule Fridge.Repo do
 
-  use Ecto.Repo,
-    otp_app: :lovmx,
-    adapter: Mongo.Ecto
-
+  use Ecto.Repo, otp_app: :lovmx
 end
