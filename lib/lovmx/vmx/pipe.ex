@@ -4,13 +4,13 @@ defmodule Pipe do
   
   @moduledoc """
   # Pipe
-  ## Push Data through a series of tubes and Holospace Port(s).
-  ### Pipe(s) manage the Data/Output life cycle.
+  ## Push Data through a series of tubes.
+  ### Pipe(s) manage the Data |> Output life cycle.
   
   Tree of Life:
   -------------
-  - Pipe(s) live *below* data/holo
-  - Pipe(s) live *lateral* to data/machine
+  - Pipe(s) live *below* data/flow/holo
+  - Pipe(s) live *after* to data/machine
   - Pipe(s) live *above* the warps/elixir/server
 
   # todo: formal protocols + Pipe API extensions
@@ -22,6 +22,11 @@ defmodule Pipe do
   ## Static Tranforms 
   # for *complex* transforms we use Bots, Flows, and Pipes
   
+  # @doc "Match outgoing Data."
+  # def catch(data = %Data{}) do
+  #   data
+  # end
+
   @doc "Pipe to a Cake/Magic document."
   def magic(data = %Data{}, holospace, secret \\ nil) do
     Cake.magic(data)
@@ -29,49 +34,51 @@ defmodule Pipe do
   end
   
   @doc "Create static HTML pages."
-  def page(data = %Data{}) do
-    page data, data.keycode
+  def page(thing, holospace \\ nil, secret \\ nil)
+  
+  # def page(data = %Data{}, holospace, secret) do
+  #   page data, data.keycode
+  # end
+  # def page(data = %Data{}, holospace, secret) do
+  #   # build page/results
+  #   page = Enum.join([
+  #     Cake.kit("html/header.html"),
+  #     html(data.thing),
+  #     Cake.kit("html/footer.html"),
+  #   ])
+  #
+  #   # write the page to whatever it wanted
+  #   #Cloud.save page, Help.web(holospace)
+  #
+  #   page
+  # end
+  def page(things, holospace, secret) when is_list(things) do
+    page Enum.join(Enum.map things, &(html &1, holospace, secret))
   end
-  def page(data = %Data{}, holospace, secret \\ nil) do
-    # build page/results
-    page = Enum.join([
-      Cake.kit("html/header.html"),
-      html(data.thing),
-      Cake.kit("html/footer.html"),
-    ])
-    
-    # write the page to whatever it wanted
-    #Cloud.save page, Help.web(holospace)
-    
-    page
-  end
-  def page(things) when is_list(things) do
-    page Enum.join(Enum.map things, &(html &1))
-  end
-  def page([]) do
+  def page([], holospace, secret) do
     page ""
   end
-  def page(nada) when is_nil(nada) do
+  def page(nada, holospace, secret) when is_nil(nada) do
     page ""
   end
   def page do
     page ""
   end
-  def page(data) when is_map(data) do
+  def page(data, holospace, secret) when is_map(data) do
     Enum.join([
       Cake.kit("html/header.html"),
       Enum.map(Map.to_list(data), &(html &1)),
       Cake.kit("html/footer.html"),
     ])
   end
-  def page(data) when is_binary(data) do
+  def page(data, holospace, secret) when is_binary(data) do
     Enum.join([
       Cake.kit("html/header.html"),
       data,
       Cake.kit("html/footer.html"),
     ])
   end
-  def page(thing) do
+  def page(thing, holospace, secret) do
     page(inspect thing)
   end
   
@@ -186,5 +193,5 @@ defmodule Pipe do
   def debug(data) do
     inspect data
   end
-
+  
 end

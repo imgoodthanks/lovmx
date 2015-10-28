@@ -71,16 +71,18 @@ defmodule Data do
            meta: Map.merge(%{}, meta || %{}),
           thing: thing
     }
-    |> Flow.x
   end
     
   @doc "Restart Data w/ new `thing`."
-  def renew(data = %Data{}, thing) do
+  def update(data = %Data{}, thing \\ nil) do
     # save a rollback version
     data = Data.tick(data)
-    #update internal data
-    data = put_in(data.thing, thing)
-
+    
+    # update internal data
+    if thing do
+      data = put_in(data.thing, thing)
+    end
+  
     data
   end
   
@@ -88,7 +90,6 @@ defmodule Data do
   def home(data = %Data{}, holospace) when is_atom(holospace) or is_binary(holospace) do
     # update the data
     Data.tick(put_in data.home, holospace)
-    |> Flow.x
   end
   def home(data = %Data{}, process) when is_pid(process) do
     # # say goodbye
@@ -98,7 +99,6 @@ defmodule Data do
     
     # update the data
     Data.tick(put_in data.home, process)
-    |> Flow.x
   end
   
   @doc "Use `Data.tick` to create a temporal notation (aka version) of `data` at this time."
@@ -107,7 +107,6 @@ defmodule Data do
     
     # save + update
     data = put_in(data.roll, Enum.concat(data.roll, [Data.address(data)]))
-    |> Flow.x
     
     # are we completely rebooting this tick?
     if reboot = Keyword.get(opts, :reboot, false) do
@@ -122,13 +121,11 @@ defmodule Data do
     
     # Update the world.
     data = put_in(data.tick, data.tick + 1)
-    |> Flow.x
   end
   
   @doc "Use `Kind.meta` controls to help the data flow."
   def meta(data = %Data{}, signal, effect \\ nil) do
     put_in(data.meta, Map.put(data.meta, signal, effect))
-    |> Flow.x
   end
 
   @doc "Use `Data.kind` to mutate the data type using custom or Kind types."
@@ -139,7 +136,6 @@ defmodule Data do
   @doc "Readme first."
   def help(data = %Data{}, message) do
     put_in(data.help, Enum.concat(data.help, [message]))
-    |> Flow.x
   end
   
   @doc "Return *current* `data.thing`."
@@ -210,7 +206,6 @@ defmodule Data do
     if test.(result) do
       data = put_in(data.jump, Map.put(data.jump, holospace, result))
       |> Data.tick
-      |> Flow.x
     else
       data
     end

@@ -23,22 +23,21 @@ defmodule Holo do
     
   ## Holospace (internal web-readable static/dynamic storage)
   
-  @doc "Use `Holo.graph` to return all <signals>."
-  def graph do
+  @doc "Use `Holo.map` to return all <signals>."
+  def map do
     GenServer.call HoloServer, {Kind.meta, nil}
   end
   
-  @doc "Use `Holo.space <signal>` to look at and return *SPECIFIC* data at `holospace`."
-  def space(holospace \\ "/", secret \\ nil) when is_atom(holospace) or is_binary(holospace) do
+  @doc "Use `Holo.space <signal>, <secret>` to look at and return *SPECIFIC* signals at `holospace`."
+  def space(data, secret \\ nil)
+  def space(holospace, secret) when is_atom(holospace) or is_binary(holospace) do
     GenServer.call HoloServer, {Kind.pull, holospace, secret}
   end
+  def space(thing, secret) do
+    thing
+  end
   
-  # @doc "Use `Holo.data <signal>` to return *ALL* `<data>.thing` at `holospace`."
-  # def data(machine, secret \\ nil, duration \\ Help.tock) when is_pid(machine) do
-  #   compute machine, secret, duration
-  # end
-  
-  @doc "Use `Holo.capture` to *EXCLUSIVELY* capture `nubspace`."
+  @doc "Use `Holo.capture` to *EXCLUSIVELY* capture `holospace`."
   def capture(data = %Data{}, holospace, secret \\ nil, duration \\ Help.long) do
     # Compile + pull *all* `data.pull` and push to the Machine for exe
     GenServer.call HoloServer, {Kind.lock, data, holospace, secret, duration}
@@ -55,7 +54,6 @@ defmodule Holo do
     Holo.forget(data.home, secret)
     
     put_in(data.home, holospace)
-    |> Flow.x
   end
   
   @doc "Use `Holo.boost` to start a `Machine` at `holospace` with `data`."
@@ -125,15 +123,12 @@ defmodule Holo do
   end
   
   def handle_call({:pull, holospace, secret}, source, agent) do
-    map = Agent.get(agent, &(&1))
+    map  = Agent.get(agent, &(&1))
     data = Map.get(map, holospace)
     
-    case data do
-      data when is_pid(data) ->
-        {:reply, Machine.data(data), agent}
-      _ -> 
-        {:reply, data, agent}
-    end
+    Logger.debug "Holo:pull // #{inspect data}"    
+    
+    {:reply, data, agent}
   end
   
   def handle_call({:push, data = %Data{}, holospace, secret, duration}, source, agent) do

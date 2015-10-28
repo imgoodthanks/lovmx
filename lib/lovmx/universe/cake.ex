@@ -100,7 +100,7 @@ defmodule Cake do
     list = Holo.space(path)
     #Logger.debug "#list // #{inspect list}"
 
-    {Data.renew(data, list), Pipe.text(list)}
+    {Data.update(data, list), Pipe.text(list)}
   end
   def x(data = %Data{}, signal, "boot", opts) do
     Logger.warn "#boot // #{inspect signal}  #{inspect opts}"

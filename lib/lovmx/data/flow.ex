@@ -4,8 +4,7 @@ defmodule Flow do
   
   @moduledoc """
   # Flow
-  ## Action/Event Graph
-  ### FBP Graph
+  ## Data Input or Action/Event Graph
   
   A data flow is the basic layout of an `application` or are the 
   Modules you need to define and respond to the various other 
@@ -18,22 +17,27 @@ defmodule Flow do
   """
   
   use GenServer
+
+  @doc "Use `Holo.graph` to return all <signals>."
+  def graph(things) when is_list(things) do
+    Logger.debug "Flow.graph #{inspect things}"
+    
+    Enum.map things, &(Holo.space &1)
+  end
+  def graph(nada) when is_nil(nada) do
+    nil
+  end
   
   ## META
-  
-  @doc "Use `Flow.space` to return *everything* in Holospace share."
-  def graph do
-    GenServer.call FlowServer, {Kind.meta}
-  end
-  
-  @doc "Broadcast `thing` *OUT* to the universe in the *BACKGROUND*."
-  def x(data = %Data{}, secret \\ nil) do
-    Task.async fn ->
-      GenServer.call FlowServer, {Kind.push, data, secret}
-    end
-    
-    data
-  end
+
+  # @doc "Broadcast `thing` *OUT* to the universe in the *BACKGROUND*."
+  # def x(data = %Data{}, secret \\ nil) do
+  #   Task.async fn ->
+  #     GenServer.call FlowServer, {Kind.push, data, secret}
+  #   end
+  #
+  #   data
+  # end
   
   ## IN
   
@@ -43,7 +47,7 @@ defmodule Flow do
   end
   def into(thing, data = %Data{}) do
     data
-    |> Data.renew(thing)
+    |> Data.update(thing)
   end
     
   @doc "Map `holospace` *INTO* `data.pull`."
@@ -72,7 +76,7 @@ defmodule Flow do
     end
     
     # flow it babe
-    Flow.x data, holospace, secret
+    Holo.boost data, holospace, secret
   end
   
   ## OUT
@@ -80,36 +84,20 @@ defmodule Flow do
   @doc "From `data` *to* `holospace` in the *BACKGROUND*."
   def push(data = %Data{}, holospace, secret \\ nil) do
     put_in(data.push, Map.put(data.push, holospace, Kind.push))
-    |> Flow.x(secret)
   end
   
   @doc "From `data` *to* `holospace` and *WAIT*."
   def wait(data = %Data{}, holospace, secret \\ nil) do
     # todo: call/receive for a data/signal from `holospace`
     put_in(data.push, Map.put(data.push, holospace, Kind.wait))
-    |> Flow.x(holospace, secret)
   end
   
-  ## Callbacks
   
-  def handle_call({:meta}, source, agent) do
-    {:reply, Agent.get(agent, &(&1)), agent}
-  end
+  ## GenServer
   
-  def handle_call({:push, data = %Data{}, secret}, source, agent) do
-    #Logger.debug "Flow:push #{inspect data.keycode}"    
-
-    # update map/space
-    :ok = Agent.update agent, fn map ->
-      Map.put map, data.keycode, data
-    end
-    
-    # return the data
-    {:reply, data, agent}
-  end
-  
+  @doc "Start the named FlowServer process."
   def start_link(_) do
-    # An agent that we'll eventually pass around to the *all* the Flow servers...
+    # An agent that we'll eventually pass around to *all* the Flow servers...
     link = {:ok, agent} = Agent.start_link(fn -> Map.new end)
     
     # Keep the map in memory for fluffiness.

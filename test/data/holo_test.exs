@@ -1,14 +1,14 @@
 defmodule Holo.Test do
   use ExUnit.Case
 
-  test "Use `Holo.graph` to get a map of everything.", do: 
-    assert is_map Holo.graph
+  test "Use `Holo.map` to get a map of everything.", do: 
+    assert is_map Holo.map
       
-  test "Use `Holo.space` to map or drop everything at <holospace>." do
-    data = %Data{} = Holo.boost Data.new, "whoa"
-    
-    assert data.home in Holo.space "whoa"
-  end
+  # test "Use `Holo.boost` and `Holo.space` to get/set things in <holospace>." do
+  #   data = %Data{} = Holo.boost Data.new, "whoa"
+  #
+  #   assert data.home in Holo.space "whoa"
+  # end
   
   test "Use `Holo.list` to get a list of everything.", do: 
     assert is_list Holo.list

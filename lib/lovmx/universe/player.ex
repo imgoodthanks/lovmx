@@ -20,7 +20,7 @@ defmodule Player do
   # def quiz(topic, secret \\ Help.keycode) do
   #   topic
   #   |> Data.new(secret)
-  #   |> Holo.space
+  #   |> Holo.map
   # end
   #
   # @doc "Sweet prince."

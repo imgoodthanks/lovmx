@@ -87,12 +87,11 @@ defmodule Wizard do
       archive = Help.thaw Drive.read Help.path ["priv", "holospace.term"]
     end
     
-    # First creation of the initial holospace network
-    "README.magic"
-    |> Drive.read # read the file
-    |> Cake.magic # compile magicdown (markdown+) into data/bot
-    |> Holo.boost "help"# send it into holospace
-
+    # # First creation of the initial holospace network
+    # "README.magic"
+    # |> Drive.read # read the file
+    # |> Cake.magic # compile magicdown (markdown+) into data/bot
+    # |> Holo.boost "help"# send it into holospace
     
     # Second Creation of Waitforit.
     Task.async fn -> 
@@ -126,7 +125,7 @@ defmodule Wizard do
   def handle_cast(:freeze, agent) do
     Logger.info "Wizard.freeze"
     
-    Holo.space
+    Holo.map
     |> Help.freeze
     |> Drive.write(Help.path ["priv", "holospace.term"])
     

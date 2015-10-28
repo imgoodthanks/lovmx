@@ -16,9 +16,29 @@ defmodule Machine do
   
   def boot(data = %Data{}) do
     link = {:ok, machine} = Machine.start_link(data)
-    Logger.debug "Machine.boot // #{inspect machine} // #{inspect data}"
+    #Logger.debug "Machine.boot // #{inspect machine} // #{inspect data}"
     
     machine
+  end
+
+  def start_link(data = %Data{}) do
+    # Create an Agent for our state, which also gets us
+    # an extra or secondary process to do longer map updates/etc
+    # outside of the Bot's own process.
+    {:ok, agent} = Agent.start_link fn -> data end
+    
+    link = {:ok, machine} = GenServer.start_link(Machine, agent, debug: [])
+    #Logger.debug "Machine.start_link #{data.keycode}"
+    
+    # # update the data to include our Machine home
+    # :ok = Agent.update agent, fn data ->
+    #   Data.home data, machine
+    # end
+    
+    link
+  end
+  def start_link(thing) do
+    start_link(Data.new thing)
   end
   
   def data(machine, secret \\ nil, duration \\ Help.tock) when is_pid(machine) do
@@ -56,8 +76,11 @@ defmodule Machine do
   def drop(machine, secret \\ nil) when is_pid(machine) do
     GenServer.call machine, {:drop, secret}
   end
-  
+
+  ########################################################
+  ########################################################  
   ## Callbacks
+  ########################################################
   ########################################################
 
   def handle_call({boot, holospace, secret, duration}, source, agent) do
@@ -128,7 +151,7 @@ defmodule Machine do
     
     data = Agent.get agent, &(&1)
     
-    # Update all nubspace that this data has just pinged
+    # Update all holospace that this data has just pinged
     Enum.each data.push, fn {key, value} ->
       case {key, value} do
         # a process, so send a :data message
@@ -136,7 +159,7 @@ defmodule Machine do
           GenServer.call key, {Kind.pull, key, secret, duration}
 
         {key, value} when is_atom(value) or is_binary(value) ->
-          Flow.x(data, key, secret)
+          Holo.boost(data, key, secret)
 
         _ -> nil
       end
@@ -157,27 +180,6 @@ defmodule Machine do
     Agent.stop(agent)
     
     {:stop, :normal, nil}
-  end
-  
-  @doc "Machine"
-  def start_link(data = %Data{}) do
-    # Create an Agent for our state, which also gets us
-    # an extra or secondary process to do longer map updates/etc
-    # outside of the Bot's own process.
-    {:ok, agent} = Agent.start_link fn -> data end
-    
-    link = {:ok, machine} = GenServer.start_link(Machine, agent, debug: [])
-    #Logger.debug "Machine.start_link #{data.keycode}"
-    
-    # update the data to include our Machine home
-    :ok = Agent.update agent, fn data -> 
-      Data.home data, machine 
-    end
-    
-    link
-  end
-  def start_link(thing) do
-    start_link(Data.new thing)
   end
    
 end

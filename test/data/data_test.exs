@@ -3,19 +3,19 @@ defmodule Data.Test do
   
   ## Examples
   
-  test "Use `Data.new` to create and then `Data.renew` to update `data`", do:
-		%Data{thing: "yep"} = Data.new("nada") |> Data.renew "yep"
+  test "Use `Data.new` to create and then `Data.update` to update `data`", do:
+		%Data{thing: "yep"} = Data.new("nada") |> Data.update "yep"
     
   ## APIs
 
   test "Use `Data.new` to create new `data`.", do:
 		%Data{} = Data.new
     
-  test "Use `Data.renew` to add a help message.", do:
-		assert %Data{thing: :reboot} = Data.renew Data.new("whoa"), :reboot
+  test "Use `Data.update` to add a help message.", do:
+		assert %Data{thing: :reboot} = Data.update Data.new("whoa"), :reboot
 
   test "Use `Data.home <holospace>` to move data to a new holospace.", do:
-		assert %Data{thing: :reboot} = Data.renew Data.new("whoa"), :reboot
+		assert %Data{thing: :reboot} = Data.update Data.new("whoa"), :reboot
     
   test "Use `Data.home <machine>` to move data to a new process." do
     data = Data.new

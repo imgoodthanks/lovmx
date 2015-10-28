@@ -50,7 +50,7 @@ end
     agent
   end
   
-  @doc "We walk the Cloud."
+  @doc "We start the Cloud."
   def kick(opts \\ []) do
     # todo: we developed with and *will ship* SSL/secure by default, 
     # just want to do an easier release and need to get the SSL
@@ -71,12 +71,39 @@ end
     Logger.info "Cloud.kick // https: #{inspect secure_by_default} // port: #{inspect Cloud.port}"
   end
   
-  @doc "Default route."
-  def call(conn = %Plug.Conn{path_info: holospace}, agent) do
-    Plug.Conn.send_resp 200, Pipe.page Drive.read Help.web holospace
+  @doc "GET: Wizard.reset_all!"
+  def call(conn = %Plug.Conn{path_info: ["reset"]}, agent) do
+    if Mix.env == :dev do
+      Wizard.reset_all!
+    end
+    
+    redirect conn, "/"
   end
   
-  
+  @doc "GET: Route *all* generic PULL signals from HTTPS."
+  def call(conn = %Plug.Conn{path_info: holospace}, agent) do
+    if holospace in [[], [""], nil] do
+      holospace = "/"
+    end
+
+    holospace = Help.path(holospace)
+    path = Help.root Help.web [holospace]
+
+    if File.exists?(path) and not File.dir?(path) do
+      # use plug/send_file here for OS-level support
+      send_file conn, 200, path
+    else
+      # we have a dynamic request
+      data = holospace
+      |> Help.web
+      |> Drive.read
+      |> Flow.graph
+      |> Pipe.page(holospace)
+    
+      send_resp conn, 200, data
+    end
+  end
+
   @doc """
   Sends redirect response to provided url String
   <snip>
@@ -86,8 +113,8 @@ end
   def redirect(conn, url), do: redirect(conn, :found, url)
   def redirect(conn, status, url) do
     conn
-    |> Plug.Conn.put_resp_header("Location", url)
-    |> Plug.Conn.send_resp(301, url)
+    |> put_resp_header("location", url)
+    |> send_resp(301, url)
   end
   
   match _ do
