@@ -126,7 +126,10 @@ defmodule Holo do
     map  = Agent.get(agent, &(&1))
     data = Map.get(map, holospace)
     
-    Logger.debug "Holo:pull // #{inspect data}"    
+    Logger.debug ">>> Holo:pull // #{inspect data}"    
+    
+    
+    
     
     {:reply, data, agent}
   end

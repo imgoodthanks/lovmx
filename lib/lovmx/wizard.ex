@@ -146,7 +146,9 @@ defmodule Wizard do
       File.rm_rf Help.project ["priv", "static"]
       # freshly copy static stuff no matter what
       File.cp_r  Help.project(["lib", "base"]), Help.project ["priv", "static"]
-
+      # copy the magic over
+      File.cp_r  Help.project("README.magic"), Help.project ["priv", "static", "README.magic"]
+      
       Logger.info "!reset // #universe // #{inspect Moment.now}"
     end
     

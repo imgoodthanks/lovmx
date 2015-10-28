@@ -36,7 +36,7 @@ defmodule Drive do
 
           List.wrap(files)
           |> Enum.map(fn x ->
-            Data.new(x, Kind.link, %{path: root})
+            Data.new(x, Kind.link, %{path: basename})
           end)
       end
     else

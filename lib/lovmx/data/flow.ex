@@ -22,7 +22,7 @@ defmodule Flow do
   def graph(things) when is_list(things) do
     Logger.debug "Flow.graph #{inspect things}"
     
-    Enum.map things, &(Holo.space &1)
+    Stream.map things, &(Holo.space &1)
   end
   def graph(nada) when is_nil(nada) do
     nil
@@ -68,9 +68,9 @@ defmodule Flow do
     #Logger.debug "Flow.push // #{holospace} // #{inspect data}"
 
     list = Flow.space(holospace, secret)
-  
+    
     unless Enum.empty? list do
-      data = List.first Enum.map list, fn path ->
+      data = List.first Stream.map list, fn path ->
         data = Flow.pull(data, path, secret)
       end
     end
@@ -91,7 +91,6 @@ defmodule Flow do
     # todo: call/receive for a data/signal from `holospace`
     put_in(data.push, Map.put(data.push, holospace, Kind.wait))
   end
-  
   
   ## GenServer
   

@@ -6,7 +6,7 @@ defmodule Pipe.Test do
   ## Data
   
   test "Pipe.magic bot creates a page from %Data{}", do:
-		assert is_binary Pipe.page Data.new("# yo"), "yo"
+		assert is_binary Pipe.page Data.new("# yo")
     
     
   test "Pipe.page bot creates a page from %Data{}", do:
@@ -35,7 +35,7 @@ defmodule Pipe.Test do
 
 
   test "Pipe.html bot returns HTML from [list]", do:
-    assert is_binary Pipe.html Data.new, "about"
+    assert is_binary Pipe.html Data.new
 
   test "Pipe.html bot returns HTML from [list]", do:
     assert is_binary Pipe.html Data.new(nil, Kind.link), "about"

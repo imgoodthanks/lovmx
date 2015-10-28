@@ -98,7 +98,7 @@ end
       |> Help.web
       |> Drive.read
       |> Flow.graph
-      |> Pipe.page(holospace)
+      |> Pipe.page
     
       send_resp conn, 200, data
     end

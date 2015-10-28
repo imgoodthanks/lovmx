@@ -33,68 +33,53 @@ defmodule Pipe do
     |> Cloud.save(holospace, secret)
   end
   
-  @doc "Create static HTML pages."
-  def page(thing, holospace \\ nil, secret \\ nil)
-  
-  # def page(data = %Data{}, holospace, secret) do
-  #   page data, data.keycode
-  # end
-  # def page(data = %Data{}, holospace, secret) do
-  #   # build page/results
-  #   page = Enum.join([
-  #     Cake.kit("html/header.html"),
-  #     html(data.thing),
-  #     Cake.kit("html/footer.html"),
-  #   ])
-  #
-  #   # write the page to whatever it wanted
-  #   #Cloud.save page, Help.web(holospace)
-  #
-  #   page
-  # end
-  def page(things, holospace, secret) when is_list(things) do
-    page Enum.join(Enum.map things, &(html &1, holospace, secret))
+  @doc "Create static HTML pages."  
+  def page(things = %Stream{}) do
+    Logger.debug "Pipe.page #{inspect things}"
+    
+    # create the binary/html
+    things
+    |> Enum.to_list
+    |> Enum.map &(html &1)
+    |> Enum.join
+    |> page
   end
-  def page([], holospace, secret) do
+  def page(things) when is_list(things) do
+    page Enum.join(Enum.map things, &(html &1))
+  end
+  def page([]) do
     page ""
   end
-  def page(nada, holospace, secret) when is_nil(nada) do
+  def page(nada) when is_nil(nada) do
     page ""
   end
   def page do
     page ""
   end
-  def page(data, holospace, secret) when is_map(data) do
+  def page(text) when is_binary(text) do
     Enum.join([
       Cake.kit("html/header.html"),
-      Enum.map(Map.to_list(data), &(html &1)),
+      text,
       Cake.kit("html/footer.html"),
     ])
   end
-  def page(data, holospace, secret) when is_binary(data) do
-    Enum.join([
-      Cake.kit("html/header.html"),
-      data,
-      Cake.kit("html/footer.html"),
-    ])
-  end
-  def page(thing, holospace, secret) do
+  def page(thing) do
+    Logger.debug "Pipe.page #{inspect thing}"
+
     page(inspect thing)
   end
   
-  @doc "Create HTML snippets."
-  def html(data, holospace \\ "/", secret \\ nil)
-  
-  def html(data = %Data{thing: data}, holospace, secret) when is_list(data) do
+  @doc "Create HTML snippets."  
+  def html(data = %Data{thing: data}) when is_list(data) do
     html Enum.map data, &(html &1)
   end
-  def html(data = %Data{kind: :link}, holospace, secret) do
+  def html(data = %Data{kind: :link}) do
     ####Cloud.boost "Pipe.html #{inspect data}"
     "<code class=\"data\">
-    <a href='#{Help.path [holospace, data.thing]}'>#{data.thing}</a>
+    <a href='#{Help.path [data.meta.path, data.thing]}'>#{data.thing}</a>
     </code>"
   end
-  def html(data = %Data{thing: %Data{kind: kind, meta: path}}, holospace, secret) when is_binary(path) do
+  def html(data = %Data{thing: %Data{kind: kind, meta: path}}) when is_binary(path) do
     #Cloud.boost "Pipe.html %Data{thing: %Data{kind: kind, meta: path}}"
     if Freezer.extension(kind) do
       "<img src='#{path}'>"
@@ -102,13 +87,13 @@ defmodule Pipe do
       text(data)
     end
   end
-  def html(things, holospace, secret) when is_list(things) do
-    Enum.join Enum.map things, &(html &1, holospace, secret)
+  def html(things) when is_list(things) do
+    Enum.join Enum.map things, &(html &1)
   end
-  def html(data, holospace, secret) when is_binary(data) do
+  def html(data) when is_binary(data) do
     "<pre class=\"text\">#{data}</pre>"
   end
-  def html(other, holospace, secret) do
+  def html(other) do
     "<pre class=\"other\">#{inspect other}</pre>"
   end
 
