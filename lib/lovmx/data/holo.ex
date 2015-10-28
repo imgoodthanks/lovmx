@@ -30,13 +30,28 @@ defmodule Holo do
   
   @doc "Use `Holo.space <signal>, <secret>` to look at and return *SPECIFIC* signals at `holospace`."
   def space(data, secret \\ nil)
+
   def space(holospace, secret) when is_atom(holospace) or is_binary(holospace) do
-    GenServer.call HoloServer, {Kind.pull, holospace, secret}
+    Logger.debug ">>> Holo:space.binary // #{inspect holospace}"
+    
+    GenServer.call HoloServer, {Kind.flow, holospace, secret}
   end
-  def space(thing, secret) do
-    thing
-  end
+  def space(things, secret) when is_list(things) do
+    Logger.debug ">>> Holo:space.things // #{inspect things}"
   
+    things
+  end
+  def space(data = %Data{kind: :blob, thing: filename}, secret) when is_binary(filename) do
+    Logger.debug ">>> Holo:space.MAGIC // #{inspect data}"
+    
+    Cake.magic data, secret
+  end
+  def space(data = %Data{}, secret) do
+    Logger.debug ">>> Holo:space.data // #{inspect data}"
+  
+    data
+  end
+    
   @doc "Use `Holo.capture` to *EXCLUSIVELY* capture `holospace`."
   def capture(data = %Data{}, holospace, secret \\ nil, duration \\ Help.long) do
     # Compile + pull *all* `data.pull` and push to the Machine for exe
@@ -128,10 +143,24 @@ defmodule Holo do
     
     Logger.debug ">>> Holo:pull // #{inspect data}"    
     
-    
-    
-    
     {:reply, data, agent}
+  end
+  
+  def handle_call({:flow, holospace, secret}, source, agent) do
+    map  = Agent.get(agent, &(&1))
+    data = Map.get(map, holospace)
+    Logger.debug ">>> Holo:flow // #{inspect data}"
+    
+    case data do
+      data when is_list(data) ->
+        Enum.each data, fn x ->
+          Logger.debug "*** Holo:flow // #{inspect data}"
+        end
+        
+        {:reply, data, agent}  
+      data ->
+        {:reply, data, agent}
+    end
   end
   
   def handle_call({:push, data = %Data{}, holospace, secret, duration}, source, agent) do

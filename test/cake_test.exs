@@ -5,7 +5,7 @@ defmodule Cake.Test do
 		assert %Data{thing: list} = Cake.magic "@list. img"
 
   test "Cake does cool stuff", do:
-		assert %Data{thing: "<h1>lol</h1>\n"} = Cake.magic Data.new "# lol"
+		assert %Data{pull: %{cake: "<h1>lol</h1>\n"}} = Cake.magic Data.new "# lol"
 
   test "Cake does nil stuff", do:
 		assert is_nil Cake.magic nil

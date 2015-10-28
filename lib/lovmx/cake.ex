@@ -63,9 +63,29 @@ defmodule Cake do
   def magic(text) when is_binary(text) do
     magic Data.new text
   end
+  
+  def magic(data = %Data{kind: :blob, thing: filename, meta: %{base: base, root: root}}, secret) 
+  when is_binary(filename) and is_binary(base) and is_binary(root) do
+    path = Help.path [base, filename]
+    
+    Logger.warn "Cake.magic: #{inspect path}"
+    
+    Cake.x data, Drive.read path
+  end
+  
   def magic(data = %Data{thing: text}) when is_binary(text) do
     Logger.warn "Cake.magic: #{inspect data.keycode}"
     
+    Cake.x data, text
+  end
+  
+  def magic(nada) when is_nil(nada) do
+    # there is no magic here.. :(
+
+    nil
+  end
+  
+  def x(data = %Data{}, text) when is_binary(text) do
     # we are a superset of markdown, so mark it first..
     text = Pipe.down(text)
     
@@ -80,15 +100,8 @@ defmodule Cake do
     end
     
     # then flow it baby
-    text 
-    |> Flow.into(data) 
+    Flow.take(cake, data, Kind.cake)
   end
-  def magic(nada) when is_nil(nada) do
-    # there is no magic here.. :(
-
-    nil
-  end
-  
   def x(data = %Data{}, signal, "code", source) do
     data = Bot.code(data, source)
     #Logger.debug "#code // #{inspect source }"

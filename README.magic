@@ -16,9 +16,13 @@ tl;dr upload and visually create extremely fast web apps.
 To start the LovMx:
 
   1. Install dependencies with `mix deps.get`
-  3. Start the Server with `iex -S mix`
-
-Now you can visit [`localhost:8443`](http://localhost:8443) from your browser.
+  2. Start the Server with `iex -S mix`
+  3. See `README.magic` or explore the API with `h Data` and `h <Module>` inside `iex`.
+  
+Now you can visit 
+  [`http://localhost:8080`](http://localhost:8080) or 
+  [`https://localhost:8443`](https://localhost:8443) 
+  from your browser.
 
 ## Learn more
 

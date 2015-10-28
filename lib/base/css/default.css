@@ -100,7 +100,6 @@ pre {
 display: block;
 color: #2d2f30;
 text-shadow: none;
-overflow: hidden;
 font-size: 16px;
 padding: 20px;
 }
@@ -298,7 +297,6 @@ border: none;
 background: none;
 color: #b8babb;
 display: block;
-overflow: hidden;
 border-radius: 1;
 }
 
@@ -455,4 +453,8 @@ width: 25%;
    margin-left: auto;
    margin-right: auto;
    max-width: initial;
+}
+
+#content {
+	overflow: visible;
 }

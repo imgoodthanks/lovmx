@@ -40,8 +40,6 @@ defmodule Pipe do
     # create the binary/html
     things
     |> Enum.to_list
-    |> Enum.map &(html &1)
-    |> Enum.join
     |> page
   end
   def page(things) when is_list(things) do
@@ -76,7 +74,7 @@ defmodule Pipe do
   def html(data = %Data{kind: :link}) do
     ####Cloud.boost "Pipe.html #{inspect data}"
     "<code class=\"data\">
-    <a href='#{Help.path [data.meta.path, data.thing]}'>#{data.thing}</a>
+    <a href='#{Help.path [data.meta.base, data.thing]}'>#{data.thing}</a>
     </code>"
   end
   def html(data = %Data{thing: %Data{kind: kind, meta: path}}) when is_binary(path) do
@@ -91,10 +89,10 @@ defmodule Pipe do
     Enum.join Enum.map things, &(html &1)
   end
   def html(data) when is_binary(data) do
-    "<pre class=\"text\">#{data}</pre>"
+    "<code class=\"text\">#{data}</code>"
   end
   def html(other) do
-    "<pre class=\"other\">#{inspect other}</pre>"
+    "<code class=\"other\">#{inspect other}</code>"
   end
 
   @doc "Return `Kind.pull = markdown(text)`."
@@ -122,9 +120,9 @@ defmodule Pipe do
     Enum.join Enum.map things, &(text &1)
   end
   def text(data = %Data{kind: :link}) do
-"""
-#{data.thing}
-"""
+    """
+    #{data.thing}
+    """
   end
   def text(data = %Data{home: home}) when is_pid(home) do
     PrettyHex.pretty_hex data.home

@@ -24,19 +24,23 @@ defmodule Drive do
       case File.dir? root do
         false ->
           Help.thaw File.read!(root)
-
+          
         true  ->
           {:ok, files} = File.ls root
-
+          
           # fixup the basename to hide inside the warp drive
           basename = Path.basename(project_path)
           if basename == "static" do
             basename = "/"
           end
-
+          
           List.wrap(files)
-          |> Enum.map(fn x ->
-            Data.new(x, Kind.link, %{path: basename})
+          |> Enum.map(fn filename ->
+            case File.dir?(Help.path [root, filename]) do
+              true  -> Data.new(filename, Kind.link, %{base: basename, root: root})
+              false -> Data.new(filename, Kind.blob, %{base: basename, root: root})
+            end
+            
           end)
       end
     else

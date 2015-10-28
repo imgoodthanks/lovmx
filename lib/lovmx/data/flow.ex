@@ -20,9 +20,10 @@ defmodule Flow do
 
   @doc "Use `Holo.graph` to return all <signals>."
   def graph(things) when is_list(things) do
-    Logger.debug "Flow.graph #{inspect things}"
-    
-    Stream.map things, &(Holo.space &1)
+    data = things
+    |> Enum.map &(Holo.space &1)
+        
+    data
   end
   def graph(nada) when is_nil(nada) do
     nil
@@ -58,7 +59,7 @@ defmodule Flow do
   
   @doc "Put `thing` *INTO* `data.pull` at `signal`."
   def take(thing, data = %Data{}, signal \\ nil, secret \\ nil) when is_atom(signal) or is_binary(signal) do
-    #Logger.debug "Flow.take // #{data.keycode} // #{signal} // #{inspect thing}"
+    Logger.debug "Flow.take // #{data.keycode} // #{signal} // #{inspect thing}"
 
     put_in(data.pull, Map.put(data.pull, signal, thing))
   end
