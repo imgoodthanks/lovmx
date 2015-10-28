@@ -21,7 +21,7 @@ defmodule Flow do
   
   ## META
   
-  @doc "Use `Flow.space` to return *everything* in Bootspace share."
+  @doc "Use `Flow.space` to return *everything* in Holospace share."
   def graph do
     GenServer.call FlowServer, {Kind.meta}
   end

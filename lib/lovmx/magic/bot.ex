@@ -25,6 +25,12 @@ defmodule Bot do
   tl;dr - Bot(s) manage Code for Machine Data.
   """
   
+  def code(text) when is_binary(text) do
+    # todo: better update meta
+    text
+    |> Data.new
+    |> Cake.magic
+  end
   def code(function) when is_function(function) do
     code Data.new, function
   end
@@ -32,6 +38,7 @@ defmodule Bot do
     # todo: better update meta
     Data.tick put_in(data.code, Enum.concat(data.code, [function]))
   end
+
   def code(block = [do: _]) do
     code Data.new, block
   end

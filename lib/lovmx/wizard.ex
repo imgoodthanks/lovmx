@@ -20,11 +20,14 @@ defmodule Wizard do
     Process.whereis WizardServer
   end
   
-  @doc "Use `Cloud.bang` to start Bootspace."
+  @doc "Use `Cloud.bang` to start Holospace."
   def bang(path \\ "README.magic", opts \\ []) do
-    GenServer.cast WizardServer, {:bang, path, opts}
+    # hack/debug to reset everything each time the server starts
+    if Mix.env == :dev do
+      Wizard.reset_all!
+    end
     
-    self
+    GenServer.call WizardServer, {:bang, path, opts}, Help.long
   end
 
   @doc "Two beams. Both have purpose."
@@ -39,7 +42,7 @@ defmodule Wizard do
     self
   end
 
-  @doc "Save Bootspace to `priv/holospace.term`."
+  @doc "Save Holospace to `priv/holospace.term`."
   def freeze do
     GenServer.cast WizardServer, :freeze
     
@@ -47,32 +50,36 @@ defmodule Wizard do
   end
     
   @doc """
-  WARNING: Destroy various parts of the Universe + Bootspace.
+  WARNING: Destroy various parts of the Universe + Holospace.
   
   *thundering sounds*
   
-  Accepts an atom `:holospace` for destroying the dynamic Bootspace and
+  Accepts an atom `:holospace` for destroying the dynamic Holospace and
   `:universe` for destroying the static file system Universe.
   """
-  def reset_all do
-    reset holospace: true, universe: true
-  end
   def reset(opts \\ []) do
     # TODO: add (an entire..) auth process (using player + stampcodes)
     destroy_holospace = Keyword.get opts, :holospace, false
     destroy_universe = Keyword.get opts, :universe, false
     
-    GenServer.cast WizardServer, {:reset, destroy_holospace, destroy_universe}
-    
-    self
+    GenServer.call WizardServer, {:reset, destroy_holospace, destroy_universe}, Help.long
   end
+  
+## Hack to reload the universe + holospace.
+if Mix.env == :dev do
+  
+  def reset_all! do
+    reset holospace: true, universe: true
+  end
+
+end
   
   ## Callbacks
   
-  def handle_cast({:bang, path, opts}, agent) do
+  def handle_call({:bang, path, opts}, source, agent) do
     Logger.info "Wizard.bang // #{inspect Help.project path}"
-    
-    # are we reloading an existing Bootspace?
+
+    # are we reloading an existing Holospace?
     reboot = Keyword.get(opts, :reboot, false)
     
     if reboot and File.exists?(Help.project ["priv", "holospace.term"]) do
@@ -84,17 +91,14 @@ defmodule Wizard do
     |> Drive.read # read the file
     |> Cake.magic # compile magicdown (markdown+) into data/bot
     |> Boot.boost "help"# send it into holospace
-    
-    Task.async fn ->
-      Wizard.reset_all
-    end
+
     
     # Second Creation of Waitforit.
     Task.async fn -> 
       Wizard.tick(self) 
     end
 
-    {:noreply, agent}
+    {:reply, self, agent}
   end
   
   def handle_cast(:tick, agent) do
@@ -130,7 +134,7 @@ defmodule Wizard do
     {:noreply, agent}
   end
   
-  def handle_cast({:reset, destroy_holospace, destroy_universe}, agent) do
+  def handle_call({:reset, destroy_holospace, destroy_universe}, source, agent) do
     Logger.info "Wizard.reset"
     
     ## DESTROY
@@ -158,12 +162,12 @@ defmodule Wizard do
     File.mkdir_p path
     File.cp_r Help.project(["doc"]), path
     File.ln_s Help.project(Help.web "doc"), path
-
+    
     Logger.info "!reset // #help // #{inspect Moment.now}"
     
-    {:noreply, agent}
+    {:reply, self, agent}
   end
-
+  
   def start_link(_) do
     # wizard state
     {:ok, agent} = Agent.start_link fn -> Map.new end

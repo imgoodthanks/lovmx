@@ -49,7 +49,7 @@ defmodule Cloud do
   
   ## Web
   
-  @doc "Return things from Web.Bootspace or the internet."
+  @doc "Return things from Web.Holospace or the internet."
   def get(holospace \\ "/", secret \\ nil) when is_atom(holospace) or is_binary(holospace) do
     regex = ~r/^https\:/i
 
@@ -89,6 +89,11 @@ defmodule Cloud do
 
   @doc "GET: Route *all* generic PULL signals from HTTPS."
   def call(conn = %Plug.Conn{method: "GET", path_info: holospace}, agent) do
+    
+    if Mix.env == :dev do
+      Wizard.reset_all!
+    end
+    
     if holospace in [[], [""], nil] do
       holospace = "/"
     end
@@ -132,18 +137,19 @@ defmodule Cloud do
     data = conn.params["data"]
     code = conn.params["code"]
 
-    # # create the item
-    # if data do
-    #   Freezer.put(data.path, data.content_type, data.filename)
-    #   |> Cloud.boost(holospace)
-    # end
+    # create the item
+    if data do
+      #todo: add the code to the data
+      Freezer.put(data.path, data.content_type, data.filename)
+      |> Boot.boost(conn.params, holospace)
+    end
     
     Logger.debug "Cloud.POST // #{holospace} // #{inspect conn.params}"
 
-    resp conn, 200, Pipe.page Boot.boost(conn.params, holospace)
+    resp conn, 200, Pipe.page 
   end
   
-  @doc """  
+  @doc """
   Sends redirect response to provided url String
   <snip>
   Redirect pulled and modified from Phoenix:

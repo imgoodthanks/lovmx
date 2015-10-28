@@ -37,7 +37,7 @@ defmodule Magic do
       
     end
     
-    if Keyword.get(opts, :orbital, false) do
+    if orbital = Keyword.get(opts, :orbital, false) do
       
       quote do
         
@@ -54,7 +54,7 @@ defmodule Magic do
       end
     end
     
-    # if Keyword.get(opts, :maru, false) do
+    # if maru = Keyword.get(opts, :maru, false) do
     #   quote do
     #
     #     import Plug.Conn
@@ -64,6 +64,6 @@ defmodule Magic do
     #
     #   end
     # end
-    
   end
+
 end

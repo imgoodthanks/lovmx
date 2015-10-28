@@ -32,7 +32,7 @@ defmodule Lovmx do
   We host a public data service (ilvmx.com).
   We give away the best Web Theme Park on the net. (lolnub.com)
   
-  Welcome to Bootspace. Here, take this map...
+  Welcome to Holospace. Here, take this map...
 
   See `README.magic` or @readme inside LovMx for more.
   

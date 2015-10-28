@@ -19,10 +19,12 @@
   <link rel="icon" type="image/png" href="/img/favicon.png">
 </head>
 
-<body id="" class="">
-<div id="" class="">
+<body id="" class="grid">
+<div id="page" class="row">
 
-<header class="">
+<header class="large-4 columns">
+		
+	<img id="holo-logo" src="img/logo.png" class="center">
 		
 	<ul id="">
 		<li><a class="radio" href="/">#back</a></li>
@@ -32,15 +34,13 @@
 		<li><a class="radio" href="/reset">!reset</a></li>
 	</ul>
 	
-	<img id="holo-logo" src="img/logo.png" class="pull-right">
 
-	<form id="" method="post" action="/" name="submit" enctype="multipart/form-data" class="cake row">
-		<textarea id="magic" name="code" placeholder="#magic" rows=3 columns=72></textarea>
+	<form id="" method="post" action="/" name="submit" enctype="multipart/form-data" class="cake">
+		<textarea id="magic" name="code" placeholder="#magic" rows=3 cols=28></textarea>
 		<input id="data" name="data" type="file">
 		<input id="secret" type="password" name="secret" placeholder="#secret" class="" size=24>
 		
-		<fieldset id="codes">
-			<input name="boot" type="submit" class="codemagic" value="Boot">
+		<fieldset id="codes" class="small-grid">
 			<input name="data" type="submit" class="codemagic" value="Data">
 			<input name="meta" type="submit" class="codemagic" value="Meta">
 			<input name="lock" type="submit" class="codemagic" value="Lock">
@@ -62,12 +62,13 @@
 		<input name="submit" type="submit" value="Magic.">
 	</form>
 		
-		<h1>Welcome to Bootspace.</h1>
+		<h1>Welcome to Holospace.</h1>
 		
 </header>
 
+<section id="content" class="large-8 columns">
+	
 
-		
 
 
 

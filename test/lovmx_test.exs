@@ -7,7 +7,7 @@ defmodule Lovmx.Test do
   
   ## Examples
   
-  # test "Use `Lovmx` to share code + data in Bootspace." do
+  # test "Use `Lovmx` to share code + data in Holospace." do
   #   key = Help.keycode
   #   data = Data.new key
   #

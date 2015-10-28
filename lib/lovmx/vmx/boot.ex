@@ -17,11 +17,11 @@ defmodule Boot do
   with software bugs.
   
   tl;dr Global Namespace + Push Data into the Machine.
-  """  
-
+  """
+  
   use GenServer
     
-  ## Bootspace (internal web-readable static/dynamic storage)
+  ## Holospace (internal web-readable static/dynamic storage)
   
   @doc "Use `Boot.graph` to return all <signals>."
   def graph do
@@ -147,11 +147,10 @@ defmodule Boot do
     # only start a machine if the data has no other home
     if is_nil data.home do
       machine = Machine.boot(data)
+      # compile data in a second level Machine process
+      data = Machine.data(machine, secret, duration)
     end
     
-    # compile data in a second level Machine process
-    data = Machine.data(machine, secret, duration)
-        
     # update map/space
     :ok = Agent.update agent, fn map ->
       Map.update map, holospace, [machine], fn x -> Enum.concat x, [machine] end

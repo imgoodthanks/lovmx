@@ -54,6 +54,8 @@ margin-bottom: 20px;
 
 header,
 footer {
+	padding-top: 40px;
+	padding-bottom: 40px;
 }
 
 #page {
@@ -128,7 +130,7 @@ border: 1px solid rgba(23, 23, 23, 0.87);
 margin-bottom: 10px;
 display: block;
 padding: 10px 30px;
-	color: #e5e5e5;
+color: #e5e5e5;
 }
 
 input[type=submit] {
@@ -214,8 +216,7 @@ border-bottom: 1px dashed rgba(12, 67, 136, 0.17);
 body a.radio {
 background-color: #4f3ff1;
 color: #eeeeee;
-
-
+	font-size: 18px;
 }
 
 body a:hover,
@@ -358,7 +359,6 @@ border: 1px dashed #2b2144;
 }
 
 .blob {
-
 margin: 0;
 }
 
@@ -436,8 +436,23 @@ min-width: 420px;
 -moz-box-shadow: 0 0 3px outer #111111;
 box-shadow: 0 0 3px #111111;
 opacity: 0.93;
+max-width: 100%;
 }
 
 #magic:focus {
 color: #5ea0e8;
+}
+
+#codes input {
+display: block;
+width: 25%;
+	margin-right: auto;
+	margin-left: auto;
+}
+
+#page.row {
+   width: 100%;
+   margin-left: auto;
+   margin-right: auto;
+   max-width: initial;
 }
