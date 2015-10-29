@@ -12,8 +12,7 @@ defmodule Flow do
   all the available framework signals. 
   
   For example a Bot produces something that Flows into a Pipe and
-  out to the Flow module for the world (Universe/Multiverse) to
-  see and use.
+  out to the Universe and Multiverse modules that people see and use.
   """
   
   use GenServer
@@ -59,14 +58,14 @@ defmodule Flow do
   
   @doc "Put `thing` *INTO* `data.pull` at `signal`."
   def take(thing, data = %Data{}, signal \\ nil, secret \\ nil) when is_atom(signal) or is_binary(signal) do
-    #Logger.debug "Flow.take // #{data.keycode} // #{signal} // #{inspect thing}"
+    
 
     put_in(data.pull, Map.put(data.pull, signal, thing))
   end
   
   @doc "Walk `holospace` and put into `data.pull`."
   def walk(data, holospace \\ "/", secret \\ nil) when is_atom(holospace) or is_binary(holospace) do
-    #Logger.debug "Flow.push // #{holospace} // #{inspect data}"
+    
 
     list = Flow.space(holospace, secret)
     

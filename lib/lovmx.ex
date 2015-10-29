@@ -78,7 +78,7 @@ defmodule Lovmx do
 
   # See http://elixir-lang.org/docs/stable/Application.html
   def start(type, data) do
-    #Logger.debug @moduledoc
+    
     
     import Supervisor.Spec, warn: false
 
@@ -99,7 +99,7 @@ defmodule Lovmx do
     
     Logger.info "Lovmx.Supervisor: #{inspect link}"
     children |> Enum.map fn child ->
-      #Logger.debug "!supervisor // #{inspect supervisor} // #{inspect child}"
+      
     end
     
     Logger.info  "Lovmx.start #{inspect link}"

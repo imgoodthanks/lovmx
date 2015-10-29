@@ -37,7 +37,7 @@ defmodule Cake do
   
   @doc "Machine a file at `path`."
   def mix(path) when is_binary(path) do
-    #Logger.debug "Cake.mix #{path}"
+    
 
     # scrub
     path = path |> Help.path?
@@ -67,15 +67,11 @@ defmodule Cake do
   def magic(data = %Data{kind: :blob, thing: filename, meta: %{base: base, root: root}}, secret) 
   when is_binary(filename) and is_binary(base) and is_binary(root) do
     path = Help.path [base, filename]
-    
-    Logger.warn "Cake.magic: #{inspect path}"
-    
+        
     Cake.x data, Drive.read path
   end
   
   def magic(data = %Data{thing: text}) when is_binary(text) do
-    Logger.warn "Cake.magic: #{inspect data.keycode}"
-    
     Cake.x data, text
   end
   
@@ -88,6 +84,7 @@ defmodule Cake do
   def x(data = %Data{}, text) when is_binary(text) do
     # we are a superset of markdown, so mark it first..
     text = Pipe.down(text)
+    text = Regex.replace(~r/\n/, text, "\n")
     
     # our magicdown regex.
     match = ~r/[^|\s]{0,}\@([a-z0-9]{2,})\>\s([a-z0-9\#\%\?\s]{2,})/i
@@ -104,26 +101,24 @@ defmodule Cake do
   end
   def x(data = %Data{}, signal, "code", source) do
     data = Bot.code(data, source)
-    #Logger.debug "#code // #{inspect source }"
+    
 
     {data, Pipe.text(source)}
   end
   def x(data = %Data{}, signal, "list", path) do
     # get the list
     list = Holo.space(path)
-    #Logger.debug "#list // #{inspect list}"
+    
 
     {Data.update(data, list), Pipe.text(list)}
   end
-  def x(data = %Data{}, signal, "boot", opts) do
-    Logger.warn "#boot // #{inspect signal}  #{inspect opts}"
-    
+  def x(data = %Data{}, signal, "boot", opts) do    
     # todo: spawn(signal, code.to_existing_atom, [opts])
     
     {data, opts}
   end
   def x(data = %Data{}, signal, code, opts) do
-    #Logger.debug "#signal // #{inspect signal } // #{inspect code} // #{inspect opts}"
+    
     
     # todo: spawn(signal, code.to_existing_atom, [opts])
     

@@ -30,7 +30,7 @@ defmodule Freezer do
     
     # write the file..
     File.write! (Help.root Help.web binspace), File.read!(path), [:write]
-    #Logger.debug "Freezer.put: #{path} kind: #{kind} name: #{name}]"
+    
     
     # create the box
     Data.new(name, mime)

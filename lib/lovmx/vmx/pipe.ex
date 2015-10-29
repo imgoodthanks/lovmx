@@ -35,8 +35,6 @@ defmodule Pipe do
   
   @doc "Create static HTML pages."  
   def page(things = %Stream{}) do
-    #Logger.debug "Pipe.page #{inspect things}"
-    
     # create the binary/html
     things
     |> Enum.to_list
@@ -62,7 +60,7 @@ defmodule Pipe do
     ])
   end
   def page(thing) do
-    #Logger.debug "Pipe.page #{inspect thing}"
+    
 
     page(inspect thing)
   end
@@ -73,9 +71,9 @@ defmodule Pipe do
   end
   def html(data = %Data{kind: :link}) do
     ####Holo.boost "Pipe.html #{inspect data}"
-    "<code class=\"data\">
+    "<section class=\"data\">
     <a href='#{Help.path [data.meta.base, data.thing]}'>#{data.thing}</a>
-    </code>"
+    </section>"
   end
   def html(data = %Data{thing: %Data{kind: kind, meta: path}}) when is_binary(path) do
     #Holo.boost "Pipe.html %Data{thing: %Data{kind: kind, meta: path}}"
@@ -89,10 +87,10 @@ defmodule Pipe do
     Enum.join Enum.map things, &(html &1)
   end
   def html(data) when is_binary(data) do
-    "<code class=\"text\">#{data}</code>"
+    "<section class=\"text\">#{data}</section>"
   end
   def html(other) do
-    "<code class=\"other\">#{inspect other}</code>"
+    "<section class=\"other\">#{inspect other}</section>"
   end
 
   @doc "Return `Kind.pull = markdown(text)`."

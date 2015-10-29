@@ -59,7 +59,7 @@ defmodule Drive do
     path = Help.path [holospace, Kind.boot]
   
     write Help.freeze(data), path, secret
-    #Logger.debug "Drive.save: #{Help.path([holospace, Kind.boot])}"
+    
   
     data
   end
@@ -73,7 +73,7 @@ defmodule Drive do
 
     # write the data out
     File.write! absolute, Help.freeze(thing), [:write]
-    #Logger.debug "Drive.write: #{Help.path([absolute, Kind.boot])}"
+    
 
     thing
   end

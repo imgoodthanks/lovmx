@@ -6,7 +6,8 @@ defmodule App do
   import Plug.Conn
   
   def init(data \\ nil) do
-    Logger.warn "App.init // #{inspect data}"
+    
+    data
   end
   
   @doc "GET: Route *all* generic PULL signals from HTTPS."
@@ -65,7 +66,7 @@ defmodule App do
       |> Holo.boost(conn.params, holospace)
     end
 
-    #Logger.debug "Cloud.POST // #{holospace} // #{inspect conn.params}"
+    
 
     resp conn, 200, Pipe.page Drive.read Help.web holospace
   end

@@ -61,7 +61,7 @@ defmodule Platform do
         
           data
           |> Pipe.text
-          |> Logger.warn
+          |> Logger.info
         
         _ -> :help
       end

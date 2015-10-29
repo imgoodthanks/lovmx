@@ -11,12 +11,11 @@ defmodule Machine do
   use GenServer
   import Kind
   
-  
   ## APIs
   
   def boot(data = %Data{}) do
     link = {:ok, machine} = Machine.start_link(data)
-    #Logger.debug "Machine.boot // #{inspect machine} // #{inspect data}"
+    
     
     machine
   end
@@ -28,7 +27,7 @@ defmodule Machine do
     {:ok, agent} = Agent.start_link fn -> data end
     
     link = {:ok, machine} = GenServer.start_link(Machine, agent, debug: [])
-    #Logger.debug "Machine.start_link #{data.keycode}"
+    
     
     # # update the data to include our Machine home
     # :ok = Agent.update agent, fn data ->
@@ -147,7 +146,7 @@ defmodule Machine do
   end
   
   def handle_call({push, holospace, secret, duration}, source, agent) do
-    #Logger.debug "Machine:push // #{inspect data.push}"
+    
     
     data = Agent.get agent, &(&1)
     
