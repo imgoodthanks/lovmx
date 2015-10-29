@@ -32,9 +32,9 @@ defmodule Machine do
     GenServer.call machine, {:meta, signal, effect}
   end
 
-  # def lock(machine, secret) when is_pid(machine) do
-  #   GenServer.call machine, {:lock, secret}
-  # end
+  def lock(machine, secret) when is_pid(machine) do
+    GenServer.call machine, {:lock, secret}
+  end
 
   def list(machine, secret \\ nil) when is_pid(machine) do
     GenServer.call machine, {:list, secret}
@@ -74,11 +74,11 @@ defmodule Machine do
     {:reply, Agent.get(agent, &(&1)), agent}
   end
 
-  # def handle_call({lock, holospace, secret, duration}, source, agent) do
-  #   # TODO: globally capture this holospace as ours
-  #
-  #   {:reply, Agent.get(agent, &(&1)), agent}
-  # end
+  def handle_call({lock, holospace, secret, duration}, source, agent) do
+    # TODO: globally capture this holospace as ours
+
+    {:reply, Agent.get(agent, &(&1)), agent}
+  end
 
   def handle_call({list, holospace, secret, duration}, source, agent) do
     data = Agent.get(agent, &(&1))

@@ -24,13 +24,20 @@ defmodule Flow do
     GenServer.call FlowServer, {:motion, secret}
   end
   
+  @doc "Use `Flow.motion` to return all <signals>."
+  def machine(data = %Data{}, secret \\ nil) do
+    GenServer.call FlowServer, {:machine, data, secret}
+  end
+  
+  ## INIT
+  
   @doc "Update `data` inside the Universal Flow in the *BACKGROUND*."
   def x(data = %Data{}, secret \\ nil, duration \\ Help.long) do
     # async update of data
     Task.async fn -> 
       boot(data, secret, duration)
     end
-    
+
     # return immedately w/ original data
     data
   end
@@ -52,51 +59,47 @@ defmodule Flow do
   
   ## IN
   
-  @doc "Put `thing` *INTO* `data.thing`."
-  def i(thing, data = %Data{}) do
-    into(thing, data)
-  end
-  def into(thing, data = %Data{}) do
-    data
-    |> Data.update(thing)
-  end
-    
-  @doc "Map `holospace` *INTO* `data.pull`."
-  def pull(data = %Data{}, holospace, secret \\ nil) when is_atom(holospace) or is_binary(holospace) do
-    put_in(data.pull, Map.put(data.pull, holospace, Kind.boot))
-  end
+  # @doc "Put `thing` *INTO* `data.thing`."
+  # def pull(data = %Data{}, thing) do
+  #   Data.update(data, thing)
+  # end
   
-  @doc "Put `thing` *INTO* `data.pull` at `signal`."
-  def take(thing, data = %Data{}, signal \\ nil, secret \\ nil) when is_atom(signal) or is_binary(signal) do
-    put_in(data.pull, Map.put(data.pull, signal, thing))
-  end
-  
-  @doc "Walk `holospace` and put into `data.pull`."
-  def walk(data, holospace \\ "/", secret \\ nil) when is_atom(holospace) or is_binary(holospace) do
-    list = Flow.space(holospace, secret)
-    
-    unless Enum.empty? list do
-      data = List.first Stream.map list, fn path ->
-        data = Flow.pull(data, path, secret)
-      end
-    end
-    
-    # flow it babe
-    Holo.boost data, holospace, secret
-  end
+  # @doc "Map `holospace` *INTO* `data.pull`."
+  # def pull(data = %Data{}, holospace, secret \\ nil) when is_atom(holospace) or is_binary(holospace) do
+  #   put_in(data.pull, Map.put(data.pull, holospace, Kind.boot))
+  # end
+  #
+  # @doc "Put `thing` *INTO* `data.pull` at `signal`."
+  # def give(thing, data = %Data{}, signal \\ nil, secret \\ nil) when is_atom(signal) or is_binary(signal) do
+  #   put_in(data.pull, Map.put(data.pull, signal, thing))
+  # end
+  #
+  # @doc "Walk `holospace` and put into `data.pull`."
+  # def walk(data, holospace \\ "/", secret \\ nil) when is_atom(holospace) or is_binary(holospace) do
+  #   list = Flow.space(holospace, secret)
+  #
+  #   unless Enum.empty? list do
+  #     data = List.first Stream.map list, fn path ->
+  #       data = Flow.pull(data, path, secret)
+  #     end
+  #   end
+  #
+  #   # flow it babe
+  #   Holo.boost data, holospace, secret
+  # end
   
   ## OUT
     
-  @doc "From `data` *to* `holospace` in the *BACKGROUND*."
-  def push(data = %Data{}, holospace, secret \\ nil) do
-    put_in(data.push, Map.put(data.push, holospace, Kind.push))
-  end
-  
-  @doc "From `data` *to* `holospace` and *WAIT*."
-  def wait(data = %Data{}, holospace, secret \\ nil) do
-    # todo: call/receive for a data/signal from `holospace`
-    put_in(data.push, Map.put(data.push, holospace, Kind.wait))
-  end
+  # @doc "From `data` *to* `holospace` in the *BACKGROUND*."
+  # def push(data = %Data{}, holospace, secret \\ nil) do
+  #   put_in(data.push, Map.put(data.push, holospace, Kind.push))
+  # end
+  #
+  # @doc "From `data` *to* `holospace` and *WAIT*."
+  # def wait(data = %Data{}, holospace, secret \\ nil) do
+  #   # todo: call/receive for a data/signal from `holospace`
+  #   put_in(data.push, Map.put(data.push, holospace, Kind.wait))
+  # end
 
   
   ## GenServer
@@ -105,6 +108,13 @@ defmodule Flow do
     #todo: support secret/access/codes
     
     {:reply, Agent.get(agent, &(&1)), agent}
+  end
+  
+  def handle_call({:machine, data = %Data{}, _secret}, source, agent) do
+    #todo: support secret/access/codes
+    map = Agent.get(agent, &(&1))
+    
+    {:reply, Map.get(map, data.keycode), agent}
   end
   
   def handle_call({boot, data = %Data{}, secret, duration}, source, agent) do
@@ -136,7 +146,6 @@ defmodule Flow do
   # end
 
 #   def handle_call({:graph, match = %Data{}, data = %Data{}}, source, agent) do
-#
 #     # return the data
 #     {:reply, data, agent}
 #   end

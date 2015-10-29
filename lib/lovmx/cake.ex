@@ -97,7 +97,7 @@ defmodule Cake do
     end
     
     # then flow it baby
-    Flow.take(cake, data, Kind.cake)
+    Flow.give(cake, data, Kind.cake)
   end
   def x(data = %Data{}, signal, "code", source) do
     data = Bot.code(data, source)
