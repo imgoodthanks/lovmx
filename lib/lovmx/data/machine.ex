@@ -12,32 +12,16 @@ defmodule Machine do
   import Kind
   
   ## APIs
-  
-  def boot(data = %Data{}) do
-    link = {:ok, machine} = Machine.start_link(data)
-    
-    
-    machine
-  end
 
-  def start_link(data = %Data{}) do
+  def start_link(data = %Data{}, secret \\ nil, duration \\ Help.tock) do
     # Create an Agent for our state, which also gets us
     # an extra or secondary process to do longer map updates/etc
     # outside of the Bot's own process.
     {:ok, agent} = Agent.start_link fn -> data end
     
     link = {:ok, machine} = GenServer.start_link(Machine, agent, debug: [])
-    
-    
-    # # update the data to include our Machine home
-    # :ok = Agent.update agent, fn data ->
-    #   Data.home data, machine
-    # end
-    
+        
     link
-  end
-  def start_link(thing) do
-    start_link(Data.new thing)
   end
   
   def data(machine, secret \\ nil, duration \\ Help.tock) when is_pid(machine) do
@@ -81,10 +65,6 @@ defmodule Machine do
   ## Callbacks
   ########################################################
   ########################################################
-
-  def handle_call({boot, holospace, secret, duration}, source, agent) do
-    {:reply, Agent.get(agent, &(&1)), agent}
-  end
 
   def handle_call({meta, signal, effect}, source, agent) do
     :ok = Agent.update agent, fn data ->

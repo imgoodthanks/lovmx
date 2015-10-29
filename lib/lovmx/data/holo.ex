@@ -4,8 +4,7 @@ defmodule Holo do
   
   @moduledoc """
   # Holo
-  ## Holospace Data Management
-  ### Global Namespace Code + Data stored in RAM.
+  ## Universal Map of *ALL* Code + Data stored in RAM.
   
   Holo renders the local Universe (aka your App) by
   routing Player data to Machine code and graphing,
@@ -163,7 +162,8 @@ defmodule Holo do
     
     # only start a machine if the data has no other home
     if is_nil data.home do
-      machine = Machine.boot(data)
+      {:ok, machine} = Machine.start_link(data)
+      
       # compile data in a second level Machine process
       data = Machine.data(machine, secret, duration)
     end

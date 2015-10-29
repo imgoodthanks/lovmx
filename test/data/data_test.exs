@@ -19,7 +19,7 @@ defmodule Data.Test do
     
   test "Use `Data.home <machine>` to move data to a new process." do
     data = Data.new
-    machine = Machine.boot data
+    {:ok, machine} = Machine.start_link data
   
     assert is_pid Data.home(data, machine).home
   end

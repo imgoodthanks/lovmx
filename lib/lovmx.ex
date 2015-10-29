@@ -78,16 +78,16 @@ defmodule Lovmx do
 
   # See http://elixir-lang.org/docs/stable/Application.html
   def start(type, data) do
-    
-    
     import Supervisor.Spec, warn: false
-
+    
+    # Our OP Data structure.
+    epoch = Data.new self, type, %{data: data}
+    
     # Define workers and child supervisors to be supervised
     children = [
-      worker(Wizard,     [self]), # janitor
-      worker(Flow,       [self]), # io/internal
-      worker(Machine,    [self]), # code/data/exe
-      worker(Holo,       [self]), # code/data/exe
+      worker(Wizard,     [epoch]), # janitor
+      worker(Flow,       [epoch]), # data/map
+      worker(Holo,       [epoch]), # global/code/data/map
     ]
 
     # See http://elixir-lang.org/docs/stable/elixir/Supervisor.html
