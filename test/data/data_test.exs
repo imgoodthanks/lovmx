@@ -1,27 +1,16 @@
 defmodule Data.Test do
   use ExUnit.Case
   
-  ## Examples
-  
-  test "Use `Data.new` to create and then `Data.update` to update `data`", do:
-		%Data{thing: "yep"} = Data.new("nada") |> Data.update "yep"
-    
   ## APIs
 
   test "Use `Data.new` to create new `data`.", do:
 		%Data{} = Data.new
-    
-  test "Use `Data.update` to add a help message.", do:
-		assert %Data{thing: :reboot} = Data.update Data.new("whoa"), :reboot
-
-  test "Use `Data.home <holospace>` to move data to a new holospace.", do:
-		assert %Data{thing: :reboot} = Data.update Data.new("whoa"), :reboot
-    
-  test "Use `Data.home <machine>` to move data to a new process." do
+      
+  test "Use `Data.home <bot>` to move data to a new process." do
     data = Data.new
-    {:ok, machine} = Machine.start_link data
+    {:ok, bot} = Bot.start_link data
   
-    assert is_pid Data.home(data, machine).home
+    assert is_pid Data.home(data, bot).home
   end
   
   test "Use `Data.kind` to mutate the data type using custom or Kind types.", do:

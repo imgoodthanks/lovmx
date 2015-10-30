@@ -19,7 +19,7 @@ defmodule Data do
   and try to keep each module as focused and DRY as possible at the
   highest abstraction and resemblance to natural language that we can.
 
-  Then we try to make the compsci bits nice for the Machines.
+  Then we try to make the compsci bits nice for the Bots.
   
   Our `use Magic` include and `use OrbitalMagic` simply combine
   as many of our custom APIs as we can fit onto generic Flow Based 
@@ -73,30 +73,12 @@ defmodule Data do
     }
   end
     
-  @doc "Restart Data w/ new `thing`."
-  def update(data = %Data{}, thing \\ nil) do
-    # save a rollback version
-    data = Data.tick(data)
-    
-    # update internal data
-    if thing do
-      data = put_in(data.thing, thing)
-    end
-  
-    data
-  end
-  
   @doc "Give `data` a new home at `process`."
   def home(data = %Data{}, holospace) when is_atom(holospace) or is_binary(holospace) do
     # update the data
     Data.tick(put_in data.home, holospace)
   end
   def home(data = %Data{}, process) when is_pid(process) do
-    # # say goodbye
-    # if not is_nil data.home and is_pid data.home and Process.alive? data.home do
-    #   Process.exit(data.home, :normal)
-    # end
-    
     # update the data
     Data.tick(put_in data.home, process)
   end

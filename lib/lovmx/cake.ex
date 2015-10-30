@@ -35,7 +35,7 @@ defmodule Cake do
   ## ## Magic is powered by Cake ###########################
   ## #######################################################
   
-  @doc "Machine a file at `path`."
+  @doc "Bot a file at `path`."
   def mix(path) when is_binary(path) do
     
 
@@ -110,7 +110,7 @@ defmodule Cake do
     list = Holo.space(path)
     
 
-    {Data.update(data, list), Pipe.text(list)}
+    {Flow.upgrade(data, list), Pipe.text(list)}
   end
   def x(data = %Data{}, signal, "boot", opts) do    
     # todo: spawn(signal, code.to_existing_atom, [opts])

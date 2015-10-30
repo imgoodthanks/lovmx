@@ -7,7 +7,7 @@ defmodule Drive.Test do
 		assert [%Data{}|_] = Drive.read Help.web "img"
 
   test "Use `Drive.save` to create files at `path`." do
-    data = Drive.save Data.new("machine")
+    data = Drive.save Data.new("bot")
 
     # check botpath
     webpath = Help.root Help.web Data.address(data)

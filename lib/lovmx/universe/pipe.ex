@@ -10,7 +10,7 @@ defmodule Pipe do
   Tree of Life:
   -------------
   - Pipe(s) live *below* data/flow/holo
-  - Pipe(s) live *after* to data/machine
+  - Pipe(s) live *after* to data/bot
   - Pipe(s) live *above* the warps/elixir/server
 
   # todo: formal protocols + Pipe API extensions
@@ -161,7 +161,7 @@ defmodule Pipe do
   
   @doc "Drop `data` to /dev/null."
   def drop(whatever) do
-    # todo: track noops to help manage machines
+    # todo: track noops to help manage bots
     # Cloud.noop whatever
     
     nil

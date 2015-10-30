@@ -7,15 +7,15 @@ defmodule Holo do
   ## Universal Map of *ALL* Code + Data stored in RAM.
   
   Holo renders the local Universe (aka your App) by
-  routing Player data to Machine code and graphing,
+  routing Player data to Bot code and graphing,
   routing, and piping the side effects as needed.
 
-  Holo signals into the Machine and other parts of the 
+  Holo signals into the Bot and other parts of the 
   framework often in order to best get/create/update 
   whatever your little heart asks for. Like magic, but 
   with software bugs.
   
-  tl;dr Global Namespace + Push Data into the Machine.
+  tl;dr Global Namespace + Push Data into the Bot.
   """
   
   use GenServer
@@ -45,7 +45,7 @@ defmodule Holo do
     
   @doc "Use `Holo.capture` to *EXCLUSIVELY* capture `holospace`."
   def capture(data = %Data{}, holospace, secret \\ nil, duration \\ Help.long) do
-    # Compile + pull *all* `data.pull` and push to the Machine for exe
+    # Compile + pull *all* `data.pull` and push to the Bot for exe
     GenServer.call HoloServer, {Kind.lock, data, holospace, secret, duration}
   end
   
@@ -62,7 +62,7 @@ defmodule Holo do
     put_in(data.home, holospace)
   end
   
-  @doc "Use `Holo.boost` to start a `Machine` at `holospace` with `data`."
+  @doc "Use `Holo.boost` to start a `Bot` at `holospace` with `data`."
   def boost(thing, holospace \\ nil, secret \\ nil, duration \\ Help.long) do
     
     
@@ -153,24 +153,22 @@ defmodule Holo do
   end
   
   def handle_call({:push, data = %Data{}, holospace, secret, duration}, source, agent) do
-    
-    
     # we need a namespace to share over..
     if is_nil holospace do
       holospace = data.keycode
     end
     
-    # only start a machine if the data has no other home
+    # only start a bot if the data has no other home
     if is_nil data.home do
-      {:ok, machine} = Machine.start_link(data)
+      {:ok, bot} = Bot.start_link(data)
       
-      # compile data in a second level Machine process
-      data = Machine.data(machine, secret, duration)
+      # compile data in a second level Bot process
+      data = Bot.data(bot, secret, duration)
     end
     
     # update map/space
     :ok = Agent.update agent, fn map ->
-      Map.update map, holospace, [machine], fn x -> Enum.concat x, [machine] end
+      Map.update map, holospace, [bot], fn x -> Enum.concat x, [bot] end
     end
     
     # send a :pull notice to holospace
@@ -208,7 +206,7 @@ defmodule Holo do
   end
   
   def handle_cast({:drop}, agent) do
-    # TODO: Process.exit :kill all machines in holospace.
+    # TODO: Process.exit :kill all bots in holospace.
     
     # recreate holospace if that's what the wiz says we should do...
     :ok = Agent.update agent, fn x -> 

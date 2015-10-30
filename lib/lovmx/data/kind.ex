@@ -29,10 +29,10 @@ defmodule Kind do
   def lock, do: :lock # lock/secret
   def list, do: :list # show/head/etc
   def pull, do: :pull # pull/get/read 
-  def push, do: :push # push/once/post/update
   def code, do: :code # source/code
   def flow, do: :flow # run/exe/produce
-  def wait, do: :wait # promise/future  
+  def push, do: :push # push/once/post/update
+  def wait, do: :wait # promise/future    
   def drop, do: :drop # nil/nada/noop/drop
   
   ## Prototypes
