@@ -95,7 +95,7 @@ defmodule Data do
       data = put_in data.jump, %{}
       data = put_in data.pull, %{}
     
-      # blank the :pulls so next time through it'll re-fire w/ fresh data
+      # blank the :pulls so next time through it'll re-flow w/ fresh data
       Enum.map data.pull, fn {key, value} ->
         data = put_in data.pull, Map.put(data.pull, key, Kind.boot)
       end

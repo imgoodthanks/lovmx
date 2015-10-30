@@ -40,7 +40,6 @@ defmodule Drive do
               true  -> Data.new(filename, Kind.link, %{base: basename, root: root})
               false -> Data.new(filename, Kind.blob, %{base: basename, root: root})
             end
-            
           end)
       end
     else
@@ -60,7 +59,6 @@ defmodule Drive do
   
     write Help.freeze(data), path, secret
     
-  
     data
   end
 
@@ -74,7 +72,6 @@ defmodule Drive do
     # write the data out
     File.write! absolute, Help.freeze(thing), [:write]
     
-
     thing
   end
   

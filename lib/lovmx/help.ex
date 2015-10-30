@@ -127,7 +127,7 @@ defmodule Help do
     [holospace] 
     |> Path.join 
     |> String.strip
-    |> String.replace ~r/^(a-z0-9\?\.\s)/, ""
+    |> String.replace ~r/^(a-z0-9\?\.\s)/i, ""
   end
 
   @doc """

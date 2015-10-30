@@ -3,23 +3,27 @@ defmodule Flow.Test do
   
   ## EXAMPLE
   
-  # test "Flow does cool stuff." do
-  #   # setup our data route
-  #   %Data{thing: "/"}
-  #   |> Flow.match Bot.code(fn data ->
-  #     "index.html"
-  #     |> Help.web
-  #     |> Drive.read
-  #     |> Pipe.page
-  #     |> Flow.upgrade
-  #   end)
-  #
-  #   # graph the route
-  #   data = %Data{} = Flow.graph("/")
-  #
-  #   # we got the web page from the flow
-  #   assert Regex.match? ~r/html/i, data.thing
-  # end
+  test "Flow does cool stuff." do
+    # setup our data route
+    %Data{thing: "/"}
+    |> Flow.match Bot.code(fn data ->
+      "index.html"
+      |> Help.web
+      |> Drive.read
+      |> Flow.feed(data, Kind.html)
+      |> Pipe.page
+      |> Flow.upgrade
+    end)
+
+    # graph the route
+    data = %Data{} = Flow.graph(Data.new "/")
+    
+    # connect the graph
+    #data = %Data{} = Pipe.drip(data)
+    
+    # we got the web page from the flow
+    #assert Regex.match? ~r/html/i, data.thing
+  end
   
   ## Meta
   
@@ -27,10 +31,10 @@ defmodule Flow.Test do
 		assert is_map Flow.motion("secrets")
   
   test "Flow.grab(data, secret) returns a Bot process.", do:
-      assert is_pid (Data.new |> Flow.boot).home
+    assert is_pid (Data.new |> Flow.boot).home
 
   ## INIT
-    
+  
   test "Flow.x(data, secret) updates a flow.", do:
 		assert %Data{thing: "lol"} = Flow.x Data.new("lol")
     
@@ -46,7 +50,7 @@ defmodule Flow.Test do
     assert %Data{thing: "lol"} = Flow.match Data.new("lol"), Data.new("whoa")
   end
 
-  test "Flow.graph(data, secret) will collect data from *m* flows." do
+  test "Flow.graph(data, secret) will collect data from *active* flows." do
     thing = Data.new("whoa")
     
     Flow.match %Data{thing: "test"}, thing
@@ -54,6 +58,21 @@ defmodule Flow.Test do
     flow = Flow.graph(Data.new "test")
     
     assert thing in flow.pull.graph
+  end
+  
+  test "Flow.graph(things, secret) will collect data for a list of *all* flows." do
+    thing = Data.new("whoa")
+    Flow.match %Data{thing: "test"}, thing
+
+    path = Help.project "README.magic"
+    file1 = Data.new("README.magic", Kind.link, %{base: Path.basename(path) , root: path})
+    file2 = Data.new("README.md", Kind.link, %{base: Path.basename(path) , root: path})
+    
+    things = Flow.graph([file1, file2])
+
+    assert is_list things
+    assert things = [file1, file2]
+    assert things = ""
   end
   
   ## IN

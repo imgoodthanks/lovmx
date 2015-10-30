@@ -6,12 +6,12 @@ defmodule Data.Test do
   test "Use `Data.new` to create new `data`.", do:
 		%Data{} = Data.new
       
-  test "Use `Data.home <bot>` to move data to a new process." do
-    data = Data.new
-    {:ok, bot} = Bot.start_link data
-  
-    assert is_pid Data.home(data, bot).home
-  end
+  # test "Use `Data.home <bot>` to move data to a new process." do
+  #   data = Data.new
+  #   {:ok, bot} = Bot.start_link data
+  #
+  #   assert is_pid Data.home(data, bot).home
+  # end
   
   test "Use `Data.kind` to mutate the data type using custom or Kind types.", do:
 		assert %Data{kind: :lols} = Data.kind Data.new, :lols

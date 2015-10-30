@@ -52,9 +52,9 @@ defmodule Flow do
     
     data = Data.tick data
     
-    # Task.async fn ->
-    #   match data, Kind.data
-    # end
+    Task.async fn ->
+      match data, Kind.data
+    end
     
     data
   end
@@ -67,8 +67,15 @@ defmodule Flow do
   end
   
   @doc "Collect Data through all Data Flows."
-  def graph(data = %Data{}, secret \\ nil, duration \\ Help.tock) do
+  def graph(thing, secret \\ nil, duration \\ Help.tock)
+  
+  def graph(data = %Data{}, secret, duration) do
     GenServer.call FlowServer, {:graph, data, secret, duration}
+  end
+  def graph(things, secret, duration) do
+    Enum.map things, fn data -> 
+      GenServer.call FlowServer, {:graph, data, secret, duration}
+    end
   end
   
   ## IN
@@ -95,20 +102,9 @@ defmodule Flow do
     put_in(data.pull, Map.put(data.pull, holospace, Kind.boot))
     |> upgrade(nil)
   end
-  
-  # @doc "Walk `holospace` and put into `data.pull`."
-  # def walk(data, holospace \\ "/", secret \\ nil) when is_pid(bot) and is_atom(holospace) or is_binary(holospace) do
-  #   list = Holo.space(holospace, secret)
-  #
-  #   unless Enum.empty? list do
-  #     data = List.first Stream.map list, fn path ->
-  #       data = Flow.pull(data, path, secret)
-  #     end
-  #   end
-  # end
-  
-  ## OUT
     
+  ## OUT
+  
   @doc "From `data` *to* `holospace` in the *BACKGROUND*."
   def push(data = %Data{}, holospace, secret \\ nil) do
     put_in(data.push, Map.put(data.push, holospace, Kind.push))
@@ -138,9 +134,14 @@ defmodule Flow do
   end
   
   # add match to the Universal Flow
-  def handle_call({:match, match = %Data{}, thing, secret}, source, agent) do    
+  def handle_call({:match, match = %Data{}, thing, secret}, source, agent) do
+    # update map/match -> match/data
+    :ok = Agent.update agent, fn map ->
+      Map.put map, thing, match
+    end
+      
     # return the thing so it can be piped
-    {:reply, agent_update_data(agent, match, thing, secret), agent}
+    {:reply, match, agent}
   end
   
   # collect all things from the Univeral Flow of data
@@ -149,10 +150,10 @@ defmodule Flow do
     
     data = Enum.reduce motion, data, fn {thing, match}, data -> 
       if match = data do
-        Flow.feed(thing, data, :graph, secret)        
+        Flow.feed(thing, data, :graph, secret)
       end
     end
-        
+    
     # return the data
     {:reply, data, agent}
   end
@@ -176,17 +177,4 @@ defmodule Flow do
     link
   end
   
-  ## Private
-  
-  defp agent_update_data(agent, data = %Data{}, thing, secret \\ nil) when is_pid(agent) do
-    Logger.debug "Flow:agent_update_data #{inspect data}"
-  
-    # update map/match -> match/data
-    :ok = Agent.update agent, fn map ->
-      Map.put map, thing, data
-    end
-    
-    data
-  end
-
 end

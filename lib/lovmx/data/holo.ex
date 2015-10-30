@@ -4,7 +4,7 @@ defmodule Holo do
   
   @moduledoc """
   # Holo
-  ## Universal Map of *ALL* Code + Data stored in RAM.
+  ## Universal Code + Data + Blob Storage.
   
   Holo renders the local Universe (aka your App) by
   routing Player data to Bot code and graphing,
@@ -23,126 +23,24 @@ defmodule Holo do
   ## Holospace (internal web-readable static/dynamic storage)
   
   @doc "Use `Holo.map` to return all <signals>."
-  def map do
-    GenServer.call HoloServer, {Kind.meta, nil}
+  def map(secret \\ nil) do
+    GenServer.call HoloServer, {Kind.list, secret}
   end
   
-  @doc "Use `Holo.space <signal>, <secret>` to look at and return *SPECIFIC* signals at `holospace`."
-  def space(data, secret \\ nil)
-
-  def space(holospace, secret) when is_atom(holospace) or is_binary(holospace) do
-    GenServer.call HoloServer, {Kind.flow, holospace, secret}
+  ## IO
+  
+  @doc "Use `Holo.space <thing>` to compute all <signals> at `holospace`."  
+  def space(holospace, secret \\ nil) when is_atom(holospace) or is_binary(holospace) do
+    GenServer.call HoloServer, {Kind.pull, holospace, secret}
   end
-  # def space(data = %Data{kind: :blob, thing: filename}, secret) when is_binary(filename) do
-  #   Cake.magic data, secret
-  # end
-  # def space(data = %Data{}, secret) do
-  #   data
-  # end
-
-  @doc "Use `Holo.capture` to *EXCLUSIVELY* capture `holospace`."
-  def capture(data = %Data{}, holospace, secret \\ nil, duration \\ Help.long) do
-    # Compile + pull *all* `data.pull` and push to the Bot for exe
-    GenServer.call HoloServer, {Kind.lock, data, holospace, secret, duration}
-  end
-
-  @doc "Use `Holo.list <holospace>` to return a [list] of things at `holospace`."
-  def list(holospace \\ "/", secret \\ nil) when is_atom(holospace) or is_binary(holospace) do
-    GenServer.call HoloServer, {Kind.list, holospace, secret}
-  end
-
-  @doc "Move `data` to `holospace`."
-  def move(data = %Data{}, holospace, secret \\ nil) when is_atom(holospace) or is_binary(holospace) do
-    # say goodbye
-    Holo.forget(data.home, secret)
-
-    put_in(data.home, holospace)
-  end
-
-  @doc "Use `Holo.boost` to start a `Bot` at `holospace` with `data`."
+  
+  @doc "Use `Holo.boost` to put `thing` into `holospace`."
   def boost(thing, holospace \\ nil, secret \\ nil, duration \\ Help.long) do
     GenServer.call HoloServer, {Kind.push, thing, holospace, secret, duration}
   end
-
-  # @doc "Write raw `thing` data to the root of the Multiverse / Unix file system."
-  # def orbit(thing, aboslute, secret)
-
-  @doc "WARNING: Destroy `holospace`. *thundering sounds*"
-  def forget(holospace \\ nil, secret \\ nil) when is_atom(holospace) or is_binary(holospace) do
-   # todo: return true if the thing has not spread to holospace
-   # otherwise radio "unable to erase" + remove the object
-   GenServer.cast HoloServer, {Kind.drop, holospace, secret}
-
-   holospace
-  end
-
+  
   ## Callbacks
-
-  def handle_call({:meta, _secret}, source, agent) do
-    {:reply, Agent.get(agent, &(&1)), agent}
-  end
-
-  def handle_call({:list, holospace, secret}, source, agent) do
-    match = Agent.get(agent, &(&1))
-    |> Map.keys
-    |> Stream.filter(fn key -> key == holospace end)
-    |> Enum.to_list
-    |> List.wrap
-
-    {:reply, match, agent}
-  end
-
-  def handle_call({:lock, data = %Data{}, holospace, secret, duration}, source, agent) do
-    # extract our map that we reset shortly
-    map = Agent.get(agent, &(&1))
-
-    # we need a namespace to share over..
-    if is_nil holospace do
-      holospace = data.keycode
-    end
-
-    if Map.has_key?(map, holospace) do
-      # return the data
-      {:reply, Data.boom(data, "Holo:lock // holospace is already taken: #{inspect holospace}"), agent}
-    else
-      # set that data to live at holospace and be static
-      data = data
-      |> Data.home(holospace)
-      |> Data.kind(Kind.data)
-
-      # exclusively put data into space
-      :ok = Agent.update agent, fn map ->
-        Map.put map, holospace, data
-      end
-
-      {:reply, data, agent}
-    end
-  end
-
-  def handle_call({:pull, holospace, secret}, source, agent) do
-    map  = Agent.get(agent, &(&1))
-    data = Map.get(map, holospace)
-
-    {:reply, data, agent}
-  end
-
-  def handle_call({:flow, holospace, secret}, source, agent) do
-    map  = Agent.get(agent, &(&1))
-    data = Map.get(map, holospace)
-
-
-    case data do
-      data when is_list(data) ->
-        Enum.each data, fn x ->
-
-        end
-
-        {:reply, data, agent}
-      data ->
-        {:reply, data, agent}
-    end
-  end
-
+  
   def handle_call({:push, data = %Data{}, holospace, secret, duration}, source, agent) do
     # we need a namespace to share over..
     if is_nil holospace do
@@ -151,17 +49,20 @@ defmodule Holo do
 
     # # only start a bot if the data has no other home
     # if is_nil data.home do
-    #   {:ok, bot} = Bot.start_link(data)
-    #
     #   # compile data in a second level Bot process
     #   data = Bot.data(bot, secret, duration)
     # end
-    #
-    # # update map/space
-    # :ok = Agent.update agent, fn map ->
-    #   Map.update map, holospace, [bot], fn x -> Enum.concat x, [bot] end
-    # end
-
+    
+    # update map/space
+    :ok = Agent.update agent, fn map ->
+      Map.update map, holospace, [data], fn space -> 
+        space
+        |> Enum.concat([data])
+        |> List.flatten
+        |> List.wrap
+      end
+    end
+    
     # # send a :pull notice to holospace
     # Task.async fn ->
     #   Enum.each list(holospace), fn thing ->
@@ -178,50 +79,16 @@ defmodule Holo do
     # return the data
     {:reply, data, agent}
   end
+  
+  def handle_call({:pull, holospace, secret}, source, agent) do
+    map  = Agent.get(agent, &(&1))
+    data = Map.get(map, holospace)
 
-  def handle_call({:push, thing, holospace, secret, duration}, source, agent) do
-    # we need a namespace to share over..
-    if is_nil holospace do
-      holospace = Help.keycode
-    end
-
-    # update map/space
-    :ok = Agent.update agent, fn map ->
-      Map.put map, holospace, thing
-    end
-
-    # TODO: send a :push to holospace
-
-    # return the data
-    {:reply, thing, agent}
+    {:reply, data, agent}
   end
-
-  def handle_cast({:drop}, agent) do
-    # TODO: Process.exit :kill all bots in holospace.
-
-    # recreate holospace if that's what the wiz says we should do...
-    :ok = Agent.update agent, fn x ->
-      Map.new
-    end
-    Logger.info "Holo!drop // #holospace // #{inspect Moment.now}"
-
-    {:noreply, agent}
-  end
-
-  def handle_cast({:drop, holospace, secret}, agent) do
-    # get the map
-    map = Agent.get(agent, &(&1))
-
-    # remove holospace
-    :ok = Agent.update(agent, fn map ->
-      if Map.has_key? map, holospace do
-        Map.delete map, holospace
-      end
-
-      map
-    end)
-
-    {:noreply, agent}
+  
+  def handle_call({:list, _secret}, source, agent) do
+    {:reply, Agent.get(agent, &(&1)), agent}
   end
   
   def start_link(_) do
