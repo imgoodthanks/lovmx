@@ -26,9 +26,9 @@ defmodule Flow.Test do
   test "Flow.motion(data, secret) returns a %{} of all flows.", do:
 		assert is_map Flow.motion("secrets")
   
-  test "Flow.collect(data, secret) returns a Bot process.", do:
-		assert is_pid (Data.new |> Flow.boot |> Help.sleep(1) |> Flow.collect).home
-    
+  test "Flow.grab(data, secret) returns a Bot process.", do:
+      assert is_pid (Data.new |> Flow.boot).home
+
   ## INIT
     
   test "Flow.x(data, secret) updates a flow.", do:
@@ -46,12 +46,15 @@ defmodule Flow.Test do
     assert %Data{thing: "lol"} = Flow.match Data.new("lol"), Data.new("whoa")
   end
 
-  # test "Flow.capture(data, secret) will collect data from *m* flows." do
-  #   Flow.match %Data{thing: "test"}, Data.new("whoa")
-  #
-  #   # flows work
-  #   assert %Data{pull: %Data{thing: "whoa"}} = Flow.capture(Data.new "test")
-  # end
+  test "Flow.graph(data, secret) will collect data from *m* flows." do
+    thing = Data.new("whoa")
+    
+    Flow.match %Data{thing: "test"}, thing
+
+    flow = Flow.graph(Data.new "test")
+    
+    assert thing in flow.pull.graph
+  end
   
   ## IN
 
@@ -62,7 +65,7 @@ defmodule Flow.Test do
     assert %Data{pull: %{"readme" => [%Data{thing: "lol"}]}} = Flow.feed Data.new("lol"), Data.new, "readme"
   
   test "Flow.pull(data, signal) controls a flow.", do:
-    assert %Data{pull: %{"about" => :boot}} = Data.new |> Flow.boot |> Flow.pull("about") |> Flow.collect
+    assert %Data{pull: %{"about" => :boot}} = Data.new |> Flow.boot |> Flow.pull("about")
   
   # # test "Flow.walk(data, signal) controls a flow.",
   # # do: assert %Data{} = Flow.walk Data.new

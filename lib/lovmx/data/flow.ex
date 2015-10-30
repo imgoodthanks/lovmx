@@ -23,12 +23,7 @@ defmodule Flow do
   def motion(secret \\ nil) do
     GenServer.call FlowServer, {:motion, secret}
   end
-  
-  @doc "Use `Flow.collect` to return specific Data."
-  def collect(data = %Data{}, secret \\ nil) do
-    GenServer.call FlowServer, {:collect, data, secret}
-  end
-  
+
   ## BOOT
   
   @doc "Boot or Upgrade `data` inside in the *BACKGROUND*."
@@ -53,18 +48,22 @@ defmodule Flow do
   
   @doc "Upgrade data in the Universal Flow w/ optional new data."
   def upgrade(data = %Data{}, thing, secret \\ nil) do
-    if thing, do: data = put_in(data.thing, thing)
-      
+    if thing, do: data = Flow.take(data, thing, secret)
+    
+    data = Data.tick data
+    
+    # Task.async fn ->
+    #   match data, Kind.data
+    # end
+    
     data
-    |> Data.tick
-    |> match Kind.data
   end
   
   ## GRAPH
   
   @doc "Return `data` if flow is a `match`."
-  def match(match = %Data{}, thing, secret \\ nil, duration \\ Help.tock) when not is_nil(thing) do
-    GenServer.call FlowServer, {:match, match, thing, secret, duration}
+  def match(match = %Data{}, thing, secret \\ nil) when not is_nil(thing) do
+    GenServer.call FlowServer, {:match, match, thing, secret}
   end
   
   @doc "Collect Data through all Data Flows."
@@ -81,17 +80,22 @@ defmodule Flow do
   end
   
   @doc "Put `thing` *INTO* `data.pull` at `signal`."
-  def feed(thing, data = %Data{}, signal \\ nil, secret \\ nil) when is_atom(signal) or is_binary(signal) do
-    put_in(data.pull, Map.update(data.pull, signal, [thing], fn take -> Enum.conact [take|thing] end))
+  def feed(thing, data = %Data{}, signal, secret \\ nil) when is_atom(signal) or is_binary(signal) do
+    put_in(data.pull, Map.update(data.pull, signal, [thing], fn take -> 
+      take
+      |> Enum.concat([thing])
+      |> List.flatten
+      |> List.wrap
+    end))
     |> upgrade(nil)
   end
   
   @doc "Map `holospace` *INTO* `data.pull`."
-  def pull(data = %Data{home: bot}, holospace, secret \\ nil) when is_atom(holospace) or is_binary(holospace) do
+  def pull(data = %Data{}, holospace, secret \\ nil) when is_atom(holospace) or is_binary(holospace) do
     put_in(data.pull, Map.put(data.pull, holospace, Kind.boot))
     |> upgrade(nil)
   end
-
+  
   # @doc "Walk `holospace` and put into `data.pull`."
   # def walk(data, holospace \\ "/", secret \\ nil) when is_pid(bot) and is_atom(holospace) or is_binary(holospace) do
   #   list = Holo.space(holospace, secret)
@@ -118,10 +122,8 @@ defmodule Flow do
     |> upgrade(nil)
   end
   
-  
-  
   ## GenServer
-  
+
   # start an active data -> session.
   def handle_call({:boot, data = %Data{}, secret, duration}, source, agent) do
     # put the bot into the data
@@ -136,36 +138,23 @@ defmodule Flow do
   end
   
   # add match to the Universal Flow
-  def handle_call({:match, match = %Data{}, thing, secret, duration}, source, agent) do
-    Logger.warn "Flow:match #{inspect match} // #{inspect thing}"
-    
-    # update map/match -> match/data
-    :ok = Agent.update agent, fn map ->
-      Map.put map, thing, match
-    end
-    
+  def handle_call({:match, match = %Data{}, thing, secret}, source, agent) do    
     # return the thing so it can be piped
-    {:reply, match, agent}
+    {:reply, agent_update_data(agent, match, thing, secret), agent}
   end
   
   # collect all things from the Univeral Flow of data
-  def handle_call({:graph, data = %Data{}, secret, duration}, source, agent) do
-    Logger.debug "Flow:graph #{inspect data}"
-    
+  def handle_call({:graph, data = %Data{}, secret, duration}, source, agent) do    
     motion = Agent.get(agent, &(&1))
-      
-    Enum.map motion, fn {thing, match} ->
-      Logger.debug "match >>> THING #{inspect thing} // MATCH #{inspect match}"
     
-      if not is_nil(data) do
-        if data == match do
-          data = Flow.pull(data, match)
-        end
+    data = Enum.reduce motion, data, fn {thing, match}, data -> 
+      if match = data do
+        Flow.feed(thing, data, :graph, secret)        
       end
     end
         
     # return the data
-    {:reply, data_from_agent(agent, data), agent}
+    {:reply, data, agent}
   end
     
   # return *all* active Flow data.
@@ -174,13 +163,7 @@ defmodule Flow do
     
     {:reply, Agent.get(agent, &(&1)), agent}
   end
-  
-  # return a specific Data Flow.
-  def handle_call({:collect, data = %Data{}, secret}, source, agent) do
-    #todo: support secret/access/codes
-    {:reply, data_from_agent(agent, data), agent}
-  end
-    
+      
   @doc "Start the named FlowServer process."
   def start_link(_) do
     # An agent that we'll eventually pass around to *all* the Flow servers...
@@ -195,20 +178,15 @@ defmodule Flow do
   
   ## Private
   
-  defp data_from_agent(agent, data, secret \\ nil) do
-    map = Agent.get(agent, &(&1))
-    
-    value = Map.get(map, data)
-    thing = nil
-
-    case value do
-      value = :data -> 
-        thing = data
-      value when is_pid(value) ->
-        thing = Bot.data(value, secret)
-      _ -> 
-        thing = data
-    end
-  end
+  defp agent_update_data(agent, data = %Data{}, thing, secret \\ nil) when is_pid(agent) do
+    Logger.debug "Flow:agent_update_data #{inspect data}"
   
+    # update map/match -> match/data
+    :ok = Agent.update agent, fn map ->
+      Map.put map, thing, data
+    end
+    
+    data
+  end
+
 end
