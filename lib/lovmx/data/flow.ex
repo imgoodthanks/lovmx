@@ -67,9 +67,9 @@ defmodule Flow do
     GenServer.call FlowServer, {:match, match, thing, secret, duration}
   end
   
-  @doc "Collect Data through all Flow/Graphs."
-  def capture(data = %Data{}, secret \\ nil, duration \\ Help.tock) do
-    GenServer.call FlowServer, {:capture, data, secret, duration}
+  @doc "Collect Data through all Data Flows."
+  def graph(data = %Data{}, secret \\ nil, duration \\ Help.tock) do
+    GenServer.call FlowServer, {:graph, data, secret, duration}
   end
   
   ## IN
@@ -94,16 +94,13 @@ defmodule Flow do
 
   # @doc "Walk `holospace` and put into `data.pull`."
   # def walk(data, holospace \\ "/", secret \\ nil) when is_pid(bot) and is_atom(holospace) or is_binary(holospace) do
-  #   list = Flow.space(holospace, secret)
+  #   list = Holo.space(holospace, secret)
   #
   #   unless Enum.empty? list do
   #     data = List.first Stream.map list, fn path ->
   #       data = Flow.pull(data, path, secret)
   #     end
   #   end
-  #
-  #   # flow it babe
-  #   Holo.boost data, holospace, secret
   # end
   
   ## OUT
@@ -120,7 +117,8 @@ defmodule Flow do
     put_in(data.push, Map.put(data.push, holospace, Kind.wait))
     |> upgrade(nil)
   end
-
+  
+  
   
   ## GenServer
   
@@ -137,6 +135,7 @@ defmodule Flow do
     {:reply, data, agent}
   end
   
+  # add match to the Universal Flow
   def handle_call({:match, match = %Data{}, thing, secret, duration}, source, agent) do
     Logger.warn "Flow:match #{inspect match} // #{inspect thing}"
     
@@ -149,8 +148,9 @@ defmodule Flow do
     {:reply, match, agent}
   end
   
-  def handle_call({:capture, data = %Data{}, secret, duration}, source, agent) do
-    Logger.debug "Flow:capture #{inspect data}"
+  # collect all things from the Univeral Flow of data
+  def handle_call({:graph, data = %Data{}, secret, duration}, source, agent) do
+    Logger.debug "Flow:graph #{inspect data}"
     
     motion = Agent.get(agent, &(&1))
       
@@ -168,14 +168,14 @@ defmodule Flow do
     {:reply, data_from_agent(agent, data), agent}
   end
     
-  # return *all* active data -> bots.
+  # return *all* active Flow data.
   def handle_call({:motion, _secret}, source, agent) do
     #todo: support secret/access/codes
     
     {:reply, Agent.get(agent, &(&1)), agent}
   end
   
-  # return a specific data -> bot.
+  # return a specific Data Flow.
   def handle_call({:collect, data = %Data{}, secret}, source, agent) do
     #todo: support secret/access/codes
     {:reply, data_from_agent(agent, data), agent}
@@ -192,7 +192,6 @@ defmodule Flow do
     
     link
   end
-  
   
   ## Private
   

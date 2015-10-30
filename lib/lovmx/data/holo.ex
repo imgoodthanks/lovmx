@@ -64,8 +64,6 @@ defmodule Holo do
   
   @doc "Use `Holo.boost` to start a `Bot` at `holospace` with `data`."
   def boost(thing, holospace \\ nil, secret \\ nil, duration \\ Help.long) do
-    
-    
     GenServer.call HoloServer, {Kind.push, thing, holospace, secret, duration}
   end
   
@@ -98,8 +96,6 @@ defmodule Holo do
   end
   
   def handle_call({:lock, data = %Data{}, holospace, secret, duration}, source, agent) do
-    
-
     # extract our map that we reset shortly
     map = Agent.get(agent, &(&1))
 
@@ -130,8 +126,6 @@ defmodule Holo do
     map  = Agent.get(agent, &(&1))
     data = Map.get(map, holospace)
     
-    
-    
     {:reply, data, agent}
   end
   
@@ -158,31 +152,31 @@ defmodule Holo do
       holospace = data.keycode
     end
     
-    # only start a bot if the data has no other home
-    if is_nil data.home do
-      {:ok, bot} = Bot.start_link(data)
-      
-      # compile data in a second level Bot process
-      data = Bot.data(bot, secret, duration)
-    end
+    # # only start a bot if the data has no other home
+    # if is_nil data.home do
+    #   {:ok, bot} = Bot.start_link(data)
+    #
+    #   # compile data in a second level Bot process
+    #   data = Bot.data(bot, secret, duration)
+    # end
+    #
+    # # update map/space
+    # :ok = Agent.update agent, fn map ->
+    #   Map.update map, holospace, [bot], fn x -> Enum.concat x, [bot] end
+    # end
     
-    # update map/space
-    :ok = Agent.update agent, fn map ->
-      Map.update map, holospace, [bot], fn x -> Enum.concat x, [bot] end
-    end
-    
-    # send a :pull notice to holospace
-    Task.async fn ->
-      Enum.each list(holospace), fn thing ->
-        case thing do
-          # a process, so send a :data message
-          thing when is_pid(thing) ->
-            GenServer.call thing, {Kind.pull, data}
-            
-          _ -> nil
-        end
-      end
-    end
+    # # send a :pull notice to holospace
+    # Task.async fn ->
+    #   Enum.each list(holospace), fn thing ->
+    #     case thing do
+    #       # a process, so send a :data message
+    #       thing when is_pid(thing) ->
+    #         GenServer.call thing, {Kind.pull, data}
+    #
+    #       _ -> nil
+    #     end
+    #   end
+    # end
     
     # return the data
     {:reply, data, agent}

@@ -7,7 +7,6 @@
 #   # test "Use `Holo.boost` and `Holo.space` to get/set things in <holospace>." do
 #   #   data = %Data{} = Holo.boost Data.new, "whoa"
 #   #
-#   #
 #   #   assert data in Holo.space data.keycod
 #   # end
 #
