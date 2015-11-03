@@ -145,7 +145,7 @@ defmodule Flow do
   end
   
   # collect all things from the Univeral Flow of data
-  def handle_call({:graph, data = %Data{}, secret, duration}, source, agent) do    
+  def handle_call({:graph, data = %Data{}, secret, duration}, source, agent) do
     motion = Agent.get(agent, &(&1))
     
     # Feed
@@ -154,7 +154,7 @@ defmodule Flow do
         Flow.feed(thing, data, :graph, secret)
       end
     end
-    #Logger.warn ">>> Flow:feed #{inspect data.pull}"
+    #Logger.warn ">>> Flow:graph #{inspect data}"
     
     # Pull
     pull_map = Enum.reduce data.pull, Map.new, fn {key, value}, current ->
@@ -163,11 +163,11 @@ defmodule Flow do
       # So we are enum'ing %Data{pull: %{key1: value1, key2: value2}}
       case {key, value} do
         {:pull, holospace} ->
-          Logger.warn "@@@ Flow:pull // #key // #{inspect key}"
+          #Logger.warn "@@@ Flow:pull // #key // #{inspect key}"
           {key, value}
 
         _ ->
-          Logger.warn "@@@ Flow:any // #key // #{inspect key}"
+          #Logger.warn "@@@ Flow:any // #key // #{inspect key}"
           
           {key, Kind.drop}
       end

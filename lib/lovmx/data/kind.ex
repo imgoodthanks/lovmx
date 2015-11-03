@@ -21,27 +21,27 @@ defmodule Kind do
   # in naming.
   """
   
-  ## Controls
+  ## Signal             # Magic         # Abstract
+                        
+  def boot, do: :boot   # Flow.boot     # new/fresh
+  def data, do: :data   # Data.thing    # object/data/json
+  def meta, do: :meta   # Data.meta     # meta/control
+  def lock, do: :lock   # Castle.lock   # lock/secret
+  def list, do: :list   # Drive.list    # show/head/etc
+  def pull, do: :pull   # Flow.pull     # pull/get/read 
+  def code, do: :code   # Data.code     # source/code
+  def flow, do: :flow   # Flow.graph    # run/exe/produce
+  def push, do: :push   # Flow.push     # push/once/post/update
+  def wait, do: :wait   # Flow.wait     # promise/future    
+  def drop, do: :drop   # Pipe.drop     # nil/nada/noop/drop
   
-  def boot, do: :boot # new/fresh
-  def data, do: :data # object/data/json
-  def meta, do: :meta # meta/control
-  def lock, do: :lock # lock/secret
-  def list, do: :list # show/head/etc
-  def pull, do: :pull # pull/get/read 
-  def code, do: :code # source/code
-  def flow, do: :flow # run/exe/produce
-  def push, do: :push # push/once/post/update
-  def wait, do: :wait # promise/future    
-  def drop, do: :drop # nil/nada/noop/drop
-  
-  ## Prototypes
-  
-  def text, do: :text # binary/text
-  def link, do: :link # a path/URI/link
-  def html, do: :html # an html snippet
-  def blob, do: :blob # static/binary
-  def cake, do: :cake # cake/magic/markdown+
+  ## Prototypes         # Default       # Abstract
+                        
+  def text, do: :text   # Pipe.text     # binary/text
+  def link, do: :link   # Data.address  # a path/URI/link
+  def html, do: :html   # Pipe.html     # an html snippet
+  def blob, do: :blob   # Freezer.put   # static/binary
+  def cake, do: :cake   # Cake.magic    # cake/magic/markdown+
   ## ^^^ cake is first class ^^^ 
   
   ## Exception

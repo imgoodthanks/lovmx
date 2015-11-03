@@ -39,18 +39,10 @@ defmodule Cake.Test do
   # test "Use `Cake.magic` to do nil stuff", do:
   #   assert is_nil Cake.magic nil
   
-  
-  test "Use `Cake.x.boot` to do nil stuff" do
-    assert {data = %Data{home: home}, text} = Cake.x(Data.new, nil, :boot, nil)
     
-    # did the data boot?
-    assert is_pid home
-  end
-  
-  test "Use `Cake.x.boot` to do nil stuff" do
-    assert {data = %Data{pull: %{drive: list}}, text} = Cake.x(Data.new, nil, :boot, nil)
-  end
-  
+  # test "Use `Cake.x.boot` to boot data", do:
+  #   assert is_pid Cake.magic("@boot. test").home
+
   # # test "Use `Cake.x.data` to do nil stuff", do:
   # #   assert %Data{} = Cake.x nil
   # #
@@ -59,10 +51,11 @@ defmodule Cake.Test do
   # #
   # # test "Use `Cake.x.lock` to do nil stuff", do:
   # #   assert %Data{} = Cake.x nil
-  # #
-  # test "Use `Cake.x.list` to do nil stuff", do:
-  #   assert is_binary (%Data{pull: %{kit: kit}} =
-  #
+  
+  # test "Use `Cake.x.list` to do nil stuff" do
+  #   assert {data = %Data{pull: %{drive: list}}, text} = Cake.x(Data.new, nil, :boot, nil)
+  # end
+  
   # # test "Use `Cake.x.pull` to do nil stuff", do:
   # #   assert %Data{} = Cake.x Data.new, "signal"
 

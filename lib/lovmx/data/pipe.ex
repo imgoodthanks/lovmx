@@ -115,7 +115,7 @@ defmodule Pipe do
     """
   end
   def text(data = %Data{home: home}) when is_pid(home) do
-    PrettyHex.pretty_hex data.home
+    PrettyHex.pretty_hex inspect data.home
   end
   def text(data) when is_atom(data) or is_binary(data) do
     """

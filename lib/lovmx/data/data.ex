@@ -160,7 +160,7 @@ defmodule Data do
   def path(path, data = %Data{}) when is_atom(path) or is_binary(path) do
     Map.get data.pull, path
   end
-    
+  
   @doc "Morph Data into whatever `function` returns."
   def morph(data = %Data{}, function) when is_function(function) do
     # Data can morph, return whatever Data or other thing from function

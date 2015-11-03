@@ -90,56 +90,115 @@ defmodule Cake do
     nil
   end
   
+  ## Compile Cake + Data
+  
   def x(data = %Data{}, text) when is_binary(text) do
-    Logger.warn "Cake.x // #data // #{inspect data}"
+    Logger.debug "Cake.x.i // #data // #{inspect data}"
     
     # we are a superset of markdown, so mark it first..
     text = Pipe.down(text)
     text = Regex.replace(~r/\n/, text, "\n")
     
     # our magicdown regex.
-    match = ~r/[^|\s]{0,}\@([a-z0-9]{2,})\.\s([a-z0-9\#\%\?\s]{2,})/i
+    match = ~r/[^|\s]{0,}\@([a-z0-9]{2,})\.\s{1,}([a-z0-9\#\%\?\s]{2,})/i
 
     # compile Data + markup from original simple text
     cake = Regex.replace match, text, fn(capture, code, opts) ->
       {data, replace} = x(data, capture, code, opts)
-
+      
       replace
     end
+    Logger.debug "Cake.x.o // #data // #{inspect data}"
     
     # then flow it baby
     Flow.feed(cake, data, Kind.cake)
   end
-  def x(data = %Data{}, capture, boot, path) when boot in [:boot, "boot"] do
+  def x(data = %Data{}, capture, code, secret) when code in [:boot, "boot"] do    
     # create our action
     # create our side effect text
     # return both
-    {Flow.boot(data) |> Flow.match(data), Pipe.text(data)}
-  end
-  def x(data = %Data{}, capture, pull, path) when pull in [:pull, "pull"] do
-    # get the list
-    # return the upgraded data, plus the 
-    {Flow.upgrade(data), Pipe.text(Drive.read(path))}
-  end
-  def x(data = %Data{}, capture, push, path) when push in [:push, "push"] do
-    # get the list + return the upgraded data
-    list = Drive.read(path)
+    data = data
+    |> Flow.boot(secret)
+    |> Flow.graph(secret)
     
-    {Flow.upgrade(data, list), Pipe.text(list)}
-  end
-  def x(data = %Data{}, capture, kit, path) when kit in [:kit, "kit"] do
-    # get the kit    
-    string = Cake.kit(path)
+    Logger.warn "Cake.x.boot // #data // #{inspect data}"
     
-    # feed the kit to data
-    data = string
-    |> Flow.feed(data, Kind.text)
-    
-    {data, string}
+    {data, Pipe.text(data)}
   end
-  def x(data = %Data{}, capture, code, source) do
-    # code our data + return the source text
-    {Data.code(data, source), Pipe.text(source)}
-  end
+  # def x(data = %Data{}, capture, code, secret) when code in [:data, "data"] do
+  #   # graph our data/action
+  #   data = Flow.graph(data, secret)
+  #
+  #   # create our side effect text
+  #   text = Pipe.text(data.thing)
+  #
+  #   # feed text to data
+  #   data = text |> Flow.feed(data, Kind.text)
+  #
+  #   # return both
+  #   {data, text}
+  # end
+  # def x(data = %Data{}, capture, code, secret) when code in [:meta, "meta"] do
+  #   # create our action
+  #   # create our side effect text
+  #   # return both
+  #   {data, Pipe.text(data.meta)}
+  # end
+  # def x(data = %Data{}, capture, code, secret) when code in [:lock, "lock"] do
+  #   # create our action
+  #   # create our side effect text
+  #   # return both
+  #   {Castle.lock(data, secret), Pipe.text(data)}
+  # end
+  # def x(data = %Data{}, capture, code, secret) when code in [:list, "list"] do
+  #   {data, Pipe.text(data)}
+  # end
+  # def x(data = %Data{}, capture, code, secret) when code in [:pull, "pull"] do
+  #   {data, Pipe.text(data)}
+  # end
+  # def x(data = %Data{}, capture, code, secret) when code in [:code, "code"] do
+  #   {data, Pipe.text(data)}
+  # end
+  # def x(data = %Data{}, capture, code, secret) when code in [:flow, "flow"] do
+  #   {data, Pipe.text(data)}
+  # end
+  # def x(data = %Data{}, capture, code, secret) when code in [:push, "push"] do
+  #   # get the list + return the upgraded data
+  #   {data, Pipe.text(data)}
+  # end
+  # def x(data = %Data{}, capture, code, secret) when code in [:wait, "wait"] do
+  #   {data, Pipe.text(data)}
+  # end
+  # def x(data = %Data{}, capture, code, secret) when code in [:drop, "drop"] do
+  #   {data, Pipe.text(data)}
+  # end
+  # def x(data = %Data{}, capture, code, secret) when code in [:text, "text"] do
+  #   {data, Pipe.text(data)}
+  # end
+  # def x(data = %Data{}, capture, code, secret) when code in [:link, "link"] do
+  #   {data, Pipe.text(data)}
+  # end
+  # def x(data = %Data{}, capture, code, secret) when code in [:html, "html"] do
+  #   {data, Pipe.text(data)}
+  # end
+  # def x(data = %Data{}, capture, code, secret) when code in [:blob, "blob"] do
+  #   {data, Pipe.text(data)}
+  # end
+  # def x(data = %Data{}, capture, code, secret) when code in [:cake, "cake"] do
+  #   {data, Pipe.text(data)}
+  # end
+  # def x(data = %Data{}, capture, code, path)   when code in [:kit,  "kit"] do
+  #   # get the kit
+  #   string = Cake.kit(path)
+  #
+  #   # feed the kit to data
+  #   data = string
+  #   |> Flow.feed(data, Kind.text)
+  #
+  #   {data, string}
+  # end
+  # def x(data = %Data{}, capture, code, source) do
+  #   {data, Pipe.text(data)}
+  # end
     
 end

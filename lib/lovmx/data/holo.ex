@@ -60,7 +60,7 @@ defmodule Holo do
       Enum.each Holo.space(holospace, secret), fn thing ->
         case thing do
           _ -> 
-          Logger.warn "@@@ Holo:push // #thing // #{inspect thing}"
+          #Logger.warn "@@@ Holo:push // #thing // #{inspect thing}"
         
         end
       end
