@@ -40,7 +40,7 @@ defmodule Freezer do
   # Custom Freezer stuff.
   
   @doc "Freezer type/file extension accessor."
-  def ext(mime) do    
+  def ext(mime) do
     if Map.has_key? @static, mime do
       @static[mime].extension
     else

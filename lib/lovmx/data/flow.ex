@@ -19,9 +19,9 @@ defmodule Flow do
 
   ## META
   
-  @doc "Use `Flow.motion` to return all Data."
-  def motion(secret \\ nil) do
-    GenServer.call FlowServer, {:motion, secret}
+  @doc "Use `Flow.beam` to return all Data."
+  def beam(secret \\ nil) do
+    GenServer.call FlowServer, {:beam, secret}
   end
 
   ## BOOT
@@ -61,7 +61,7 @@ defmodule Flow do
   
   ## GRAPH
   
-  @doc "Return `data` if flow is a `match`."
+  @doc "Put `match` into `Flow.beam` to return `thing` when `Flow.graph <thing>` matches."
   def match(match = %Data{}, thing, secret \\ nil) when not is_nil(thing) do
     GenServer.call FlowServer, {:match, match, thing, secret}
   end
@@ -127,7 +127,7 @@ defmodule Flow do
     
     # put the data/bot into the flow
     Task.async fn ->
-      Flow.match(data, Kind.data)
+      Flow.match(data, data)
     end
     
     {:reply, data, agent}
@@ -148,18 +148,60 @@ defmodule Flow do
   def handle_call({:graph, data = %Data{}, secret, duration}, source, agent) do    
     motion = Agent.get(agent, &(&1))
     
-    data = Enum.reduce motion, data, fn {thing, match}, data -> 
+    # Feed
+    data = Enum.reduce motion, data, fn {thing, match}, data ->
       if match = data do
         Flow.feed(thing, data, :graph, secret)
       end
     end
+    #Logger.warn ">>> Flow:feed #{inspect data.pull}"
     
+    # Pull
+    pull_map = Enum.reduce data.pull, Map.new, fn {key, value}, current ->
+      #Logger.warn ">>> Flow:pull_map #pull // #{inspect key} // #value // #{inspect value}"
+      
+      # So we are enum'ing %Data{pull: %{key1: value1, key2: value2}}
+      case {key, value} do
+        {:pull, holospace} ->
+          Logger.warn "@@@ Flow:pull // #key // #{inspect key}"
+          {key, value}
+
+        _ ->
+          Logger.warn "@@@ Flow:any // #key // #{inspect key}"
+          
+          {key, Kind.drop}
+      end
+    end
+    
+    # Code
+    Enum.map data.code, fn x ->
+      #Logger.warn "@@@ Flow:code // #x // #{inspect x}"
+  
+      data = Help.thaw(x).(data)
+    end
+
+    # # Push
+    Enum.each data.push, fn {key, value} ->
+      case {key, value} do
+        # a process, so send a :data message
+        {key, value} when is_pid(value) ->
+          Logger.warn "@@@ Flow:pid // #key // #{inspect key}"
+          
+        {key, value} when is_atom(value) or is_binary(value) ->
+          Logger.warn "@@@ Flow:atom // #key // #{inspect key}"
+          
+          Holo.boost(data, key, secret)
+          
+        _ -> nil
+      end
+    end
+
     # return the data
     {:reply, data, agent}
   end
     
   # return *all* active Flow data.
-  def handle_call({:motion, _secret}, source, agent) do
+  def handle_call({:beam, _secret}, source, agent) do
     #todo: support secret/access/codes
     
     {:reply, Agent.get(agent, &(&1)), agent}

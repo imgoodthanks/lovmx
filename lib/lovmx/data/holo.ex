@@ -14,8 +14,6 @@ defmodule Holo do
   framework often in order to best get/create/update 
   whatever your little heart asks for. Like magic, but 
   with software bugs.
-  
-  tl;dr Global Namespace + Push Data into the Bot.
   """
   
   use GenServer
@@ -46,12 +44,6 @@ defmodule Holo do
     if is_nil holospace do
       holospace = data.keycode
     end
-
-    # # only start a bot if the data has no other home
-    # if is_nil data.home do
-    #   # compile data in a second level Bot process
-    #   data = Bot.data(bot, secret, duration)
-    # end
     
     # update map/space
     :ok = Agent.update agent, fn map ->
@@ -63,18 +55,16 @@ defmodule Holo do
       end
     end
     
-    # # send a :pull notice to holospace
-    # Task.async fn ->
-    #   Enum.each list(holospace), fn thing ->
-    #     case thing do
-    #       # a process, so send a :data message
-    #       thing when is_pid(thing) ->
-    #         GenServer.call thing, {Kind.pull, data}
-    #
-    #       _ -> nil
-    #     end
-    #   end
-    # end
+    # send a :pull notice to holospace
+    Task.async fn ->
+      Enum.each Holo.space(holospace, secret), fn thing ->
+        case thing do
+          _ -> 
+          Logger.warn "@@@ Holo:push // #thing // #{inspect thing}"
+        
+        end
+      end
+    end
 
     # return the data
     {:reply, data, agent}

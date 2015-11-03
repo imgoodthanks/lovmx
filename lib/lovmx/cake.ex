@@ -37,16 +37,25 @@ defmodule Cake do
   
   @doc "Bot a file at `path`."
   def mix(path) when is_binary(path) do
-    
-
     # scrub
     path = path |> Help.path?
 
     # best effort the file..
     case Path.extname(path) do
-      ".exs"    -> {data, _} = Code.eval_file(path)
-      ".eex"    -> EEx.eval_string Drive.read(path), assigns: []
-      ".magic"  -> Drive.read(path) |> Cake.magic
+      ".exs"    ->
+        {data, binding} = Code.eval_file(path)
+
+        binding
+
+      # ".eex"    ->
+      #   data = EEx.eval_string Drive.read(path), assigns: []
+      
+      ".magic"  -> 
+        data = Drive.read(path) 
+        |> Data.new 
+        |> Cake.magic
+        |> Cake.x(:boot, :boot, path)
+        
       _ ->
         Data.boom("#weird `#{path}` *seems* to have a problem...")
     end
@@ -56,73 +65,81 @@ defmodule Cake do
   def kit(path) do
     EEx.eval_file Help.web path
   end
-  def kit(data = %Data{}, path) do
-    EEx.eval_file Help.web(path), assigns: [data: data]
-  end
+  # def kit(data = %Data{}, path) do
+  #   Data.code(fn data ->
+  #     EEx.eval_file(Help.web(path), assigns: [data: data])
+  #     |> Flow.feed(data)
+  #   end)
+  # end
   
   def magic(text) when is_binary(text) do
     magic Data.new text
   end
-  
   def magic(data = %Data{kind: :blob, thing: filename, meta: %{base: base, root: root}}, secret) 
-  when is_binary(filename) and is_binary(base) and is_binary(root) do
+    when is_binary(filename) and is_binary(base) and is_binary(root) do
     path = Help.path [base, filename]
-        
+    
     Cake.x data, Drive.read path
   end
-  
   def magic(data = %Data{thing: text}) when is_binary(text) do
     Cake.x data, text
   end
-  
   def magic(nada) when is_nil(nada) do
     # there is no magic here.. :(
-
+    
     nil
   end
   
   def x(data = %Data{}, text) when is_binary(text) do
+    Logger.warn "Cake.x // #data // #{inspect data}"
+    
     # we are a superset of markdown, so mark it first..
     text = Pipe.down(text)
     text = Regex.replace(~r/\n/, text, "\n")
     
     # our magicdown regex.
-    match = ~r/[^|\s]{0,}\@([a-z0-9]{2,})\>\s([a-z0-9\#\%\?\s]{2,})/i
+    match = ~r/[^|\s]{0,}\@([a-z0-9]{2,})\.\s([a-z0-9\#\%\?\s]{2,})/i
 
     # compile Data + markup from original simple text
-    cake = Regex.replace match, text, fn(cap, code, opts) ->
-      {data, replace} = x(data, cap, code, opts)
+    cake = Regex.replace match, text, fn(capture, code, opts) ->
+      {data, replace} = x(data, capture, code, opts)
 
       replace
     end
     
     # then flow it baby
-    Flow.give(cake, data, Kind.cake)
+    Flow.feed(cake, data, Kind.cake)
   end
-  def x(data = %Data{}, signal, "code", source) do
-    data = Bot.code(data, source)
-    
-
-    {data, Pipe.text(source)}
+  def x(data = %Data{}, capture, boot, path) when boot in [:boot, "boot"] do
+    # create our action
+    # create our side effect text
+    # return both
+    {Flow.boot(data) |> Flow.match(data), Pipe.text(data)}
   end
-  def x(data = %Data{}, signal, "list", path) do
+  def x(data = %Data{}, capture, pull, path) when pull in [:pull, "pull"] do
     # get the list
-    list = Holo.space(path)
+    # return the upgraded data, plus the 
+    {Flow.upgrade(data), Pipe.text(Drive.read(path))}
+  end
+  def x(data = %Data{}, capture, push, path) when push in [:push, "push"] do
+    # get the list + return the upgraded data
+    list = Drive.read(path)
     
-
     {Flow.upgrade(data, list), Pipe.text(list)}
   end
-  def x(data = %Data{}, signal, "boot", opts) do    
-    # todo: spawn(signal, code.to_existing_atom, [opts])
+  def x(data = %Data{}, capture, kit, path) when kit in [:kit, "kit"] do
+    # get the kit    
+    string = Cake.kit(path)
     
-    {data, opts}
+    # feed the kit to data
+    data = string
+    |> Flow.feed(data, Kind.text)
+    
+    {data, string}
   end
-  def x(data = %Data{}, signal, code, opts) do
-    
-    
-    # todo: spawn(signal, code.to_existing_atom, [opts])
-    
-    {data, code}
+  def x(data = %Data{}, capture, code, source) do
+    # code our data + return the source text
+    {Data.code(data, source), Pipe.text(source)}
   end
     
 end

@@ -55,9 +55,7 @@ defmodule Platform do
         
         {[magic: path], _, _} ->
           data = path
-          |> Drive.read
-          |> Cake.magic
-          |> Pipe.page("#{path}.boot.html")
+          |> Cake.mix
         
           data
           |> Pipe.text

@@ -1,3 +1,5 @@
+require Logger
+
 defmodule Flow.Test do
   use ExUnit.Case
   
@@ -6,33 +8,25 @@ defmodule Flow.Test do
   test "Flow does cool stuff." do
     # setup our data route
     %Data{thing: "/"}
-    |> Flow.match Bot.code(fn data ->
+    |> Flow.match Data.code(fn data ->
       "index.html"
       |> Help.web
       |> Drive.read
-      |> Flow.feed(data, Kind.html)
       |> Pipe.page
-      |> Flow.upgrade
+      |> Flow.feed(data, Kind.html)
     end)
-
+    |> Flow.graph
+    
     # graph the route
     data = %Data{} = Flow.graph(Data.new "/")
-    
-    # connect the graph
-    #data = %Data{} = Pipe.drip(data)
-    
-    # we got the web page from the flow
-    #assert Regex.match? ~r/html/i, data.thing
+    #Logger.warn "Flow.Test: #{inspect data}"
   end
   
   ## Meta
   
-  test "Flow.motion(data, secret) returns a %{} of all flows.", do:
-		assert is_map Flow.motion("secrets")
+  test "Flow.beam(data, secret) returns a %{} of all flows.", do:
+		assert is_map Flow.beam("secrets")
   
-  test "Flow.grab(data, secret) returns a Bot process.", do:
-    assert is_pid (Data.new |> Flow.boot).home
-
   ## INIT
   
   test "Flow.x(data, secret) updates a flow.", do:
@@ -41,9 +35,9 @@ defmodule Flow.Test do
   test "Flow.boot(data, secret) creates a flow.", do:
 		assert is_pid Flow.boot(Data.new).home
   
-  test "Use `Data.new` to create and then `Flow.upgrade` to update `data`", do:
+  test "Flow.upgrade updates `data`", do:
     assert %Data{thing: "yep"} = Data.new("nada") |> Flow.upgrade "yep"
-      
+  
   ## Graph
     
   test "Flow.match(match, data) will append data to the flow." do

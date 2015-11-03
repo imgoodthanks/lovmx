@@ -14,6 +14,39 @@ defmodule Drive do
  
   ## File System
   
+  @doc "List Cloud-based directories from `$project/<path>`."
+  def list(project_path, _secret \\ nil) do
+    # build the path
+    root = Help.project Help.web project_path
+
+    # either read the file, or list the dir
+    if File.exists? root do
+      case File.dir? root do
+        false ->
+        []
+       
+        true  ->
+          {:ok, files} = File.ls root
+        
+          # fixup the basename to hide inside the warp drive
+          basename = Path.basename(project_path)
+          if basename == "static" do
+            basename = "/"
+          end
+        
+          List.wrap(files)
+          |> Enum.map(fn filename ->
+            case File.dir?(Help.path [root, filename]) do
+              true  -> Data.new(filename, Kind.link, %{base: basename, root: root})
+              false -> Data.new(filename, Kind.blob, %{base: basename, root: root})
+            end
+          end)
+      end
+    else
+      []
+    end
+  end
+  
   @doc "Read private/project-based files from `$project/<path>`."
   def read(project_path, _secret \\ nil) do
     # build the path
@@ -26,21 +59,7 @@ defmodule Drive do
           Help.thaw File.read!(root)
           
         true  ->
-          {:ok, files} = File.ls root
-          
-          # fixup the basename to hide inside the warp drive
-          basename = Path.basename(project_path)
-          if basename == "static" do
-            basename = "/"
-          end
-          
-          List.wrap(files)
-          |> Enum.map(fn filename ->
-            case File.dir?(Help.path [root, filename]) do
-              true  -> Data.new(filename, Kind.link, %{base: basename, root: root})
-              false -> Data.new(filename, Kind.blob, %{base: basename, root: root})
-            end
-          end)
+          nil
       end
     else
       nil

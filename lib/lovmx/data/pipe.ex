@@ -22,11 +22,6 @@ defmodule Pipe do
   ## Static Tranforms 
   # for *complex* transforms we use Bots, Flows, and Pipes
   
-  # @doc "Match outgoing Data."
-  # def catch(data = %Data{}) do
-  #   data
-  # end
-
   @doc "Pipe to a Cake/Magic document."
   def magic(data = %Data{}, holospace, secret \\ nil) do
     Cake.magic(data)

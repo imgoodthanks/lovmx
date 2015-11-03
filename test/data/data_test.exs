@@ -5,13 +5,6 @@ defmodule Data.Test do
 
   test "Use `Data.new` to create new `data`.", do:
 		%Data{} = Data.new
-      
-  # test "Use `Data.home <bot>` to move data to a new process." do
-  #   data = Data.new
-  #   {:ok, bot} = Bot.start_link data
-  #
-  #   assert is_pid Data.home(data, bot).home
-  # end
   
   test "Use `Data.kind` to mutate the data type using custom or Kind types.", do:
 		assert %Data{kind: :lols} = Data.kind Data.new, :lols
@@ -21,6 +14,21 @@ defmodule Data.Test do
 
   test "Use `Data.meta(data, signal)` to control the data.", do:
 		assert %Data{meta: %{"signal" => "lol"}} = Data.meta Data.new, "signal", "lol"
+
+  test "Use `Data.code` to add code and make Bot ready for work.", do:
+    assert 1 == length Data.code(fn bot -> inspect bot end).code
+
+  test "Use `Data.code` to add code and make Bot ready for work.", do:
+    assert 1 == length Data.code(fn bot -> inspect bot end).code
+
+  test "Use `Data.code <binary>` to add code and make Bot ready for work.", do:
+    assert %Data{} = Data.code "@list> img"
+
+  test "Use `Data.code` to add code to data and make Bot ready for work.", do:
+    assert %Data{code: [data]} = Data.code Data.new, fn bot -> inspect bot end
+
+  test "Use `Data.code` to add code and make Bot ready for work.", do:
+    assert 1 <= length (Data.new |> Data.code(fn x -> x end)).code
 
   test "Use `Data.address(data, signal)` to get a specific Data version string." do
 		data = Data.new

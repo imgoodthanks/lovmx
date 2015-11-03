@@ -3,9 +3,12 @@ defmodule Drive.Test do
 
   ## General
   
-  test "Use `Drive.read` to list directories", do:
-		assert [%Data{}|_] = Drive.read Help.web "img"
+  test "Use `Drive.list` to list directories", do:
+		assert [%Data{}|_] = Drive.list "img"
 
+  test "Use `Drive.read` to read blobs", do:
+		assert is_binary Drive.read("example.exs")
+    
   test "Use `Drive.save` to create files at `path`." do
     data = Drive.save Data.new("bot")
 

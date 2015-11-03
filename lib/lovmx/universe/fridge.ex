@@ -33,8 +33,8 @@ defmodule Fridge.Model do
   use Ecto.Model
 
   schema "data" do
-    field :key,                :string  #   :length => 40,    :key => true,   :auto_validation => false
-    field :data,               :binary  #   :length => 80
+    field :key,   :string  #   :length => 40,    :key => true,   :auto_validation => false
+    field :data,  :binary  #   :length => 80
   end
 
 end
@@ -43,4 +43,5 @@ end
 defmodule Fridge.Repo do
 
   use Ecto.Repo, otp_app: :lovmx
+
 end

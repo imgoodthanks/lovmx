@@ -117,7 +117,9 @@ defmodule Lovmx do
 
   @doc "Readme first. Don't panic."
   def help do
-    "README.magic" |> Drive.read |> Cake.magic
+    "README.magic"
+    |> Drive.read
+    |> Cake.magic
   end
 
   ## Exit

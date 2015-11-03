@@ -23,7 +23,7 @@ defmodule Wizard do
   @doc """
   Use `Cloud.bang` to start Holospace.
   """
-  def bang(path \\ "README.magic", opts \\ []) do
+  def bang(path \\ "example.exs", opts \\ []) do
     # hack/debug to reset everything each time the server starts
   if Mix.env == :dev do
     Wizard.reset_all!
@@ -88,11 +88,8 @@ defmodule Wizard do
     end
     
     # # First creation of the initial holospace network
-    # "README.magic"
-    # |> Drive.read # read the file
-    # |> Cake.magic # compile magicdown (markdown+) into data/bot
-    # |> Holo.boost "help"# send it into holospace
-    
+    Cake.mix path
+
     # Second Creation of Waitforit.
     Task.async fn -> 
       Wizard.tick(self) 

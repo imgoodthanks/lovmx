@@ -120,6 +120,32 @@ defmodule Data do
     put_in(data.help, Enum.concat(data.help, [message]))
   end
   
+  @doc "Add executable `code` to Data."
+  def code(text) when is_binary(text) do
+    # todo: better update meta
+    text
+    |> Data.new
+    |> Cake.magic
+  end
+  def code(function) when is_function(function) do
+    code Data.new, function
+  end
+  def code(data = %Data{}, function) when is_function(function) do
+    # todo: better update meta
+    Data.tick put_in(data.code, Enum.concat(data.code, [function]))
+  end
+  def code(block = [do: _]) do
+    code Data.new, block
+  end
+  def code(data = %Data{}, block = [do: _]) do
+    code data, fn data ->
+      block
+    end
+  end
+  def code(data = %Data{home: bot}, holospace \\ nil, secret \\ nil, duration \\ nil) when is_pid(bot) do
+    GenServer.call data.home, {:code, holospace, secret, duration}
+  end
+  
   @doc "Return *current* `data.thing`."
   def thing(data = %Data{}) do
     # todo: get the data from holo
@@ -152,7 +178,7 @@ defmodule Data do
     clone
   end
 
-  @doc "Add an error `message` to Bot."
+  @doc "Add an error `message` to Data."
   def boom(data = %Data{}, message) when not is_nil(message) do
     Data.tick put_in(data.boom, List.flatten [List.wrap(message)|data.boom])
   end
