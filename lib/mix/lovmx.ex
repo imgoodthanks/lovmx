@@ -56,6 +56,8 @@ defmodule Platform do
         {[magic: path], _, _} ->
           data = path
           |> Cake.mix
+          |> inspect
+          |> Logger.debug
         
           data
           |> Pipe.text

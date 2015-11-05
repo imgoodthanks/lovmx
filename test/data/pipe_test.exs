@@ -77,7 +77,7 @@ defmodule Pipe.Test do
     assert is_binary Pipe.text Data.new(nil, Kind.link)
 
   test "Pipe.text returns text for Data", do:
-    assert is_binary Pipe.text Flow.boot Data.new
+    assert is_binary Pipe.text Flow.beam Data.new
 
   test "Pipe.text returns text for binary", do:
     assert is_binary Pipe.text "lol"

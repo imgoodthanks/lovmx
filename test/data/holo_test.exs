@@ -13,5 +13,5 @@ defmodule Holo.Test do
     two = "two" |> Data.new |> Holo.boost key
     assert [one, two] = Holo.space(key)
   end
-  
+
 end

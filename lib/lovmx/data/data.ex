@@ -74,10 +74,6 @@ defmodule Data do
   end
     
   @doc "Give `data` a new home at `process`."
-  def home(data = %Data{}, holospace) when is_atom(holospace) or is_binary(holospace) do
-    # update the data
-    Data.tick(put_in data.home, holospace)
-  end
   def home(data = %Data{}, process) when is_pid(process) do
     # update the data
     Data.tick(put_in data.home, process)

@@ -54,7 +54,7 @@ defmodule Cake do
         data = Drive.read(path) 
         |> Data.new 
         |> Cake.magic
-        |> Cake.x(:boot, :boot, path)
+        |> Cake.x(:beam, :beam, path)
         
       _ ->
         Data.boom("#weird `#{path}` *seems* to have a problem...")
@@ -101,7 +101,7 @@ defmodule Cake do
     
     # our magicdown regex.
     match = ~r/[^|\s]{0,}\@([a-z0-9]{2,})\.\s{1,}([a-z0-9\#\%\?\s]{2,})/i
-
+    
     # compile Data + markup from original simple text
     cake = Regex.replace match, text, fn(capture, code, opts) ->
       {data, replace} = x(data, capture, code, opts)
@@ -111,33 +111,41 @@ defmodule Cake do
     Logger.debug "Cake.x.o // #data // #{inspect data}"
     
     # then flow it baby
-    Flow.feed(cake, data, Kind.cake)
+    
+    data = Flow.feed(cake, data, Kind.cake)
+    
+    {data, text} = x(data, :capture, :beam, nil)
+    
+    data = Flow.feed(text, data, Kind.text)
+    
+    data
   end
-  def x(data = %Data{}, capture, code, secret) when code in [:boot, "boot"] do    
+  def x(data = %Data{}, capture, code, secret) when code in [:beam, "beam"] do    
     # create our action
     # create our side effect text
     # return both
     data = data
-    |> Flow.boot(secret)
+    |> Flow.beam(secret)
     |> Flow.graph(secret)
+    |> Holo.boost(code)
     
-    Logger.warn "Cake.x.boot // #data // #{inspect data}"
+    #Logger.warn "Cake.x.beam // #data // #{inspect data}"
     
     {data, Pipe.text(data)}
   end
-  # def x(data = %Data{}, capture, code, secret) when code in [:data, "data"] do
-  #   # graph our data/action
-  #   data = Flow.graph(data, secret)
-  #
-  #   # create our side effect text
-  #   text = Pipe.text(data.thing)
-  #
-  #   # feed text to data
-  #   data = text |> Flow.feed(data, Kind.text)
-  #
-  #   # return both
-  #   {data, text}
-  # end
+  def x(data = %Data{}, capture, code, holospace) when code in [:list, "list"] do
+    # graph our data/action
+    data = Drive.list(holospace)
+    
+    # create our side effect text
+    text = Pipe.text(data)
+
+    # feed text to data
+    data = text |> Flow.feed(data, Kind.text)
+
+    # return both
+    {data, text}
+  end
   # def x(data = %Data{}, capture, code, secret) when code in [:meta, "meta"] do
   #   # create our action
   #   # create our side effect text

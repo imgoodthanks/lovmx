@@ -22,10 +22,11 @@ defmodule Pipe do
   ## Static Tranforms 
   # for *complex* transforms we use Bots, Flows, and Pipes
   
+  ## Graphing
+    
   @doc "Pipe to a Cake/Magic document."
-  def magic(data = %Data{}, holospace, secret \\ nil) do
+  def magic(data = %Data{}, holospace \\ "/", secret \\ nil) do
     Cake.magic(data)
-    |> Cloud.save(holospace, secret)
   end
   
   @doc "Create static HTML pages."  

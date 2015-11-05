@@ -1,23 +1,16 @@
-# an index flow
-
-# %Data{thing: "/"}
-# |> Flow.feed("lol")
-
-# %Data{thing: "/"}
-# |> Flow.match Data.code(fn data ->
-#   "index.html"
-#   |> Help.web
-#   |> Drive.read
-#   |> Pipe.page
-#   |> Flow.feed(data, Kind.html)
-# end)
-# |> Flow.push("splash")
-# |> Flow.graph
-
+# setup a catch all data flow
+%Data{}
+|> Flow.match Data.code(fn data ->
+  data = "index.html"
+  |> Help.web
+  |> Drive.read
+  |> Pipe.page
+  |> Flow.feed(data, Kind.html)
+  |> Holo.boost("splash")
+end)
 
 # # a splash bot
-# %Data{thing: "splash"}
+# [%Data{}, %Data{thing: "splash"}]
 # |> Flow.match Data.code(fn data ->
-#   data
+#   Flow.feed "hello", data, Kind.text
 # end)
-# |> Flow.beam

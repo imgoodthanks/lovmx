@@ -23,14 +23,14 @@ defmodule Kind do
   
   ## Signal             # Magic         # Abstract
                         
-  def boot, do: :boot   # Flow.boot     # new/fresh
+  def boot, do: :boot   # Flow.beam     # new/fresh
   def data, do: :data   # Data.thing    # object/data/json
   def meta, do: :meta   # Data.meta     # meta/control
   def lock, do: :lock   # Castle.lock   # lock/secret
   def list, do: :list   # Drive.list    # show/head/etc
   def pull, do: :pull   # Flow.pull     # pull/get/read 
   def code, do: :code   # Data.code     # source/code
-  def flow, do: :flow   # Flow.graph    # run/exe/produce
+  def flow, do: :flow   # Holo.graph    # run/exe/produce
   def push, do: :push   # Flow.push     # push/once/post/update
   def wait, do: :wait   # Flow.wait     # promise/future    
   def drop, do: :drop   # Pipe.drop     # nil/nada/noop/drop

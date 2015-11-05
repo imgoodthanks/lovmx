@@ -215,10 +215,11 @@ end
       data = holospace
       |> Data.new
       |> Flow.graph
+      |> Pipe.magic
       
-      Logger.warn "Cloud.call: #{inspect data}"
+      #Logger.warn "Cloud.call: #{inspect data}"
       
-      send_resp conn, 200, Pipe.page data
+      send_resp conn, 200, Pipe.page(data)
     end
   end
   
