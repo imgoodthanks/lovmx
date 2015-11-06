@@ -49,6 +49,15 @@ defmodule Holo do
     {:reply, Agent.get(agent, &(&1)), agent}
   end
   
+  # return specific [things] inside %{"holospace" => [things]}
+  def handle_call({:pull, holospace, secret}, source, agent) do
+    map  = Agent.get(agent, &(&1))
+    data = Map.get(map, holospace)
+    #Logger.warn "@@@ Holo:pull // #thing // #{inspect data}"
+    
+    {:reply, data, agent}
+  end
+  
   # update the universal hologram: %{"holospace" => [things]}
   def handle_call({:push, data = %Data{}, holospace, secret, duration}, source, agent) do
     # we need a namespace to share over..
@@ -72,7 +81,7 @@ defmodule Holo do
         case thing do
           _ -> 
           #Logger.warn "@@@ Holo:push // #thing // #{inspect thing}"
-        
+          
         end
       end
     end
@@ -81,15 +90,6 @@ defmodule Holo do
     {:reply, data, agent}
   end
   
-  # return specific [things] inside %{"holospace" => [things]}
-  def handle_call({:pull, holospace, secret}, source, agent) do
-    map  = Agent.get(agent, &(&1))
-    data = Map.get(map, holospace)
-    #Logger.warn "@@@ Holo:pull // #thing // #{inspect data}"
-    
-    {:reply, data, agent}
-  end
-    
   def start_link(_) do
     # An agent that we'll eventually pass around to the *all* the Holo servers...
     link = {:ok, agent} = Agent.start_link(fn -> Map.new end)

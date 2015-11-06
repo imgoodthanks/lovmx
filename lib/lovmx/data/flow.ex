@@ -73,11 +73,11 @@ defmodule Flow do
     GenServer.call FlowServer, {Kind.push, data, holospace, secret, duration}
   end
 
-  @doc "Map `holospace` *INTO* `data.pull`."
+  @doc "Pull from `holospace` *INTO* `data.pull`."
   def pull(data = %Data{}, holospace, secret \\ nil, duration \\ Help.long) when is_atom(holospace) or is_binary(holospace) do
     GenServer.call FlowServer, {Kind.pull, data, holospace, secret, duration}
   end
-
+  
   @doc "Put `thing` *INTO* `data.pull`.`<signal>`."
   def feed(thing, data, signal, secret \\ nil)
 

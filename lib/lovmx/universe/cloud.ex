@@ -212,10 +212,12 @@ end
       send_file conn, 200, path
     else
       # # we have a dynamic request
-      data = holospace
-      |> Data.new
-      |> Flow.graph
-      |> Pipe.magic
+      # data = holospace
+      # |> Data.new
+      # |> Flow.graph
+      # |> Pipe.magic
+      data = "README.magic"
+      |> Cake.mix
       
       #Logger.warn "Cloud.call: #{inspect data}"
       
