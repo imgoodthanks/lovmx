@@ -56,8 +56,6 @@ defmodule Pipe do
     ])
   end
   def page(thing) do
-    
-
     page(inspect thing)
   end
   

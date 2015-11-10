@@ -26,7 +26,8 @@ use Mix.Config
 # Default HTTPS Port 
 # todo: add better in-app support
 config :lovmx, 
-  https: true
+   http: 8888,
+  https: 8443
 
 # In your config/config.exs file
 config :lovmx, Fridge.Repo,
