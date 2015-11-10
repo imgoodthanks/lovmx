@@ -40,7 +40,6 @@ defmodule Flow do
       match(thing, data, secret, duration)
     end
   end
-
   def match(match = %Data{}, data = %Data{}, secret, duration) do
     GenServer.call FlowServer, {Kind.code, match, data, secret, duration}
   end

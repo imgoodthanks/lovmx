@@ -211,17 +211,17 @@ end
       # use plug/send_file here for OS-level support
       send_file conn, 200, path
     else
-      # # we have a dynamic request
-      # data = holospace
-      # |> Data.new
-      # |> Flow.graph
-      # |> Pipe.magic
-      data = "README.magic"
-      |> Cake.mix
+      # # # we have a dynamic request
+      # # data = holospace
+      # # |> Data.new
+      # # |> Flow.graph
+      # # |> Pipe.magic
+      # data = "README.magic"
+      # |> Cake.mix
       
       #Logger.warn "Cloud.call: #{inspect data}"
-      
-      send_resp conn, 200, Pipe.page(data)
+      send_resp conn, 200, Pipe.page
+      #send_resp conn, 200, Pipe.page Flow.graph %Data{thing: holospace}
     end
   end
   
