@@ -36,13 +36,13 @@ end
   
   @doc "We live in an HTTPS Multiverse."
   def port do
-    if port = Application.get_env(:lovmx, :https, 8080) do
+    if port = Application.get_env(:lovmx, :https, 8888) do
       port
     else
-      if port = Application.get_env(:lovmx, :http, 8080) do
+      if port = Application.get_env(:lovmx, :http, 8888) do
         port
       else
-        8080
+        8888
       end
     end
   end

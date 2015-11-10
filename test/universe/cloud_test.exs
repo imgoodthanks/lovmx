@@ -13,7 +13,7 @@ defmodule Cloud.Test do
   # test "Cloud.kick(secure: false)" do
   #   Cloud.kick secure: false
   #
-  #   IT.assert_web_page HTTPotion.get("http://localhost:8080/").body
+  #   IT.assert_web_page HTTPotion.get("http://localhost:8888/").body
   # end
 
 end

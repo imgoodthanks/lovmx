@@ -20,7 +20,7 @@ To start the LovMx:
   3. See `README.magic` or explore the API with `h Data` and `h <Module>` inside `iex`.
 
 Now you can visit
-  [`http://localhost:8080`](http://localhost:8080) or
+  [`http://localhost:8888`](http://localhost:8888) or
   [`https://localhost:8443`](https://localhost:8443)
   from your browser.
 
