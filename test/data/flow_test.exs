@@ -6,7 +6,7 @@ defmodule Flow.Test do
   ## Meta
   
   test "Flow.out(data, secret) returns a %{} of all flows.", do:
-		assert is_map Flow.out("secrets")
+	assert is_map Flow.out("secrets")
   
   ## INIT
   
@@ -18,19 +18,7 @@ defmodule Flow.Test do
 
     assert %Data{pull: %{}} = Flow.match %Data{}, data
   end
-  
-  test "Flow.match(match, thing) controls a flow." do
-    data = Data.new "lol"
 
-    assert %Data{pull: %{}} = Flow.match %Data{}, data
-  end
-
-  test "Flow.match(match, thing) controls a flow." do
-    data = Data.new "lol"
-
-    assert %Data{pull: %{}} = Flow.match %Data{}, data
-  end
-  
   test "Flow.upgrade(data, secret) updates `data`" do
     assert data = %Data{thing: "yada"} = Data.new("yada")
 
@@ -40,11 +28,7 @@ defmodule Flow.Test do
   test "Flow.x(data, secret) updates a flow." do
     assert data = %Data{thing: "yada"} = Data.new("yada") |> Flow.x
   end
-  
-  test "Flow.x(data, secret) updates a flow." do
-    assert data = %Data{thing: "yada"} = Data.new("yada") |> Flow.x
-  end
-  
+
   test "Flow.push(data, signal) controls a flow.", do:
     assert :push in (Data.new |> Flow.beam |> Flow.push("about")).push["about"]
 

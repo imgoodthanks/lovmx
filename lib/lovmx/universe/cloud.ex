@@ -59,8 +59,10 @@ end
     # todo: we developed with and *will ship* SSL/secure by default, 
     # just want to do an easier release and need to get the SSL
     # guide written up on lovmx.com first.
-    secure_by_default = Keyword.get opts, :https, Application.get_env(:lovmx, :https, false)
-    
+
+    # secure_by_default = Keyword.get opts, :https, Application.get_env(:lovmx, :https, false)
+	secure_by_default = false
+	
     # hack: start the Cloud/API server until a proper API is in place
     if secure_by_default do 
       Plug.Adapters.Cowboy.https(Cloud, secure_by_default, port: Cloud.port,

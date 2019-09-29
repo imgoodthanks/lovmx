@@ -105,10 +105,11 @@ defmodule Lovmx do
     Logger.info  "Lovmx.start #{inspect link}"
     
     # Kickoff the First Creation of Init.
-    Wizard.bang
+    # Wizard.bang
     
     # HTTPS kickoff.
-    Cloud.kick secure: File.exists? Help.root "priv/ssl/cert.pem"
+    #Cloud.kick secure: File.exists? Help.root "priv/ssl/cert.pem"
+    Cloud.kick secure: false
     
     link
   end

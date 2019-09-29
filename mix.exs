@@ -55,8 +55,7 @@ defmodule Lovmx.Mixfile do
     [ {:uuid,             "~> 1.0", override: false}, 
       {:cuid,             "~> 0.1.0"},
       
-      {:cowboy,           [hex_app: :cowboy]},
-      {:plug,             [optional: false, hex: :plug]},
+	  {:plug_cowboy,	  "~> 2.1.0"},
       
       {:ibrowse,          github: "cmullaparthi/ibrowse", tag: "v4.1.2"},
       {:httpotion,        "~> 2.1.0"},

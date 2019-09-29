@@ -5,11 +5,10 @@ defmodule Pipe.Test do
 
   ## Data
   
-  test "Pipe.magic creates a page from %Data{}", do:
+  test "Pipe.page creates a page from %Data{}", do:
 		assert is_binary Pipe.page Data.new("# yo")
     
-    
-  test "Pipe.page creates a page from %Data{}", do:
+  test "Pipe.page creates a page from `[list]`", do:
 		assert is_binary Pipe.page ["lol", "nub"]
     
   test "Pipe.page creates a page from %Data{} at `holospace`", do:
@@ -34,17 +33,17 @@ defmodule Pipe.Test do
     assert is_binary Pipe.page HashDict.new
 
 
-  test "Pipe.html returns HTML from [list]", do:
+  test "Pipe.html returns HTML from blank `Data`", do:
     assert is_binary Pipe.html Data.new
 
-  test "Pipe.html returns HTML from [list]", do:
+  test "Pipe.html returns HTML from `Data`", do:
     assert is_binary Pipe.html Data.new(nil, Kind.link), "about"
     
   test "Pipe.html returns HTML from [list]", do:
     assert is_binary Pipe.html ["lol", "nub"]
 
-  test "Pipe.html returns HTML from [list]", do:
-		assert is_binary Pipe.html ["lol", "nub"]
+  # test "Pipe.html returns HTML from [list]", do:
+  # 		assert is_binary Pipe.html ["lol", "nub"]
 
   test "Pipe.html returns HTML from Bot", do:
 		assert is_binary Pipe.html Data.new "ok"
